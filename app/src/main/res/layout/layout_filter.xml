@@ -1,0 +1,36 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/sh_component"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Placeholder items here -->
+            <include layout="@layout/placeholder_filter_item" />
+            <include layout="@layout/placeholder_filter_item" />
+            <include layout="@layout/placeholder_filter_item" />
+            <include layout="@layout/placeholder_filter_item" />
+            <include layout="@layout/placeholder_filter_item" />
+            <include layout="@layout/placeholder_filter_item" />
+            <include layout="@layout/placeholder_filter_item" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_component"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:visibility="gone"/>
+</merge>

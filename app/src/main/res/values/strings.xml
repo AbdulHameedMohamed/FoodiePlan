@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">FoodiePlan</string>
+    <string name="default_web_client_id">\"314988652841-kkros69rc40pr1fi8h1pjqs14fqegk2b.apps.googleusercontent.com\"</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="redirect_to_login">Already an user? Login</string>
+    <string name="daily_inspiration">Daily Inspiration For You</string>
+    <string name="meal_name">Name Of The Meal</string>
+    <string name="country_meals">Meals That Popular in Your Country</string>
+    <string name="key_meal_id">Key Meal Id</string>
 </resources>

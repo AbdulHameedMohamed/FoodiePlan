@@ -6,5 +6,13 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lavender">#8692f7</color>
+    <color name="google_button_color">#4285F4</color>
+    <color name="bg_card">#DDFFFFFF</color>
+    <color name="mediumGray">#D1D1D1</color>
+    <color name="cv_bg">#DDFFFFFF</color>
+    // Light Theme
+    <color name="bottom_sheet_bg">@color/white</color>
+    <color name="placeholderColor">@color/mediumGray</color>
 </resources>
