@@ -23,17 +23,17 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
     @Override
     public void getFavouriteMeals() {
         view.showData(mealRepository.getAllMealsFromLocal());
-
         Log.i("TAG", "getData: " + User.getCurrentUserId());
     }
 
     @Override
     public void removeFavouriteMeal(String userId, Meal meal) {
         if (userId != null && meal.getId() != null) {
+            mealRepository.deleteMeal(meal);
             favouriteRepository.deleteMealForUser(userId, meal.getId(), new FavouriteRepository.Callback<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
-                    mealRepository.deleteMeal(meal);
+                    view.showMessage("Removed Successfully");
                 }
 
                 @Override
@@ -44,11 +44,6 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
         } else {
             view.showError("No User, Login First");
         }
-    }
-
-    @Override
-    public void getFavouriteMealsFromRemote(String userId) {
-        favouriteRepository.getAllMealsForUser(userId, this);
     }
 
     @Override

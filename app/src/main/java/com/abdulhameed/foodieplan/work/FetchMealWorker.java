@@ -89,17 +89,14 @@ public class FetchMealWorker extends Worker implements NetworkCallBack<List<Meal
         if (mealOfTheDay != null && !mealOfTheDay.isEmpty()) {
             Meal meal = mealOfTheDay.get(0);
             SharedPreferencesManager.getInstance(getApplicationContext()).saveMealOfTheDay(meal);
-            notificationHelper.showNotification("Your meal of the day is ready!", "Today's meal: " + meal.getName());
+            notificationHelper.showNotification("Good Morning Sir!\nYour meal of the day is ready!", "Today's meal: " + meal.getName());
         }
     }
 
     @Override
     public void onFailure(String message) {
         Log.d(TAG, "onFailure: " + message);
-        scheduleNextWorkRequest();
     }
-
-
 
     private void scheduleNextWorkRequest() {
         OneTimeWorkRequest fetchMealWork = new OneTimeWorkRequest.Builder(FetchMealWorker.class)

@@ -17,6 +17,9 @@ import java.util.Objects;
 
 @Entity(tableName = "meals")
 public class Meal {
+    public Meal() {
+    }
+
     public Meal(@NonNull String id, String name, String category, String country, String thumb) {
         this.id = id;
         this.name = name;
@@ -24,6 +27,7 @@ public class Meal {
         this.country = country;
         this.thumb = thumb;
     }
+
     @PrimaryKey
     @NonNull
     @SerializedName("idMeal")

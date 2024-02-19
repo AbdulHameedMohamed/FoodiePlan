@@ -16,7 +16,6 @@ public interface DetailsContract {
 
     interface View {
         void showMeal(Meal meal);
-        void showEmptyDataMessage();
         void showErrorMsg(String error);
     }
 }

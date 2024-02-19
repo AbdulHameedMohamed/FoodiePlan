@@ -16,5 +16,9 @@ public interface LoginContract {
 
     interface Presenter {
         void signInWithEmail(String email, String password);
+
+        void getFavouriteMeals(String userId);
+
+        void signInAsGuest();
     }
 }

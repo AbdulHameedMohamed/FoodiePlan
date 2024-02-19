@@ -23,6 +23,7 @@ import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
+import com.abdulhameed.foodieplan.utils.MyCalender;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.google.android.material.chip.Chip;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -173,25 +174,19 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
         builder.setView(dialogBinding.getRoot());
         AlertDialog dialog = builder.create();
 
-        String[] daysOfWeek = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-        for (String day : daysOfWeek) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(day);
-            chip.setCheckable(true);
-            dialogBinding.chipGroup.addView(chip);
+        String today = MyCalender.getDayName(MyCalender.getDayOfWeek());
+
+        for (String day : MyCalender.getDaysOfWeek()) {
+                Chip chip = new Chip(requireContext());
+                chip.setText(day);
+                chip.setCheckable(true);
+                dialogBinding.chipGroup.addView(chip);
         }
 
+        disableChipsBeforeToday(dialogBinding, today);
+
         dialogBinding.btnSelectDay.setOnClickListener(view -> {
-            for (int i = 0; i < dialogBinding.chipGroup.getChildCount(); i++) {
-                Chip chip = (Chip) dialogBinding.chipGroup.getChildAt(i);
-                if (chip.isChecked()) {
-                    String day = chip.getText().toString();
-                    presenter.savePlannedMeal(day, meal.getId());
-                    Toast.makeText(requireContext(),
-                            meal.getName() + " Stored Successfully To "+ day
-                            , Toast.LENGTH_SHORT).show();
-                }
-            }
+            setSelectDays(dialogBinding);
             dialog.dismiss();
             Toast.makeText(requireContext(), "Meals ", Toast.LENGTH_SHORT).show();
         });
@@ -199,9 +194,26 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
         dialog.show();
     }
 
-    @Override
-    public void showEmptyDataMessage() {
+    private void setSelectDays(DialogSelectDayBinding dialogBinding) {
+        for (int i = 0; i < dialogBinding.chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) dialogBinding.chipGroup.getChildAt(i);
+            if (chip.isChecked()) {
+                String day = chip.getText().toString();
+                presenter.savePlannedMeal(day, meal.getId());
+                Toast.makeText(requireContext(),
+                        meal.getName() + " Stored Successfully To "+ day
+                        , Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
+    private static void disableChipsBeforeToday(DialogSelectDayBinding dialogBinding, String today) {
+        for (int i = 0; i < dialogBinding.chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) dialogBinding.chipGroup.getChildAt(i);
+            if(chip.getText().toString().equals(today))
+                break;
+            chip.setEnabled(false);
+        }
     }
 
     @Override

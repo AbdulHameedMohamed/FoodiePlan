@@ -9,15 +9,12 @@ public interface FavouriteContract {
         void showData(LiveData<List<Meal>> meals);
         void showError(String message);
         void deleteMeal(Meal mealsItem);
-        void afterRemove();
-
         void showNoFavourites();
+        void showMessage(String message);
     }
 
     interface Presenter {
         void getFavouriteMeals();
         void removeFavouriteMeal(String userId, Meal meal);
-
-        void getFavouriteMealsFromRemote(String userId);
     }
 }

@@ -3,6 +3,9 @@ package com.abdulhameed.foodieplan.model.repository;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.abdulhameed.foodieplan.authentication.login.LoginFragment;
 import com.abdulhameed.foodieplan.model.data.User;
@@ -11,7 +14,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -28,6 +34,7 @@ public class AuthenticationRepository {
     private final FirebaseAuth mAuth;
     private final FirebaseDatabase mDatabase;
     private final StorageReference mStorageRef;
+    private static final String TAG = "AuthenticationRepositor";
 
     public AuthenticationRepository(FirebaseAuth mAuth, FirebaseDatabase mDatabase, StorageReference mStorageRef) {
         this.mAuth = mAuth;
@@ -169,6 +176,20 @@ public class AuthenticationRepository {
                 })
                 .addOnFailureListener(e -> {
                     callback.onSaveUserFailed("Failed to save user data: " + e.getMessage());
+                });
+    }
+
+    public void signInAsGuest(LoginCallback callback) {
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInAnonymously:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        callback.onLoginSuccess(user);
+                    } else {
+                        Log.w(TAG, "signInAnonymously:failure", task.getException());
+                        callback.onLoginFailed(task.getException().getMessage());
+                    }
                 });
     }
 

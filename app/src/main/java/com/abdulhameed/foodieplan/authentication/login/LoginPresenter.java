@@ -2,25 +2,44 @@ package com.abdulhameed.foodieplan.authentication.login;
 
 import android.content.Intent;
 
+import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
-import com.abdulhameed.foodieplan.utils.NetworkManager;
+import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
+import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginPresenter implements LoginContract.Presenter, AuthenticationRepository.LoginCallback, AuthenticationRepository.LoginWithGoogleCallback {
-    private final LoginContract.View view;
-    private final AuthenticationRepository repository;
+import java.util.List;
 
-    public LoginPresenter(LoginContract.View view, AuthenticationRepository repository) {
+public class LoginPresenter implements LoginContract.Presenter, AuthenticationRepository.LoginCallback, AuthenticationRepository.LoginWithGoogleCallback, FavouriteRepository.Callback<List<Meal>> {
+    private final LoginContract.View view;
+    private final AuthenticationRepository authenticationRepository;
+    private final FavouriteRepository favouriteRepository;
+    private final MealRepository mealRepository;
+    public LoginPresenter(LoginContract.View view, AuthenticationRepository authenticationRepository,
+                          FavouriteRepository favouriteRepository, MealRepository mealRepository) {
         this.view = view;
-        this.repository = repository;
+        this.authenticationRepository = authenticationRepository;
+        this.favouriteRepository =  favouriteRepository;
+        this.mealRepository = mealRepository;
     }
 
     @Override
     public void signInWithEmail(String email, String password) {
-        repository.login(email, password, this);
+        authenticationRepository.login(email, password, this);
+    }
+
+    @Override
+    public void getFavouriteMeals(String userId) {
+
+        favouriteRepository.getAllMealsForUser(userId, this);
+    }
+
+    @Override
+    public void signInAsGuest() {
+        authenticationRepository.signInAsGuest(this);
     }
 
     private void storeUserData(String userId, String email, String username, String photoUrl) {
@@ -36,7 +55,7 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
     }
 
     public void handleGoogleSignInResult(Intent data) {
-        repository.handleGoogleSignInResult(data, this);
+        authenticationRepository.handleGoogleSignInResult(data, this);
     }
 
     @Override
@@ -48,7 +67,7 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
             String email = user.getEmail();
             String username = user.getDisplayName();
             String imageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
-            repository.saveUserToDatabase(userId, email, username, imageUrl, new AuthenticationRepository.SaveUserCallback() {
+            authenticationRepository.saveUserToDatabase(userId, email, username, imageUrl, new AuthenticationRepository.SaveUserCallback() {
                 @Override
                 public void onSaveUserSuccess() {
                     view.onGoogleSignInSuccess(user);
@@ -77,5 +96,15 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
     @Override
     public void onLoginWithGoogleFailed(String errorMessage) {
         view.onGoogleSignInFailed(errorMessage);
+    }
+
+    @Override
+    public void onSuccess(List<Meal> meals) {
+        mealRepository.setMeals(meals);
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+
     }
 }

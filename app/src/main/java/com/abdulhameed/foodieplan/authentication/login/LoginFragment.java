@@ -16,7 +16,11 @@ import android.widget.Toast;
 import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.FragmentLoginBinding;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
+import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
+import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
+import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
+import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class LoginFragment extends Fragment implements LoginContract.View {
-
     public static final int RC_SIGN_IN = 123;
     private LoginPresenter presenter;
     NavController navController;
@@ -43,7 +46,9 @@ public class LoginFragment extends Fragment implements LoginContract.View {
         presenter = new LoginPresenter(this,
                 new AuthenticationRepository(FirebaseAuth.getInstance(),
                         FirebaseDatabase.getInstance(),
-                        FirebaseStorage.getInstance().getReference()));
+                        FirebaseStorage.getInstance().getReference()),
+                FavouriteRepository.getInstance(),
+                MealRepository.getInstance(MealsRemoteDataSource.getInstance(), MealsLocalDataSource.getInstance(requireContext())));
 
         navController = NavHostFragment.findNavController(this);
     }
@@ -77,6 +82,8 @@ public class LoginFragment extends Fragment implements LoginContract.View {
             presenter.signInWithEmail(email, password);
         });
 
+        loginBinding.btnLoginFacebook.setOnClickListener(view -> presenter.signInAsGuest());
+
         loginBinding.btnLoginGoogle.setOnClickListener(view -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -96,6 +103,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     @Override
     public void navigateToHomeActivity(String uid) {
         SharedPreferencesManager.getInstance(requireContext()).saveUserId(uid);
+        presenter.getFavouriteMeals(uid);
         navController.navigate(R.id.action_loginFragment_to_homeActivity);
     }
 

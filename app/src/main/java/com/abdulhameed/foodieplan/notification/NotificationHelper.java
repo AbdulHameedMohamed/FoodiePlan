@@ -23,9 +23,8 @@ public class NotificationHelper {
     public void showNotification(String title, String content) {
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Create a notification channel for Android Oreo and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("meal_channel", "Meal Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("meal_channel", "Meal Notification", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
 
@@ -35,9 +34,13 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "meal_channel")
                 .setSmallIcon(R.drawable.ic_lock)
                 .setContentTitle(title)
-                .setContentText(content)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
+
+        // Set big text style for expanded content
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+        bigTextStyle.bigText(content);
+        builder.setStyle(bigTextStyle);
 
         // Show the notification
         notificationManager.notify(1, builder.build());

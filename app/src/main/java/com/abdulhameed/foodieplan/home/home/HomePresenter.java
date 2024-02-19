@@ -23,7 +23,7 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
     private HomeContract.View view;
     private final MealRepository mealsRepository;
     private final FavouriteRepository favouriteRepository;
-    private SharedPreferencesManager preferencesManager;
+    private final SharedPreferencesManager preferencesManager;
 
     public HomePresenter(MealRepository mealsRepository, FavouriteRepository repository, SharedPreferencesManager preferencesManager) {
         this.mealsRepository = mealsRepository;
@@ -74,16 +74,19 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
 
     @Override
     public void addToFavourite(String userId, Meal meal) {
+        Log.d(TAG, "addToFavourite: " + userId);
         favouriteRepository.saveMealForUser(userId, meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
                 if (isInserted)
                     mealsRepository.insertMeal(meal);
+                Log.d(TAG, "addToFavourite: " + isInserted);
             }
 
             @Override
             public void onError(String errorMessage) {
                 view.showError(errorMessage);
+                Log.d(TAG, "addToFavourite: " + userId);
             }
         });
     }
