@@ -16,5 +16,7 @@ public interface FavouriteContract {
     interface Presenter {
         void getFavouriteMeals();
         void removeFavouriteMeal(String userId, Meal meal);
+
+        void savePlannedMeal(String day, String mealId);
     }
 }

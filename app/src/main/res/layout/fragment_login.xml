@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/foodimg"
+    android:background="@drawable/ic_food_background"
     tools:context=".authentication.MainActivity">
 
     <com.google.android.material.card.MaterialCardView
@@ -12,7 +12,6 @@
         android:id="@+id/cv_login"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:backgroundTint="@color/bg_card"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textAlignment="center"
-                android:textColor="@color/lavender"
+                android:fontFamily="@font/courgette"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
@@ -69,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="@color/lavender"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="Login"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
@@ -107,6 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="Continue with Google"
+                        android:fontFamily="@font/courgette"
                         app:layout_constraintBottom_toBottomOf="@id/googleLogo"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -136,7 +136,7 @@
                         android:id="@+id/facebookLogo"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ic_google"
+                        android:src="@drawable/incognito_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/facebookText"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -149,13 +149,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="Continue with Facebook"
+                        android:text="Continue as A Guest"
+                        android:fontFamily="@font/courgette"
                         app:layout_constraintBottom_toBottomOf="@id/facebookLogo"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/facebookLogo"
                         app:layout_constraintTop_toTopOf="@id/facebookLogo" />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -169,7 +169,7 @@
                 android:layout_marginBottom="20dp"
                 android:padding="8dp"
                 android:text="Not yet registered? SignUp Now"
-                android:textColor="@color/lavender"
+                android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -1,23 +1,16 @@
 package com.abdulhameed.foodieplan.model.repository;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.abdulhameed.foodieplan.authentication.login.LoginFragment;
+import com.abdulhameed.foodieplan.home.profile.presenter.ProfilePresenter;
+import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -179,7 +172,7 @@ public class AuthenticationRepository {
                 });
     }
 
-    public void signInAsGuest(LoginCallback callback) {
+    public void signInAsGuest(LoginGuestCallback callback) {
         mAuth.signInAnonymously()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -193,17 +186,35 @@ public class AuthenticationRepository {
                 });
     }
 
+    public void downloadUserImage(GetImageCallback callback) {
+        StorageReference profileImgRef = mStorageRef.child("profile_images/" + FirebaseAuth.getInstance().getUid() + ".jpg");
+
+        profileImgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            callback.onDownloadImgSuccess(uri.toString());
+        }).addOnFailureListener(exception -> {
+            callback.onSaveUserFailed(exception.getMessage());
+        });
+    }
+
     public interface SaveUserCallback {
         void onSaveUserSuccess();
         void onSaveUserFailed(String errorMessage);
     }
-
+    public interface GetImageCallback {
+        void onDownloadImgSuccess(String url);
+        void onSaveUserFailed(String errorMessage);
+    }
     public interface LoginWithGoogleCallback {
         void onLoginWithGoogleSuccess(FirebaseUser user);
         void onLoginWithGoogleFailed(String errorMessage);
     }
 
     public interface LoginCallback {
+        void onLoginSuccess(FirebaseUser user);
+        void onLoginFailed(String errorMessage);
+    }
+
+    public interface LoginGuestCallback {
         void onLoginSuccess(FirebaseUser user);
         void onLoginFailed(String errorMessage);
     }

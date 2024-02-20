@@ -11,10 +11,20 @@ import com.abdulhameed.foodieplan.home.HomeActivity;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static boolean isGuest = false;
+    public static void setGuest(boolean isGuest) {
+        MainActivity.isGuest =  isGuest;
+    }
+
+    public static boolean getGuestMode() {
+        return isGuest;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_FoodiePlan);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
 
         SharedPreferencesManager.getInstance(this).saveUserId(null);

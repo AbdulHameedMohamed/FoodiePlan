@@ -21,11 +21,11 @@
             android:adjustViewBounds="true"
             android:contentDescription="@null"
             android:foreground="#30000000"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_launcher_background" />
+            tools:src="@drawable/ic_cooking" />
 
         <TextView
             android:id="@+id/tv_name"
@@ -47,14 +47,24 @@
 
         <ImageView
             android:id="@+id/iv_save_meal"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_lock"
+            android:src="@drawable/ic_red_heart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_calender_meal"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/calendar"
+            app:layout_constraintEnd_toEndOf="@id/iv_save_meal"
+            app:layout_constraintTop_toBottomOf="@id/iv_save_meal" />
 
         <TextView
             android:id="@+id/tv_category"

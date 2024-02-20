@@ -13,5 +13,9 @@ public interface SearchContract {
 
     interface Presenter {
         void searchFilterItem(String searchText);
+
+        void addToFavourite(String userId, Meal meal);
+
+        void savePlannedMeal(String day, String mealId);
     }
 }

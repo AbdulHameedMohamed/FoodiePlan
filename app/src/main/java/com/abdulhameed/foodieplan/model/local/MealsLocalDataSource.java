@@ -45,7 +45,6 @@ public class MealsLocalDataSource {
     public LiveData<Integer> getMealCount() {
         return favouriteDao.getMealCount();
     }
-
     public void deleteAllMeals() {
         new Thread (()-> favouriteDao.deleteAllMeals()).start();
     }

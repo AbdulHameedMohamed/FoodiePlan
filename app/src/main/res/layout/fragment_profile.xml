@@ -1,175 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".home.profile.ProfileFragment">
+    tools:context=".home.profile.view.ProfileFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-16dp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="38dp"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_width="2dp"
+            app:riv_corner_radius="50dp" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:text="Name"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="38dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/black"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name">
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Name"
+                android:inputType="textPersonName|textCapWords"
+                android:maxLength="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="38dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/black"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ti_name">
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:maxLength="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_favourite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_red_heart"
+            app:layout_constraintEnd_toStartOf="@id/iv_plan"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ti_email" />
+
+        <ImageView
+            android:id="@+id/iv_plan"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="96dp"
+            android:src="@drawable/calendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_favourite"
+            app:layout_constraintTop_toTopOf="@+id/iv_favourite" />
+
+        <TextView
+            android:id="@+id/tv_num_of_favourites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_favourite"
+            app:layout_constraintStart_toStartOf="@+id/iv_favourite"
+            app:layout_constraintTop_toBottomOf="@+id/iv_favourite" />
+
+        <TextView
+            android:id="@+id/tv_num_of_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/iv_plan"
+            app:layout_constraintStart_toStartOf="@id/iv_plan"
+            app:layout_constraintTop_toBottomOf="@+id/iv_plan" />
+
+        <Button
+            android:id="@+id/save_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginTop="80dp"
+            android:paddingVertical="10dp"
+            android:text="Save"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_num_of_favourites" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="40dp"
+            android:indeterminate="true"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/save_edit" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/ib_logout"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:padding="10dp"
-        android:src="@drawable/home"
-        android:background="@android:color/transparent"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/iv_profile"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="38dp"
-        android:src="@drawable/ic_person"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
-        android:padding="6dp"
-        app:riv_corner_radius="50dp"
-        app:riv_border_width="2dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_profile_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:text="Name"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/iv_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_name"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/av_sign_up"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="38dp"
-        android:background="@android:color/transparent"
-        android:textColor="@color/black"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
+        android:layout_height="350dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_profile_name"
-        >
-        <EditText
-            android:id="@+id/et_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name"
-            android:inputType="textPersonName|textCapWords"
-            android:maxLength="1"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="38dp"
-        android:background="@android:color/transparent"
-        android:textColor="@color/black"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ti_name">
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:maxLength="1"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/fav_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ti_email" />
-
-
-    <ImageView
-        android:id="@+id/plan_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="96dp"
-        android:src="@drawable/home"
-        app:layout_constraintStart_toEndOf="@+id/fav_image"
-        app:layout_constraintTop_toTopOf="@+id/fav_image" />
-
-    <TextView
-        android:id="@+id/fav_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="0"
-        android:textSize="28sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/fav_image"
-        app:layout_constraintEnd_toEndOf="@+id/fav_image"
-        app:layout_constraintTop_toBottomOf="@+id/fav_image" />
-
-    <TextView
-        android:id="@+id/plan_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="0"
-        android:textColor="@color/black"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/plan_image"
-        app:layout_constraintStart_toStartOf="@id/plan_image"
-        app:layout_constraintTop_toBottomOf="@+id/plan_image" />
-    <Button
-        android:id="@+id/save_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="80dp"
-        android:layout_marginTop="80dp"
-        android:paddingVertical="10dp"
-        android:text="Save"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fav_tv" />
-
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="40dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save_edit" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animation_sign_up" />
 </androidx.constraintlayout.widget.ConstraintLayout>

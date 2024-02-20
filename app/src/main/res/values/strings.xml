@@ -11,4 +11,5 @@
     <string name="meal_name">Name Of The Meal</string>
     <string name="country_meals">Meals That Popular in Your Country</string>
     <string name="key_meal_id">Key Meal Id</string>
+    <string name="meals_interesting">Meals That You Are Interesting In :</string>
 </resources>

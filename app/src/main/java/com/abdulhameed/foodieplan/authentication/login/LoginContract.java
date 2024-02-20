@@ -9,7 +9,7 @@ public interface LoginContract {
 
         void onGoogleSignInSuccess(FirebaseUser user);
 
-        void onGoogleSignInFailed(String errorMessage);
+        void showMessage(String errorMessage);
 
         void showLoading();
     }

@@ -43,6 +43,7 @@
                 android:ellipsize="end"
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                android:fontFamily="@font/courgette"
                 android:textStyle="italic|bold"
                 app:layout_constraintEnd_toEndOf="@id/iv_image"
                 app:layout_constraintStart_toStartOf="@id/iv_image"

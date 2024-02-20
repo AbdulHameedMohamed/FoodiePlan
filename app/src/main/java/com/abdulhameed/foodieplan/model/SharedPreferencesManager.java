@@ -3,26 +3,18 @@ package com.abdulhameed.foodieplan.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.abdulhameed.foodieplan.model.data.PlannedMeal;
-
 public class SharedPreferencesManager {
     private static final String SHARED_PREF_NAME = "MySharedPref";
 
 
     private static final String KEY_USER_ID = "userId";
+    private static final String KEY_GUEST_MODE = "guest_mode";
 
     private static final String KEY_MEAL_NAME = "meal_name";
     private static final String KEY_MEAL_CATEGORY = "meal_category";
     private static final String KEY_MEAL_COUNTRY = "meal_country";
     private static final String KEY_MEAL_ID = "meal_id";
     private static final String KEY_MEAL_THUMB = "meal_thumb";
-
-    private static final String KEY_PLANNED_MEAL_ID = "planned_meal_id";
-    private static final String KEY_PLANNED_MEAL_DAY = "planned_meal_day";
-    private static final String KEY_PLANNED_MEAL_NAME = "planned_meal_name";
-    private static final String KEY_PLANNED_MEAL_CATEGORY = "planned_meal_category";
-    private static final String KEY_PLANNED_MEAL_COUNTRY = "planned_meal_country";
-    private static final String KEY_PLANNED_MEAL_THUMB = "planned_meal_thumb";
 
     private static SharedPreferencesManager instance;
     private final SharedPreferences sharedPreferences;
@@ -48,6 +40,15 @@ public class SharedPreferencesManager {
 
     public String getUserId() {
         return sharedPreferences.getString(KEY_USER_ID, null);
+    }
+
+    public void saveGuestMode(Boolean guestMode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_GUEST_MODE, guestMode);
+        editor.apply();
+    }
+    public Boolean isGuest() {
+        return sharedPreferences.getBoolean(KEY_GUEST_MODE, false);
     }
 
     public void clearUserId() {

@@ -14,9 +14,15 @@ public interface ProfileContract {
         void getUser(String id);
 
         void clearFavourites();
+
+        void getDownloadUserImage();
     }
 
     interface View {
         void showUserData(User user);
+
+        void showErrorMessage(String errorMessage);
+
+        void displayImage(String url);
     }
 }

@@ -7,17 +7,17 @@
     <item
         android:id="@+id/favouriteFragment"
         android:title="Favourite"
-        android:icon="@drawable/home"/>
+        android:icon="@drawable/ic_star"/>
     <item
         android:id="@+id/planFragment"
         android:title="Plan"
-        android:icon="@drawable/home"/>
+        android:icon="@drawable/calendar"/>
     <item
         android:id="@+id/searchFragment"
         android:title="Search"
-        android:icon="@drawable/home"/>
+        android:icon="@drawable/search"/>
     <item
         android:id="@+id/profileFragment"
         android:title="Profile"
-        android:icon="@drawable/home"/>
+        android:icon="@drawable/ic_person"/>
 </menu>

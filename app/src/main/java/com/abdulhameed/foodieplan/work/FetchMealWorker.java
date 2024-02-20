@@ -13,9 +13,9 @@ import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
 import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;
-import com.abdulhameed.foodieplan.notification.NotificationHelper;
+import com.abdulhameed.foodieplan.utils.NotificationHelper;
+import com.abdulhameed.foodieplan.utils.MyCalender;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -35,11 +35,12 @@ public class FetchMealWorker extends Worker implements NetworkCallBack<List<Meal
         apiService.getRandomMeal(this);
         SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(getApplicationContext());
 
-        Calendar calendar = Calendar.getInstance();
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        int dayOfWeek = MyCalender.getDayOfWeek();
 
-        String dayName = getDayNameFromInt(dayOfWeek);
+        String dayName = MyCalender.getDayName(dayOfWeek);
+        String yesterdayName = MyCalender.getDayName(dayOfWeek-1);
 
+        preferencesManager.saveMealIdForDay(yesterdayName, null);
         String mealId = preferencesManager.getMealIdForDay(dayName);
         if(mealId!= null) {
             apiService.getMealById(new NetworkCallBack<Meal>() {
@@ -58,31 +59,9 @@ public class FetchMealWorker extends Worker implements NetworkCallBack<List<Meal
         return Result.success();
     }
 
-    private String getDayNameFromInt(int dayOfWeek) {
-        switch (dayOfWeek) {
-            case Calendar.SUNDAY:
-                return "Sunday";
-            case Calendar.MONDAY:
-                return "Monday";
-            case Calendar.TUESDAY:
-                return "Tuesday";
-            case Calendar.WEDNESDAY:
-                return "Wednesday";
-            case Calendar.THURSDAY:
-                return "Thursday";
-            case Calendar.FRIDAY:
-                return "Friday";
-            case Calendar.SATURDAY:
-                return "Saturday";
-            default:
-                return "";
-        }
-    }
-
     @Override
     public void onSuccess(List<Meal> mealOfTheDay) {
         onMealFetched(mealOfTheDay);
-        scheduleNextWorkRequest();
     }
 
     private void onMealFetched(List<Meal> mealOfTheDay) {

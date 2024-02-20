@@ -43,5 +43,7 @@ public interface HomeContract {
         void getCountry();
 
         void getWatchedMeals();
+
+        void savePlannedMeal(String day, String mealId);
     }
 }
