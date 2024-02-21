@@ -28,12 +28,12 @@ public class DetailsPresenter implements DetailsContract.Presenter, NetworkCallB
 
     @Override
     public void addToFavourite(Meal meal) {
-
+        repository.insertMeal(meal);
     }
 
     @Override
-    public void removeFromFavourite(Meal mealsItem) {
-
+    public void removeFromFavourite(Meal meal) {
+        repository.deleteMeal(meal);
     }
 
     @Override

@@ -78,28 +78,27 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
     }
 
     @Override
-    public void addToFavourite(String userId, Meal meal) {
-        Log.d(TAG, "addToFavourite: " + userId);
-        favouriteRepository.saveMealForUser(userId, meal, new FavouriteRepository.Callback<Boolean>() {
+    public void addToFavourite(Meal meal) {
+        Log.d(TAG, "addToFavourite: " + preferencesManager.getUser());
+
+        mealsRepository.insertMeal(meal);
+        favouriteRepository.saveMealForUser(preferencesManager.getUser().getId(), meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
-                if (isInserted)
-                    mealsRepository.insertMeal(meal);
                 Log.d(TAG, "addToFavourite: " + isInserted);
             }
 
             @Override
             public void onError(String errorMessage) {
                 view.showError(errorMessage);
-                Log.d(TAG, "addToFavourite: " + userId);
             }
         });
     }
 
     @Override
-    public void removeFromFavourite(String userId, Meal meal) {
-        if (userId != null && meal.getId() != null) {
-            favouriteRepository.deleteMealForUser(userId, meal.getId(), new FavouriteRepository.Callback<Boolean>() {
+    public void removeFromFavourite(Meal meal) {
+        if (preferencesManager.getUser() != null && meal.getId() != null) {
+            favouriteRepository.deleteMealForUser(preferencesManager.getUser().getId(), meal.getId(), new FavouriteRepository.Callback<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
                     mealsRepository.deleteMeal(meal);

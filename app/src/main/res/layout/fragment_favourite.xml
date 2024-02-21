@@ -4,18 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.favourite.view.FavouriteFragment">
+    tools:context=".home.favourite.view.FavouriteFragment"
+    tools:background="@color/white">
 
     <TextView
         android:id="@+id/tv_favourite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="15dp"
-        android:text="Favourite Meals"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        style="@style/App.TitleTextView"
+        android:text="@string/favourite_meals"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +27,8 @@
         app:layout_constraintTop_toBottomOf="@id/tv_favourite"
         tools:itemCount="3"
         tools:listitem="@layout/item_meal"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        android:paddingBottom="@dimen/spacing_medium"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/av_no_data_found"

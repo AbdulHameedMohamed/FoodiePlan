@@ -111,7 +111,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="96dp"
-            android:src="@drawable/calendar"
+            android:src="@drawable/ic_calendar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_favourite"
             app:layout_constraintTop_toTopOf="@+id/iv_favourite" />

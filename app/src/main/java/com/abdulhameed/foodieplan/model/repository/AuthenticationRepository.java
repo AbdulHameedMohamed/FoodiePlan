@@ -66,7 +66,7 @@ public class AuthenticationRepository {
                     if (task.isSuccessful()) {
                         FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         if (firebaseUser != null) {
-                            Log.d(TAG, "signup: "+ user);
+                            Log.d(TAG, "signup: " + user);
                             user.setId(firebaseUser.getUid());
                             saveUserData(user, profileImg, callback);
                         } else {
@@ -136,34 +136,20 @@ public class AuthenticationRepository {
     public void handleGoogleSignInResult(Intent data, LoginWithGoogleCallback callback) {
         try {
             GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
-            if (account != null) {
-                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                mAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                callback.onLoginWithGoogleSuccess(mAuth.getCurrentUser());
-                            } else {
-                                callback.onLoginWithGoogleFailed("Authentication failed: " + task.getException().getMessage());
-                            }
-                        });
-            } else {
-                callback.onLoginWithGoogleFailed("Google Sign-In account is null.");
-            }
+            AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            callback.onLoginWithGoogleSuccess(mAuth.getCurrentUser());
+                        } else {
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            callback.onLoginWithGoogleFailed("Authentication failed: " + task.getException().getMessage());
+                        }
+                    });
         } catch (ApiException e) {
+            Log.w("TAG", "signInWithCredential:failure"+ e.getMessage());
             callback.onLoginWithGoogleFailed("Google Sign-In failed: " + e.getMessage());
         }
-    }
-
-    public void saveUserToDatabase(String userId, String email, String username, String imageUrl, SaveUserCallback callback) {
-        DatabaseReference usersRef = mDatabase.getReference("users");
-        User newUser = new User(userId, email, username, imageUrl);
-        usersRef.child(userId).setValue(newUser)
-                .addOnSuccessListener(aVoid -> {
-                    callback.onSaveUserSuccess();
-                })
-                .addOnFailureListener(e -> {
-                    callback.onSaveUserFailed("Failed to save user data: " + e.getMessage());
-                });
     }
 
     public void signInAsGuest(LoginGuestCallback callback) {
@@ -172,7 +158,7 @@ public class AuthenticationRepository {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "signInAnonymously:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        callback.onLoginSuccess(user);
+                        callback.onGuestLoginSuccess(user);
                     } else {
                         Log.w(TAG, "signInAnonymously:failure", task.getException());
                         callback.onLoginFailed(task.getException().getMessage());
@@ -207,49 +193,61 @@ public class AuthenticationRepository {
 
     public interface SaveUserCallback {
         void onSaveUserSuccess();
+
         void onSaveUserFailed(String errorMessage);
     }
+
     public interface GetImageCallback {
         void onDownloadImgSuccess(String url);
+
         void onSaveUserFailed(String errorMessage);
     }
+
     public interface LoginWithGoogleCallback {
         void onLoginWithGoogleSuccess(FirebaseUser user);
+
         void onLoginWithGoogleFailed(String errorMessage);
     }
 
     public interface LoginCallback {
         void onLoginSuccess(FirebaseUser user);
+
         void onLoginFailed(String errorMessage);
     }
 
     public interface LoginGuestCallback {
-        void onLoginSuccess(FirebaseUser user);
+        void onGuestLoginSuccess(FirebaseUser user);
+
         void onLoginFailed(String errorMessage);
     }
 
     interface UpdateUserCallback {
         void onUpdateUserSuccess();
+
         void onUpdateUserFailed(String errorMessage);
     }
 
     public interface SignupCallback {
         void onSignupSuccess(User user, Bitmap profileImg);
+
         void onSignupFailed(String errorMessage);
     }
 
     public interface UploadCallback {
         void onUploadSuccess();
+
         void onUploadFailed(String errorMessage);
     }
 
     public interface GetUserCallback {
         void onGetUserSuccess(User user);
+
         void onGetUserFailed(String errorMessage);
     }
 
     public interface LinkGuestCallback {
         void onLinkGuestSuccess(FirebaseUser user);
+
         void onLinkGuestFailed(String errorMessage);
     }
 }

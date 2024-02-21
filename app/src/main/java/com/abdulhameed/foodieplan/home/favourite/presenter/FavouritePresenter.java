@@ -1,7 +1,5 @@
 package com.abdulhameed.foodieplan.home.favourite.presenter;
 
-import android.util.Log;
-
 import com.abdulhameed.foodieplan.home.favourite.FavouriteContract;
 import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
@@ -33,10 +31,12 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
     }
 
     @Override
-    public void removeFavouriteMeal(String userId, Meal meal) {
-        if (userId != null && meal.getId() != null) {
+    public void removeMeal(Meal meal) {
+        User user = preferencesManager.getUser();
+        if (user.getId() != null) {
             mealRepository.deleteMeal(meal);
-            favouriteRepository.deleteMealForUser(userId, meal.getId(), new FavouriteRepository.Callback<Boolean>() {
+            view.mealDeleted(meal);
+            favouriteRepository.deleteMealForUser(user.getId(), meal.getId(), new FavouriteRepository.Callback<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
                     view.showMessage("Removed Successfully");
@@ -44,11 +44,33 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
 
                 @Override
                 public void onError(String errorMessage) {
-                    view.showError(errorMessage);
+                    view.showMessage(errorMessage);
                 }
             });
         } else {
-            view.showError("No User, Login First");
+            view.showMessage("No User, Login First");
+        }
+    }
+
+    @Override
+    public void addMeal(Meal meal) {
+        User user = preferencesManager.getUser();
+        if (user.getId() != null) {
+            mealRepository.insertMeal(meal);
+            view.mealInserted(meal);
+            favouriteRepository.saveMealForUser(user.getId(), meal, new FavouriteRepository.Callback<Boolean>() {
+                @Override
+                public void onSuccess(Boolean result) {
+                    view.showMessage("Added Successfully");
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    view.showMessage(errorMessage);
+                }
+            });
+        } else {
+            view.showMessage("No User, Login First");
         }
     }
 
@@ -56,6 +78,7 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
     public void savePlannedMeal(String day, String mealId) {
         preferencesManager.saveMealIdForDay(day, mealId);
     }
+
     @Override
     public void onSuccess(List<Meal> meals) {
         if(meals!= null && meals.size() != 0) {
@@ -68,6 +91,6 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
 
     @Override
     public void onError(String errorMessage) {
-        view.showError(errorMessage);
+        view.showMessage(errorMessage);
     }
 }

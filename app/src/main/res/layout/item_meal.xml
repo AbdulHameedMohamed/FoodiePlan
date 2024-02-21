@@ -45,7 +45,7 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_meal"
             tools:text="Meal Name" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_save_meal"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -56,13 +56,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_calender_meal"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/calendar"
+            android:src="@drawable/ic_calendar"
             app:layout_constraintEnd_toEndOf="@id/iv_save_meal"
             app:layout_constraintTop_toBottomOf="@id/iv_save_meal" />
 

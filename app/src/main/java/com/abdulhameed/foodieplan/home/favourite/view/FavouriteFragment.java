@@ -26,7 +26,7 @@ import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.abdulhameed.foodieplan.utils.MyCalender;
 import com.google.android.material.chip.Chip;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -69,14 +69,8 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
         });
     }
 
-    @Override
-    public void showError(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
     public void deleteMeal(Meal meal) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        presenter.removeFavouriteMeal(userId, meal);
+        presenter.removeMeal(meal);
     }
 
     @Override
@@ -88,6 +82,24 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
     @Override
     public void showMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mealDeleted(Meal meal) {
+        adapter.removeMeal(meal);
+        Snackbar.make(requireView(), "Meal " + meal.getName() + " Removed.", Snackbar.LENGTH_LONG)
+                .setAction("Undo", view -> {
+                    presenter.addMeal(meal);
+                }).show();
+    }
+
+    @Override
+    public void mealInserted(Meal meal) {
+        adapter.insertMeal(meal);
+        Snackbar.make(requireView(), "Meal "+ meal.getName() +" Added Again.", Snackbar.LENGTH_LONG)
+                .setAction("Redo", view -> {
+                    presenter.removeMeal(meal);
+                }).show();
     }
 
     public void displayDialog(Meal meal) {

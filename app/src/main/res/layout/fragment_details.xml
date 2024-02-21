@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/cooking"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:riv_corner_radius="10dp" />
@@ -34,27 +34,30 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <ImageButton
-        android:id="@+id/ib_favourite"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_lock"
+        app:singleSelection="false"
         app:layout_constraintEnd_toEndOf="@id/cv_meal_img"
-        app:layout_constraintTop_toTopOf="@id/cv_meal_img" />
+        app:layout_constraintTop_toTopOf="@id/cv_meal_img">
 
-    <ImageButton
-        android:id="@+id/ib_plan"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_lock"
-        app:layout_constraintEnd_toEndOf="@id/ib_favourite"
-        app:layout_constraintStart_toStartOf="@id/ib_favourite"
-        app:layout_constraintTop_toBottomOf="@id/ib_favourite"
-        android:layout_marginTop="12dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorite"
+            app:icon="@drawable/ic_red_heart"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plan"
+            app:icon="@drawable/ic_calendar"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <View
         android:id="@+id/gradient_overlay"
@@ -73,7 +76,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="8dp"
-        android:drawableStart="@drawable/ic_lock"
+        android:drawableStart="@drawable/ic_name"
         android:drawablePadding="12dp"
         android:ellipsize="end"
         android:maxLines="1"
@@ -90,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="8dp"
-        android:drawableStart="@drawable/ic_lock"
+        android:drawableStart="@drawable/ic_cateogry"
         android:drawablePadding="12dp"
         android:text="Category"
         android:textColor="@color/white"
@@ -104,7 +107,7 @@
         android:id="@+id/tv_meal_details_country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_lock"
+        android:drawableStart="@drawable/ic_country"
         android:drawablePadding="12dp"
         android:text="Country"
         android:textColor="@color/white"

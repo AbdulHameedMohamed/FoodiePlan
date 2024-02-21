@@ -7,10 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.abdulhameed.foodieplan.databinding.ItemMealBinding;
 import com.abdulhameed.foodieplan.model.Meal;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
     private final OnMealClickListener<Meal> listener;
@@ -37,18 +41,25 @@ public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
         holder.bindViews(holder, position);
     }
 
+    public void removeMeal(Meal meal) {
+        List<Meal> newList = new ArrayList<>(getCurrentList());
+        newList.remove(meal);
+        submitList(newList);
+    }
+
+    public void insertMeal(Meal meal) {
+        List<Meal> newList = new ArrayList<>(getCurrentList());
+        newList.add(meal);
+        submitList(newList);
+    }
+
     class MealViewHolder extends RecyclerView.ViewHolder {
         ItemMealBinding binding;
 
         public MealViewHolder(@NonNull ItemMealBinding binding, OnMealClickListener<Meal> listener) {
             super(binding.getRoot());
             this.binding = binding;
-            binding.getRoot().setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(getItem(position));
-                }
-            });
+            binding.getRoot().setOnClickListener(v -> listener.onItemClick(getItem(getAdapterPosition())));
             binding.ivSaveMeal.setOnClickListener(view -> listener.onFavouriteClick(getItem(getAdapterPosition())));
             binding.ivCalenderMeal.setOnClickListener(view -> listener.onPlanClick(getItem(getAdapterPosition())));
         }
@@ -74,9 +85,11 @@ public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
         }
     }
 
-    public static interface OnMealClickListener<T> {
+    public interface OnMealClickListener<T> {
         void onItemClick(T meal);
+
         void onFavouriteClick(T meal);
+
         void onPlanClick(T meal);
     }
 }

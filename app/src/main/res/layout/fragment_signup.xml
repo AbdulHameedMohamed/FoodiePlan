@@ -9,39 +9,35 @@
     android:orientation="vertical"
     android:paddingVertical="@dimen/spacing_medium">
 
+
+    <TextView
+        android:id="@+id/tv_signup"
+        style="@style/App.TitleTextView"
+        android:text="@string/sign_up"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_large"
-        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:layout_marginHorizontal="@dimen/spacing_large"
         app:cardCornerRadius="@dimen/corner_radius_large"
         app:cardElevation="@dimen/spacing_large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/courgette"
-            android:text="@string/sign_up"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_xxlarge"
-            android:textStyle="bold" />
+        app:layout_constraintStart_toStartOf="parent">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/spacing_xlarge">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_large">
+                android:paddingHorizontal="@dimen/spacing_large">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_circular"
@@ -52,25 +48,14 @@
                     android:src="@drawable/profile"
                     app:shapeAppearanceOverlay="@style/Circular" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ti_email"
-                    style="@style/App.TextInputLayout"
-                    android:hint="@string/email"
-                    app:startIconContentDescription="Email"
-                    app:startIconDrawable="@drawable/ic_email">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                <include
+                    android:id="@+id/i_email"
+                    layout="@layout/layout_email" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ti_username"
                     style="@style/App.TextInputLayout"
-                    android:hint="Name"
+                    android:hint="@string/name"
                     app:startIconContentDescription="Username"
                     app:startIconDrawable="@drawable/ic_person">
 
@@ -82,54 +67,30 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ti_password"
-                    style="@style/App.TextInputLayout"
-                    android:hint="Password"
-                    app:endIconMode="password_toggle"
-                    app:startIconContentDescription="Password"
-                    app:startIconDrawable="@drawable/ic_lock">
+                <include
+                    android:id="@+id/i_password"
+                    layout="@layout/layout_password" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ti_confirm_password"
-                    style="@style/App.TextInputLayout"
-                    android:hint="Confirm Password"
-                    app:endIconMode="password_toggle"
-                    app:startIconContentDescription="Password"
-                    app:startIconDrawable="@drawable/ic_lock">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_confirm_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                <include
+                    android:id="@+id/i_confirm_password"
+                    layout="@layout/layout_password"/>
 
                 <Button
                     android:id="@+id/btn_signup"
-                    style="@style/App.Button"
+                    style="@style/App.AuthenticationButton"
                     android:text="@string/sign_up"
-                    app:icon="@drawable/ic_person" />
+                    />
 
                 <TextView
                     android:id="@+id/tv_redirect_to_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:padding="@dimen/spacing_medium"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:text="@string/redirect_to_login"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_large" />
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_marginBottom="@dimen/spacing_small"/>
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>

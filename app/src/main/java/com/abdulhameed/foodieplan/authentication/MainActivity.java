@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.home.HomeActivity;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
+import com.abdulhameed.foodieplan.model.data.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,10 +19,9 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
 
-        SharedPreferencesManager.getInstance(this).saveUserId(null);
-        String userId = SharedPreferencesManager.getInstance(this).getUserId();
+        User user = SharedPreferencesManager.getInstance(this).getUser();
 
-        if (userId != null) {
+        if (user != null) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();

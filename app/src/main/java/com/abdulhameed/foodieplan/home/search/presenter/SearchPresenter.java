@@ -9,6 +9,7 @@ import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchPresenter implements SearchContract.Presenter, NetworkCallBack<List<Meal>> {
@@ -31,6 +32,7 @@ public class SearchPresenter implements SearchContract.Presenter, NetworkCallBac
     }
 
     private static final String TAG = "SearchPresenter";
+
     @Override
     public void addToFavourite(String userId, Meal meal) {
         mealRepository.insertMeal(meal);
@@ -55,8 +57,9 @@ public class SearchPresenter implements SearchContract.Presenter, NetworkCallBac
 
     @Override
     public void onSuccess(List<Meal> meals) {
-        if(meals != null)
-            view.showMeals(meals);
+        if(meals == null)
+            meals = new ArrayList<>();
+        view.showMeals(meals);
     }
 
     @Override

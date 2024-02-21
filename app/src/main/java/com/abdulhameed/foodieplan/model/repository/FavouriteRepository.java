@@ -1,5 +1,7 @@
 package com.abdulhameed.foodieplan.model.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.abdulhameed.foodieplan.model.Meal;
@@ -41,6 +43,7 @@ public class FavouriteRepository {
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 
+    private static final String TAG = "FavouriteRepository";
     public void getAllMealsForUser(String userId, final Callback<List<Meal>> callback) {
         usersRef.child(userId).child("meals").addValueEventListener(new ValueEventListener() {
             @Override
@@ -49,9 +52,11 @@ public class FavouriteRepository {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Meal meal = snapshot.getValue(Meal.class);
                     if (meal != null) {
+                        Log.d(TAG, "onDataChange: "+meal);
                         meals.add(meal);
                     }
                 }
+                Log.d(TAG, "onDataChange: " + meals);
                 callback.onSuccess(meals);
             }
 

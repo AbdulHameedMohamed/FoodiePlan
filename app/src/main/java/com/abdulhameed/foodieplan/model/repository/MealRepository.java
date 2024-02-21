@@ -1,6 +1,6 @@
 package com.abdulhameed.foodieplan.model.repository;
 
-import android.util.Log;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
@@ -54,12 +54,12 @@ public class MealRepository {
         mealsRemoteDataSource.searchMealByName(networkCallBack, mealName);
     }
 
-    public void insertMeal(Meal mealsItem) {
-        mealsLocalDataSource.insertMeal(mealsItem);
+    public void insertMeal(Meal meal) {
+        mealsLocalDataSource.insertMeal(meal);
     }
 
-    public void deleteMeal(Meal mealsItem) {
-        mealsLocalDataSource.deleteMeal(mealsItem);
+    public void deleteMeal(Meal meal) {
+        mealsLocalDataSource.deleteMeal(meal);
     }
 
     public LiveData<List<Meal>> getAllMealsFromLocal() {

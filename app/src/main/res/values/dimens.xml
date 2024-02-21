@@ -5,13 +5,15 @@
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_xlarge">32dp</dimen>
+    <dimen name="spacing_xxlarge">36dp</dimen>
+    <dimen name="spacing_xxxlarge">50dp</dimen>
 
     <!-- Text size values -->
-    <dimen name="text_size_small">16sp</dimen>
-    <dimen name="text_size_medium">18sp</dimen>
-    <dimen name="text_size_large">22sp</dimen>
-    <dimen name="text_size_xlarge">24sp</dimen>
-    <dimen name="text_size_xxlarge">26sp</dimen>>
+    <dimen name="text_size_small">18sp</dimen>
+    <dimen name="text_size_medium">22sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_xlarge">26sp</dimen>
+    <dimen name="text_size_xxlarge">30sp</dimen>
 
     <!-- Corner radius values -->
     <dimen name="corner_radius_small">4dp</dimen>

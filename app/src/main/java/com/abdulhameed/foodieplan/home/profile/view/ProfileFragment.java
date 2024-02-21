@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
                     MealRepository.getInstance(MealsRemoteDataSource.getInstance(), MealsLocalDataSource.getInstance(requireContext())));
             binding.avSignUp.setVisibility(View.GONE);
             binding.clProfile.setVisibility(View.VISIBLE);
-            presenter.getUser(SharedPreferencesManager.getInstance(requireContext()).getUserId());
+            presenter.getUser(SharedPreferencesManager.getInstance(requireContext()).getUser().getId());
             presenter.getDownloadUserImage();
         }
         setListeners();

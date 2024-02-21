@@ -12,4 +12,13 @@
     <string name="country_meals">Meals That Popular in Your Country</string>
     <string name="key_meal_id">Key Meal Id</string>
     <string name="meals_interesting">Meals That You Are Interesting In :</string>
+    <string name="name">Name</string>
+    <string name="login">Login</string>
+    <string name="continue_with_google">Continue With Google</string>
+    <string name="continue_as_a_guest">Continue As a Guest</string>
+    <string name="plan">Plan</string>
+    <string name="favorite">Favorite</string>
+    <string name="search">Search</string>
+    <string name="planned_meals">Planned Meals</string>
+    <string name="favourite_meals">Favourite Meals</string>
 </resources>

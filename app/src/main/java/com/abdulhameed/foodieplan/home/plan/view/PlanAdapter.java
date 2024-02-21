@@ -10,26 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.ItemPlanBinding;
+import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.data.PlannedMeal;
+import com.abdulhameed.foodieplan.utils.OnClickListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlanAdapter extends ListAdapter<PlannedMeal, PlanAdapter.PlanViewHolder> {
 
-    private final OnClickListener<PlannedMeal> onClickListener;
+    private final OnPlannedClickListener<PlannedMeal> listener;
 
-    protected PlanAdapter(OnClickListener<PlannedMeal> onClickListener) {
-        super(new DiffUtil.ItemCallback<PlannedMeal>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull PlannedMeal oldItem, @NonNull PlannedMeal newItem) {
-                return oldItem.getId().equals(newItem.getId());
-            }
-
-            @Override
-            public boolean areContentsTheSame(@NonNull PlannedMeal oldItem, @NonNull PlannedMeal newItem) {
-                return oldItem.equals(newItem);
-            }
-        });
-        this.onClickListener = onClickListener;
+    public PlanAdapter(OnPlannedClickListener<PlannedMeal> listener) {
+        super(new PlannedDiffCallback());
+        this.listener = listener;
     }
 
     @NonNull
@@ -42,30 +37,69 @@ public class PlanAdapter extends ListAdapter<PlannedMeal, PlanAdapter.PlanViewHo
     @Override
     public void onBindViewHolder(@NonNull PlanViewHolder holder, int position) {
         PlannedMeal plannedMeal = getItem(position);
-        holder.bind(plannedMeal, onClickListener);
+        holder.bind(plannedMeal);
     }
 
-    public static class PlanViewHolder extends RecyclerView.ViewHolder {
+    public void insertMeal(PlannedMeal meal) {
+        List<PlannedMeal> newList = new ArrayList<>(getCurrentList());
+        newList.add(meal);
+        submitList(newList);
+    }
+
+    public void deleteMeal(PlannedMeal meal) {
+        List<PlannedMeal> newList = new ArrayList<>(getCurrentList());
+        newList.remove(meal);
+        submitList(newList);
+    }
+
+    public class PlanViewHolder extends RecyclerView.ViewHolder {
         private final ItemPlanBinding binding;
 
         public PlanViewHolder(@NonNull ItemPlanBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            addListeners(binding);
         }
 
-        public void bind(PlannedMeal plannedMeal, OnClickListener<PlannedMeal> onClickListener) {
+        private void addListeners(@NonNull ItemPlanBinding binding) {
+            binding.getRoot().setOnClickListener(v -> listener.onItemClick(getItem(getAdapterPosition())));
+            binding.ivSaveMeal.setOnClickListener(view -> listener.onFavouriteClick(getItem(getAdapterPosition())));
+            binding.ivCalenderMeal.setOnClickListener(view -> listener.onPlanClick(getItem(getAdapterPosition())));
+            binding.ivRemove.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION)
+                    listener.onDeleteClick(getItem(getAdapterPosition()));
+            });
+        }
+
+        public void bind(PlannedMeal plannedMeal) {
             binding.tvDay.setText(plannedMeal.getDay());
             Picasso.get().load(plannedMeal.getThumb())
                     .placeholder(R.drawable.cooking)
-                    .into(binding.iMeal.ivMeal);
-            binding.iMeal.tvName.setText(plannedMeal.getName());
-            binding.iMeal.tvCountry.setText(plannedMeal.getCountry());
-            binding.iMeal.tvCategory.setText(plannedMeal.getCategory());
-            binding.getRoot().setOnClickListener(view -> onClickListener.onItemClick(plannedMeal));
+                    .into(binding.ivMeal);
+            binding.tvName.setText(plannedMeal.getName());
+            binding.tvCountry.setText(plannedMeal.getCountry());
+            binding.tvCategory.setText(plannedMeal.getCategory());
         }
     }
 
-    public interface OnClickListener<T> {
-        void onItemClick(T item);
+    static class PlannedDiffCallback extends DiffUtil.ItemCallback<PlannedMeal> {
+        @Override
+        public boolean areItemsTheSame(@NonNull PlannedMeal oldItem, @NonNull PlannedMeal newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull PlannedMeal oldItem, @NonNull PlannedMeal newItem) {
+            return oldItem.equals(newItem);
+        }
+    }
+
+    public interface OnPlannedClickListener<T> {
+        void onItemClick(T meal);
+        void onFavouriteClick(T meal);
+        void onPlanClick(T meal);
+        void onDeleteClick(T meal);
     }
 }

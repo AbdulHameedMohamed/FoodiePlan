@@ -8,6 +8,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.abdulhameed.foodieplan.work.FetchMealWorker;
+import com.google.firebase.FirebaseApp;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +23,7 @@ public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
     private void scheduleFetchMealWork() {
         Log.d(TAG, "scheduleFetchMealWork: ");
+        FirebaseApp.initializeApp(this);
         PeriodicWorkRequest fetchMealWork = new PeriodicWorkRequest.Builder(
                 FetchMealWorker.class,
                 1, TimeUnit.DAYS)

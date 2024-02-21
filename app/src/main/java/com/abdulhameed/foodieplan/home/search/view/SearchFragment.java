@@ -77,12 +77,17 @@ public class SearchFragment extends Fragment implements SearchContract.View , Me
         binding.etSearch.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void onTextChanged(CharSequence searchText, int i, int i1, int i2) {
-                binding.shRvMeals.setVisibility(View.VISIBLE);
-                binding.shRvMeals.startShimmer();
+                showLoading();
                 String search = searchText.toString().toLowerCase();
                 presenter.searchFilterItem(search);
             }
         });
+    }
+
+    private void showLoading() {
+        binding.rvMeals.setVisibility(View.GONE);
+        binding.shRvMeals.setVisibility(View.VISIBLE);
+        binding.shRvMeals.startShimmer();
     }
 
     @Override
@@ -92,6 +97,7 @@ public class SearchFragment extends Fragment implements SearchContract.View , Me
     }
 
     private void stopShimmer() {
+        binding.rvMeals.setVisibility(View.VISIBLE);
         binding.shRvMeals.stopShimmer();
         binding.shRvMeals.setVisibility(View.INVISIBLE);
     }

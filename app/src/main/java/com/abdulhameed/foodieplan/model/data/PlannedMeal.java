@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-
 public class PlannedMeal {
     private String id;
     private String name;

@@ -3,9 +3,15 @@ package com.abdulhameed.foodieplan.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.abdulhameed.foodieplan.model.data.User;
+
 public class SharedPreferencesManager {
     private static final String SHARED_PREF_NAME = "MySharedPref";
     private static final String KEY_USER_ID = "userId";
+
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PROFILE_URL = "imageUrl";
     private static final String KEY_GUEST_MODE = "guest_mode";
 
     private static final String KEY_MEAL_NAME = "meal_name";
@@ -28,21 +34,33 @@ public class SharedPreferencesManager {
         return instance;
     }
 
-    // Save user ID
-    public void saveUserId(String userId) {
+    public void saveUser(User user) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_USER_ID, userId);
+        editor.putString(KEY_USER_ID, user.getId());
+        editor.putString(KEY_EMAIL, user.getEmail());
+        editor.putString(KEY_USERNAME, user.getUserName());
+        editor.putString(KEY_PROFILE_URL, user.getProfileUrl());
         editor.apply();
     }
+    public User getUser() {
+        String userId = sharedPreferences.getString(KEY_USER_ID, null);
+        String email = sharedPreferences.getString(KEY_EMAIL, null);
+        String username = sharedPreferences.getString(KEY_USERNAME, null);
+        String imageUrl = sharedPreferences.getString(KEY_PROFILE_URL, null);
 
-    public void clearUserId() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_USER_ID, null);
-        editor.apply();
+        if (userId == null)
+            return null;
+
+        return new User(userId, email, username, imageUrl);
     }
 
-    public String getUserId() {
-        return sharedPreferences.getString(KEY_USER_ID, null);
+    public void clearUserDetails() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_USER_ID);
+        editor.remove(KEY_EMAIL);
+        editor.remove(KEY_USERNAME);
+        editor.remove(KEY_PROFILE_URL);
+        editor.apply();
     }
 
     public void saveGuestMode(Boolean guestMode) {
@@ -80,6 +98,12 @@ public class SharedPreferencesManager {
     public void saveMealIdForDay(String day, String mealId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(day, mealId);
+        editor.apply();
+    }
+
+    public void clearMealForDay(String day) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(day, null);
         editor.apply();
     }
 

@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.abdulhameed.foodieplan.model.data.PlannedMeal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,6 +19,14 @@ import java.util.Objects;
 @Entity(tableName = "meals")
 public class Meal {
     public Meal() {
+    }
+
+    public Meal(PlannedMeal meal) {
+        this.id = meal.getId();
+        this.name = meal.getName();
+        this.category = meal.getCategory();
+        this.country = meal.getCountry();
+        this.thumb = meal.getThumb();
     }
 
     public Meal(@NonNull String id, String name, String category, String country, String thumb) {
@@ -34,8 +43,6 @@ public class Meal {
     private String id;
     @SerializedName("strMeal")
     private String name;
-    @Ignore
-    private Object strDrinkAlternate;
     @SerializedName("strCategory")
     private String category;
     @SerializedName("strArea")
@@ -44,8 +51,6 @@ public class Meal {
     private String instructions;
     @SerializedName("strMealThumb")
     private String thumb;
-    private String strTags;
-
     @SerializedName("strYoutube")
     private String videoUrl;
 
@@ -92,12 +97,6 @@ public class Meal {
     private String strMeasure19;
     private String strMeasure20;
     private String strSource;
-    @Ignore
-    private Object strImageSource;
-    @Ignore
-    private Object strCreativeCommonsConfirmed;
-    @Ignore
-    private Object dateModified;
 
     public String getId() {
         return id;
@@ -113,14 +112,6 @@ public class Meal {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Object getStrDrinkAlternate() {
-        return strDrinkAlternate;
-    }
-
-    public void setStrDrinkAlternate(Object strDrinkAlternate) {
-        this.strDrinkAlternate = strDrinkAlternate;
     }
 
     public String getCategory() {
@@ -153,14 +144,6 @@ public class Meal {
 
     public void setThumb(String strMealThumb) {
         this.thumb = strMealThumb;
-    }
-
-    public String getStrTags() {
-        return strTags;
-    }
-
-    public void setStrTags(String strTags) {
-        this.strTags = strTags;
     }
 
     public String getVideoUrl() {
@@ -606,40 +589,16 @@ public class Meal {
         this.strSource = strSource;
     }
 
-    public Object getStrImageSource() {
-        return strImageSource;
-    }
-
-    public void setStrImageSource(Object strImageSource) {
-        this.strImageSource = strImageSource;
-    }
-
-    public Object getStrCreativeCommonsConfirmed() {
-        return strCreativeCommonsConfirmed;
-    }
-
-    public void setStrCreativeCommonsConfirmed(Object strCreativeCommonsConfirmed) {
-        this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
-    }
-
-    public Object getDateModified() {
-        return dateModified;
-    }
-
-    public void setDateModified(Object dateModified) {
-        this.dateModified = dateModified;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meal meal = (Meal) o;
-        return Objects.equals(id, meal.id) && Objects.equals(name, meal.name) && Objects.equals(strDrinkAlternate, meal.strDrinkAlternate) && Objects.equals(category, meal.category) && Objects.equals(country, meal.country) && Objects.equals(instructions, meal.instructions) && Objects.equals(thumb, meal.thumb) && Objects.equals(strTags, meal.strTags) && Objects.equals(videoUrl, meal.videoUrl) && Objects.equals(strIngredient1, meal.strIngredient1) && Objects.equals(strIngredient2, meal.strIngredient2) && Objects.equals(strIngredient3, meal.strIngredient3) && Objects.equals(strIngredient4, meal.strIngredient4) && Objects.equals(strIngredient5, meal.strIngredient5) && Objects.equals(strIngredient6, meal.strIngredient6) && Objects.equals(strIngredient7, meal.strIngredient7) && Objects.equals(strIngredient8, meal.strIngredient8) && Objects.equals(strIngredient9, meal.strIngredient9) && Objects.equals(strIngredient10, meal.strIngredient10) && Objects.equals(strIngredient11, meal.strIngredient11) && Objects.equals(strIngredient12, meal.strIngredient12) && Objects.equals(strIngredient13, meal.strIngredient13) && Objects.equals(strIngredient14, meal.strIngredient14) && Objects.equals(strIngredient15, meal.strIngredient15) && Objects.equals(strIngredient16, meal.strIngredient16) && Objects.equals(strIngredient17, meal.strIngredient17) && Objects.equals(strIngredient18, meal.strIngredient18) && Objects.equals(strIngredient19, meal.strIngredient19) && Objects.equals(strIngredient20, meal.strIngredient20) && Objects.equals(strMeasure1, meal.strMeasure1) && Objects.equals(strMeasure2, meal.strMeasure2) && Objects.equals(strMeasure3, meal.strMeasure3) && Objects.equals(strMeasure4, meal.strMeasure4) && Objects.equals(strMeasure5, meal.strMeasure5) && Objects.equals(strMeasure6, meal.strMeasure6) && Objects.equals(strMeasure7, meal.strMeasure7) && Objects.equals(strMeasure8, meal.strMeasure8) && Objects.equals(strMeasure9, meal.strMeasure9) && Objects.equals(strMeasure10, meal.strMeasure10) && Objects.equals(strMeasure11, meal.strMeasure11) && Objects.equals(strMeasure12, meal.strMeasure12) && Objects.equals(strMeasure13, meal.strMeasure13) && Objects.equals(strMeasure14, meal.strMeasure14) && Objects.equals(strMeasure15, meal.strMeasure15) && Objects.equals(strMeasure16, meal.strMeasure16) && Objects.equals(strMeasure17, meal.strMeasure17) && Objects.equals(strMeasure18, meal.strMeasure18) && Objects.equals(strMeasure19, meal.strMeasure19) && Objects.equals(strMeasure20, meal.strMeasure20) && Objects.equals(strSource, meal.strSource) && Objects.equals(strImageSource, meal.strImageSource) && Objects.equals(strCreativeCommonsConfirmed, meal.strCreativeCommonsConfirmed) && Objects.equals(dateModified, meal.dateModified);
+        return Objects.equals(id, meal.id) && Objects.equals(name, meal.name) && Objects.equals(category, meal.category) && Objects.equals(country, meal.country) && Objects.equals(instructions, meal.instructions) && Objects.equals(thumb, meal.thumb) && Objects.equals(videoUrl, meal.videoUrl) && Objects.equals(strIngredient1, meal.strIngredient1) && Objects.equals(strIngredient2, meal.strIngredient2) && Objects.equals(strIngredient3, meal.strIngredient3) && Objects.equals(strIngredient4, meal.strIngredient4) && Objects.equals(strIngredient5, meal.strIngredient5) && Objects.equals(strIngredient6, meal.strIngredient6) && Objects.equals(strIngredient7, meal.strIngredient7) && Objects.equals(strIngredient8, meal.strIngredient8) && Objects.equals(strIngredient9, meal.strIngredient9) && Objects.equals(strIngredient10, meal.strIngredient10) && Objects.equals(strIngredient11, meal.strIngredient11) && Objects.equals(strIngredient12, meal.strIngredient12) && Objects.equals(strIngredient13, meal.strIngredient13) && Objects.equals(strIngredient14, meal.strIngredient14) && Objects.equals(strIngredient15, meal.strIngredient15) && Objects.equals(strIngredient16, meal.strIngredient16) && Objects.equals(strIngredient17, meal.strIngredient17) && Objects.equals(strIngredient18, meal.strIngredient18) && Objects.equals(strIngredient19, meal.strIngredient19) && Objects.equals(strIngredient20, meal.strIngredient20) && Objects.equals(strMeasure1, meal.strMeasure1) && Objects.equals(strMeasure2, meal.strMeasure2) && Objects.equals(strMeasure3, meal.strMeasure3) && Objects.equals(strMeasure4, meal.strMeasure4) && Objects.equals(strMeasure5, meal.strMeasure5) && Objects.equals(strMeasure6, meal.strMeasure6) && Objects.equals(strMeasure7, meal.strMeasure7) && Objects.equals(strMeasure8, meal.strMeasure8) && Objects.equals(strMeasure9, meal.strMeasure9) && Objects.equals(strMeasure10, meal.strMeasure10) && Objects.equals(strMeasure11, meal.strMeasure11) && Objects.equals(strMeasure12, meal.strMeasure12) && Objects.equals(strMeasure13, meal.strMeasure13) && Objects.equals(strMeasure14, meal.strMeasure14) && Objects.equals(strMeasure15, meal.strMeasure15) && Objects.equals(strMeasure16, meal.strMeasure16) && Objects.equals(strMeasure17, meal.strMeasure17) && Objects.equals(strMeasure18, meal.strMeasure18) && Objects.equals(strMeasure19, meal.strMeasure19) && Objects.equals(strMeasure20, meal.strMeasure20) && Objects.equals(strSource, meal.strSource);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, strDrinkAlternate, category, country, instructions, thumb, strTags, videoUrl, strIngredient1, strIngredient2, strIngredient3, strIngredient4, strIngredient5, strIngredient6, strIngredient7, strIngredient8, strIngredient9, strIngredient10, strIngredient11, strIngredient12, strIngredient13, strIngredient14, strIngredient15, strIngredient16, strIngredient17, strIngredient18, strIngredient19, strIngredient20, strMeasure1, strMeasure2, strMeasure3, strMeasure4, strMeasure5, strMeasure6, strMeasure7, strMeasure8, strMeasure9, strMeasure10, strMeasure11, strMeasure12, strMeasure13, strMeasure14, strMeasure15, strMeasure16, strMeasure17, strMeasure18, strMeasure19, strMeasure20, strSource, strImageSource, strCreativeCommonsConfirmed, dateModified);
+        return Objects.hash(id, name, category, country, instructions, thumb, videoUrl, strIngredient1, strIngredient2, strIngredient3, strIngredient4, strIngredient5, strIngredient6, strIngredient7, strIngredient8, strIngredient9, strIngredient10, strIngredient11, strIngredient12, strIngredient13, strIngredient14, strIngredient15, strIngredient16, strIngredient17, strIngredient18, strIngredient19, strIngredient20, strMeasure1, strMeasure2, strMeasure3, strMeasure4, strMeasure5, strMeasure6, strMeasure7, strMeasure8, strMeasure9, strMeasure10, strMeasure11, strMeasure12, strMeasure13, strMeasure14, strMeasure15, strMeasure16, strMeasure17, strMeasure18, strMeasure19, strMeasure20, strSource);
     }
 }

@@ -41,12 +41,10 @@ import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class HomeFragment extends Fragment implements HomeContract.View, NetworkChangeListener, MealAdapter.OnMealClickListener<Meal> {
     private HomeContract.Presenter presenter;
@@ -91,24 +89,37 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         initRecyclerViews();
         setListeners();
 
+        handleOnlineStatusAndLoadData();
+    }
+
+    private void handleOnlineStatusAndLoadData() {
         if (NetworkManager.isOnline(requireContext())) {
-            binding.svHome.setVisibility(View.VISIBLE);
-            binding.avNoInternet.setVisibility(View.GONE);
-            startShimmer();
-            presenter.getMealOfTheDay();
-            presenter.getIngredients();
-            presenter.getCountry();
-            presenter.getCategories();
-            presenter.getWatchedMeals();
+            fetchDataWhenOnline();
         } else {
-            binding.svHome.setVisibility(View.GONE);
-            binding.avNoInternet.setVisibility(View.VISIBLE);
+            showNoInternet();
         }
+    }
+
+    private void showNoInternet() {
+        binding.svHome.setVisibility(View.GONE);
+        binding.avNoInternet.setVisibility(View.VISIBLE);
+    }
+
+    private void fetchDataWhenOnline() {
+        binding.svHome.setVisibility(View.VISIBLE);
+        binding.avNoInternet.setVisibility(View.GONE);
+        startShimmer();
+        presenter.getMealOfTheDay();
+        presenter.getIngredients();
+        presenter.getCountry();
+        presenter.getCategories();
+        presenter.getWatchedMeals();
     }
 
     private void setListeners() {
         binding.ibFavourite.setOnClickListener(view -> {
-            addMeal(mealOfTheDay);
+            presenter.addToFavourite(mealOfTheDay);
+            Toast.makeText(requireContext(), "Meal Of Day Added Successfully", Toast.LENGTH_SHORT).show();
         });
         binding.cvMealOfTheDay.setOnClickListener(view -> {
             HomeFragmentDirections.ActionHomeFragmentToDetailsFragment direction = HomeFragmentDirections.
@@ -132,23 +143,28 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         });
         binding.rvIngredients.setAdapter(filterAdapter);
 
-        countriesAdapter = new FilterAdapter(item -> {
-            HomeFragmentDirections.ActionHomeToFilterFragment action =
-                    HomeFragmentDirections.actionHomeToFilterFragment("Country", (Country) item);
-            navController.navigate(action);
-        });
+        countriesAdapter = new FilterAdapter(item -> goToCountryMeals((Country) item));
         binding.rvCountries.setAdapter(countriesAdapter);
 
         categoriesAdapter = new FilterAdapter(item -> {
-            HomeFragmentDirections.ActionHomeToFilterFragment action =
-                    HomeFragmentDirections.actionHomeToFilterFragment("Category", (Category) item);
-            navController.navigate(action);
-            Toast.makeText(requireContext(), item.getName(), Toast.LENGTH_LONG).show();
+            goToCategoryMeals((Category) item);
         });
         binding.rvCategories.setAdapter(categoriesAdapter);
 
         mealsAdapter = new MealAdapter(this);
         binding.rvCountryMeals.setAdapter(mealsAdapter);
+    }
+
+    private void goToCategoryMeals(Category item) {
+        HomeFragmentDirections.ActionHomeToFilterFragment action =
+                HomeFragmentDirections.actionHomeToFilterFragment("Category", item);
+        navController.navigate(action);
+    }
+
+    private void goToCountryMeals(Country item) {
+        HomeFragmentDirections.ActionHomeToFilterFragment action =
+                HomeFragmentDirections.actionHomeToFilterFragment("Country", item);
+        navController.navigate(action);
     }
 
     @Override
@@ -179,7 +195,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     @Override
     public void showWatchedMeals(LiveData<List<WatchedMeal>> watchedMealsLD) {
         stopShimmer(binding.shRvInterest);
-        binding.shRvInterest.setVisibility(View.INVISIBLE);
+        binding.shRvInterest.setVisibility(View.GONE);
         watchedMealsLD.observe(getViewLifecycleOwner(), watchedMeals -> {
             if (watchedMeals != null && !watchedMeals.isEmpty()) {
                 List<Meal> meals = new ArrayList<>();
@@ -196,13 +212,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         });
     }
 
-    private String getCurrentCountry() {
-        // Get the default locale
-        Locale locale = getResources().getConfiguration().locale;
-        // Get the country name from the locale
-        return locale.getDisplayCountry();
-    }
-
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
         stopShimmer(binding.shRvIngredients);
@@ -215,22 +224,16 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     @Override
     public void showCountry(List<Country> countries) {
         stopShimmer(binding.shRvCountries);
-        List<Filter> filters = new ArrayList<>();
 
-        for (Country country : countries) {
-            filters.add(country);
-        }
+        List<Filter> filters = new ArrayList<>(countries);
         countriesAdapter.setList(filters);
     }
 
     @Override
     public void showCategory(List<Category> categories) {
         stopShimmer(binding.shRvCategories);
-        List<Filter> filters = new ArrayList<>();
 
-        for (Category category : categories) {
-            filters.add(category);
-        }
+        List<Filter> filters = new ArrayList<>(categories);
         categoriesAdapter.setList(filters);
     }
 
@@ -240,19 +243,13 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     }
 
     @Override
-    public void addMeal(Meal meal) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        presenter.addToFavourite(userId, meal);
-    }
-
-    @Override
     public void showEmptyDataMessage() {
         stopAllShimmers();
     }
 
     @Override
     public void deleteMeal(Meal meal) {
-        presenter.removeFromFavourite(SharedPreferencesManager.getInstance(requireContext()).getUserId(), meal);
+        presenter.removeFromFavourite(meal);
     }
 
     private void showIngredientDialog(Ingredient ingredient) {
@@ -324,7 +321,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
 
     @Override
     public void onFavouriteClick(Meal meal) {
-        addMeal(meal);
+        presenter.addToFavourite(meal);
     }
 
     @Override

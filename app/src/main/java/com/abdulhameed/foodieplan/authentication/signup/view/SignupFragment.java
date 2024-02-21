@@ -24,12 +24,9 @@ import com.abdulhameed.foodieplan.authentication.signup.presenter.SignupPresente
 import com.abdulhameed.foodieplan.databinding.FragmentSignupBinding;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
+import com.abdulhameed.foodieplan.model.factory.AuthenticationRepositoryFactory;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 public class SignupFragment extends Fragment implements SignupContract.View {
     private SignupContract.Presenter presenter;
@@ -40,11 +37,8 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         presenter = new SignupPresenter(this,
-                new AuthenticationRepository(mAuth, mDatabase, mStorageRef),
+                AuthenticationRepositoryFactory.getInstance().createAuthenticationRepository(),
                 SharedPreferencesManager.getInstance(requireContext()));
     }
 
@@ -67,13 +61,11 @@ public class SignupFragment extends Fragment implements SignupContract.View {
             }
 
             Bitmap bitmap = getProfileImg();
-            String confirmPassword = signupBinding.etConfirmPassword.getText().toString();
+            String confirmPassword = signupBinding.iConfirmPassword.etPassword.getText().toString();
             presenter.signup(getUser(), confirmPassword, bitmap);
         });
 
-        signupBinding.tvRedirectToLogin.setOnClickListener(v -> {
-            navController.navigate(R.id.action_signupFragment_to_loginFragment);
-        });
+        signupBinding.tvRedirectToLogin.setOnClickListener(v -> navController.navigate(R.id.action_signupFragment_to_loginFragment));
     }
 
     private Bitmap getProfileImg() {
@@ -82,9 +74,9 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     }
 
     private User getUser() {
-        String email = signupBinding.etEmail.getText().toString();
+        String email = signupBinding.iEmail.etEmail.getText().toString();
         String username = signupBinding.etUsername.getText().toString();
-        String password = signupBinding.etPassword.getText().toString();
+        String password = signupBinding.iPassword.etPassword.getText().toString();
 
         return new User(email, username, password);
     }

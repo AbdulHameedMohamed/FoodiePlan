@@ -3,7 +3,8 @@ package com.abdulhameed.foodieplan.authentication.login.presenter;
 import android.content.Intent;
 import android.util.Log;
 
-import com.abdulhameed.foodieplan.authentication.MainActivity;
+import androidx.annotation.NonNull;
+
 import com.abdulhameed.foodieplan.authentication.login.LoginContract;
 import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
@@ -12,28 +13,28 @@ import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-public class LoginPresenter implements LoginContract.Presenter, AuthenticationRepository.LoginCallback, AuthenticationRepository.LoginWithGoogleCallback, FavouriteRepository.Callback<List<Meal>> {
+public class LoginPresenter implements LoginContract.Presenter, AuthenticationRepository.LoginCallback, AuthenticationRepository.LoginWithGoogleCallback, FavouriteRepository.Callback<List<Meal>>, AuthenticationRepository.LoginGuestCallback {
     private final LoginContract.View view;
     private final AuthenticationRepository authenticationRepository;
     private final FavouriteRepository favouriteRepository;
     private final MealRepository mealRepository;
     SharedPreferencesManager preferencesManager;
-    public LoginPresenter(LoginContract.View view, AuthenticationRepository authenticationRepository,
-                          FavouriteRepository favouriteRepository, MealRepository mealRepository, SharedPreferencesManager preferencesManager) {
-        this.view = view;
-        this.authenticationRepository = authenticationRepository;
-        this.favouriteRepository =  favouriteRepository;
-        this.mealRepository = mealRepository;
-        this.preferencesManager = preferencesManager;
+    private static final String TAG = "LoginPresenter";
+
+    private LoginPresenter(Builder presenterBuilder) {
+        this.view = presenterBuilder.view;
+        this.authenticationRepository = presenterBuilder.authenticationRepository;
+        this.favouriteRepository = presenterBuilder.favouriteRepository;
+        this.mealRepository = presenterBuilder.mealRepository;
+        this.preferencesManager = presenterBuilder.sharedPreferencesManager;
     }
 
     @Override
     public void signInWithEmail(String email, String password) {
+        view.showLoading();
         authenticationRepository.login(email, password, this);
     }
 
@@ -44,45 +45,37 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
 
     @Override
     public void signInAsGuest() {
-        authenticationRepository.signInAsGuest(new AuthenticationRepository.LoginGuestCallback() {
-            @Override
-            public void onLoginSuccess(FirebaseUser user) {
-                Log.d(TAG, "onLoginSuccess: ");
-                preferencesManager.saveGuestMode(true);
-                view.navigateToHomeActivity(user.getUid());
-            }
-
-            @Override
-            public void onLoginFailed(String errorMessage) {
-                view.showAuthenticationFailedError(errorMessage);
-            }
-        });
+        authenticationRepository.signInAsGuest(this);
     }
 
     public void handleGoogleSignInResult(Intent data) {
         authenticationRepository.handleGoogleSignInResult(data, this);
     }
 
-    @Override
-    public void onLoginSuccess(FirebaseUser user) {
-        view.showLoading();
-        if (user != null) {
-            preferencesManager.saveGuestMode(false);
-            String userId = user.getUid();
-            String email = user.getEmail();
-            String username = user.getDisplayName();
-            String imageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
-            authenticationRepository.saveUserToDatabase(userId, email, username, imageUrl, new AuthenticationRepository.SaveUserCallback() {
-                @Override
-                public void onSaveUserSuccess() {
-                    view.navigateToHomeActivity(user.getUid());
-                }
+    @NonNull
+    private static User getUser(FirebaseUser firebaseUser) {
+        String userId = firebaseUser.getUid();
+        String email = firebaseUser.getEmail();
+        String username = firebaseUser.getDisplayName();
+        String imageUrl = firebaseUser.getPhotoUrl() != null ? firebaseUser.getPhotoUrl().toString() : "";
+        return new User(userId, email, username, imageUrl);
+    }
 
-                @Override
-                public void onSaveUserFailed(String errorMessage) {
-                    view.showMessage(errorMessage);
-                }
-            });
+    @Override
+    public void onGuestLoginSuccess(FirebaseUser user) {
+        Log.d(TAG, "onLoginSuccess: ");
+        preferencesManager.saveGuestMode(true);
+        view.navigateToHomeActivity(user.getUid());
+    }
+
+    @Override
+    public void onLoginSuccess(FirebaseUser firebaseUser) {
+        if (firebaseUser != null) {
+            favouriteRepository.getAllMealsForUser(firebaseUser.getUid(), this);
+            preferencesManager.saveGuestMode(false);
+            User user = getUser(firebaseUser);
+            preferencesManager.saveUser(user);
+            view.navigateToHomeActivity(user.getId());
         } else {
             view.showMessage("User is Not Found");
         }
@@ -93,12 +86,13 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
         view.showAuthenticationFailedError(errorMessage);
     }
 
-    private static final String TAG = "LoginPresenter";
     @Override
-    public void onLoginWithGoogleSuccess(FirebaseUser user) {
-        Log.d(TAG, "onLoginWithGoogleSuccess: + false");
+    public void onLoginWithGoogleSuccess(FirebaseUser firebaseUser) {
         preferencesManager.saveGuestMode(false);
-        view.onGoogleSignInSuccess(user);
+        User user = getUser(firebaseUser);
+        preferencesManager.saveUser(user);
+        Log.d(TAG, "onLoginWithGoogleSuccess: " + preferencesManager.isGuest());
+        view.onGoogleSignInSuccess(firebaseUser);
     }
 
     @Override
@@ -108,11 +102,47 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
 
     @Override
     public void onSuccess(List<Meal> meals) {
-        mealRepository.setMeals(meals);
+        if (meals != null && !meals.isEmpty())
+            mealRepository.setMeals(meals);
     }
 
     @Override
     public void onError(String errorMessage) {
         view.showMessage(errorMessage);
+    }
+    public static class Builder {
+        private final LoginContract.View view;
+        private AuthenticationRepository authenticationRepository;
+        private FavouriteRepository favouriteRepository;
+        private MealRepository mealRepository;
+        private SharedPreferencesManager sharedPreferencesManager;
+
+        public Builder(LoginContract.View view) {
+            this.view = view;
+        }
+
+        public Builder setAuthenticationRepository(AuthenticationRepository authenticationRepository) {
+            this.authenticationRepository = authenticationRepository;
+            return this;
+        }
+
+        public Builder setFavouriteRepository(FavouriteRepository favouriteRepository) {
+            this.favouriteRepository = favouriteRepository;
+            return this;
+        }
+
+        public Builder setMealRepository(MealRepository mealRepository) {
+            this.mealRepository = mealRepository;
+            return this;
+        }
+
+        public Builder setSharedPreferencesManager(SharedPreferencesManager sharedPreferencesManager) {
+            this.sharedPreferencesManager = sharedPreferencesManager;
+            return this;
+        }
+
+        public LoginPresenter build() {
+            return new LoginPresenter(this);
+        }
     }
 }

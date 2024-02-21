@@ -17,11 +17,9 @@ public interface HomeContract {
         void showCategory(List<Category> categories);
 
         void showCountry(List<Country> countryItems);
-        void addMeal(Meal mealsItem);
         void showEmptyDataMessage();
         public void deleteMeal(Meal mealsItem);
         void showError(String message);
-
         void showWatchedMeals(LiveData<List<WatchedMeal>> watchedMealsLD);
     }
 
@@ -32,9 +30,9 @@ public interface HomeContract {
 
         void attachView(HomeContract.View homeFragment);
 
-        void addToFavourite(String userId, Meal meal);
+        void addToFavourite(Meal meal);
 
-        void removeFromFavourite(String userId, Meal meal);
+        void removeFromFavourite(Meal meal);
 
         void getIngredients();
 

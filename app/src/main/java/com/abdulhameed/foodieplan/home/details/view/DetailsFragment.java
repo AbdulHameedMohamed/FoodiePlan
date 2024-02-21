@@ -79,12 +79,19 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     }
 
     private void setListeners() {
-        binding.ibFavourite.setOnClickListener(view -> {
-            presenter.addToFavourite(meal);
-        });
-
-        binding.ibPlan.setOnClickListener(view -> {
-            showDaySelectionDialog();
+        binding.toggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                switch (checkedId) {
+                    case R.id.btn_favourite:
+                        presenter.addToFavourite(meal);
+                        Toast.makeText(requireContext(), "Added Successfully", Toast.LENGTH_SHORT).show();
+                        //toggleFavorite();
+                        break;
+                    case R.id.btn_plan:
+                        showDaySelectionDialog();
+                        break;
+                }
+            }
         });
     }
 

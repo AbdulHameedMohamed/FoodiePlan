@@ -13,9 +13,7 @@
 
         <action
             android:id="@+id/action_home_to_filterFragment"
-            app:destination="@id/filterFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true">
+            app:destination="@id/filterFragment">
             <argument
                 android:name="filter_type"
                 app:argType="string" />
@@ -41,9 +39,7 @@
         tools:layout="@layout/fragment_favourite">
         <action
             android:id="@+id/action_favouriteFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment"
-            app:popUpTo="@id/favouriteFragment"
-            app:popUpToInclusive="true">
+            app:destination="@id/detailsFragment">
             <argument
                 android:name="meal_id"
                 app:argType="string" />
@@ -56,9 +52,7 @@
         tools:layout="@layout/fragment_plan">
         <action
             android:id="@+id/action_planFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment"
-            app:popUpTo="@id/planFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -89,9 +83,7 @@
 
         <action
             android:id="@+id/action_filterFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment"
-            app:popUpTo="@id/filterFragment"
-            app:popUpToInclusive="true">
+            app:destination="@id/detailsFragment">
             <argument
                 android:name="meal_id"
                 app:argType="string" />
