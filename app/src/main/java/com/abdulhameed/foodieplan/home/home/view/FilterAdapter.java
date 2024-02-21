@@ -38,7 +38,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         holder.binding.tvName.setText(ingredient);
 
         Picasso.get().load(filters.get(position).getThumb())
-                .placeholder(R.drawable.ic_cooking)
+                .placeholder(R.drawable.cooking)
                 .into(holder.binding.ivImage);
         holder.itemView.setOnClickListener(view -> listener.onItemClick(filters.get(position)));
     }

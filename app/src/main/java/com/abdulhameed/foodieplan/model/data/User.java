@@ -1,10 +1,16 @@
 package com.abdulhameed.foodieplan.model.data;
 
+import android.graphics.Bitmap;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class User {
-    private String id, email, userName, profileUrl;
+    private String id;
+    private String email;
+    private String userName;
+    private String password;
+    private String profileUrl;
 
     public User(String id, String email, String userName, String profileUrl) {
         this.id = id;
@@ -13,22 +19,25 @@ public class User {
         this.profileUrl = profileUrl;
     }
 
-    public User(String id, String email, String userName) {
-        this.id = id;
+    public User(String email, String userName, String password) {
         this.email = email;
         this.userName = userName;
+        this.password = password;
     }
 
     public User() {
     }
 
-    public static String getCurrentUserId() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            return currentUser.getUid();
-        } else {
-            return null;
-        }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getProfileUrl() {

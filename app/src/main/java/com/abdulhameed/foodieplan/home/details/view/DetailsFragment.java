@@ -141,7 +141,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     public void showMeal(Meal meal) {
         this.meal = meal;
         Toast.makeText(requireContext(), meal.getName(), Toast.LENGTH_SHORT).show();
-        Picasso.get().load(meal.getThumb()).placeholder(R.drawable.ic_cooking).into(binding.ivMealImg);
+        Picasso.get().load(meal.getThumb()).placeholder(R.drawable.cooking).into(binding.ivMealImg);
 
         binding.tvMealDetailsName.setText(meal.getName());
         binding.tvMealDetailsCategory.setText(meal.getCategory());

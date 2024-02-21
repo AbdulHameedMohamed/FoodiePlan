@@ -23,7 +23,7 @@ public interface MealsApi {
     Single<MealResponse> getMealById(@Query("i") String id);
 
     @GET("search.php")
-    Single<MealResponse>searchByName(@Query("s") String mealName);
+    Single<MealResponse> searchByName(@Query("s") String mealName);
 
     @GET("filter.php")
     Single<FilterMealResponse> getMealsByIngredient(@Query("i") String ingredient);

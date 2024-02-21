@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesManager {
     private static final String SHARED_PREF_NAME = "MySharedPref";
-
-
     private static final String KEY_USER_ID = "userId";
     private static final String KEY_GUEST_MODE = "guest_mode";
 
@@ -37,6 +35,11 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
+    public void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_USER_ID, null);
+        editor.apply();
+    }
 
     public String getUserId() {
         return sharedPreferences.getString(KEY_USER_ID, null);
@@ -47,14 +50,9 @@ public class SharedPreferencesManager {
         editor.putBoolean(KEY_GUEST_MODE, guestMode);
         editor.apply();
     }
+
     public Boolean isGuest() {
         return sharedPreferences.getBoolean(KEY_GUEST_MODE, false);
-    }
-
-    public void clearUserId() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(KEY_USER_ID);
-        editor.apply();
     }
 
     public void saveMealOfTheDay(Meal meal) {

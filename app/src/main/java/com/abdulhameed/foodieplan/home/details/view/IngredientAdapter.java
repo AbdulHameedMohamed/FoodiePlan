@@ -33,7 +33,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         holder.binding.tvIngredientName.setText(item.first);
         holder.binding.measureName.setText(item.second);
         Picasso.get().load(imageUrl)
-                .placeholder(R.drawable.ic_cooking)
+                .placeholder(R.drawable.cooking)
                 .into(holder.binding.ivIngredientImg);
     }
 

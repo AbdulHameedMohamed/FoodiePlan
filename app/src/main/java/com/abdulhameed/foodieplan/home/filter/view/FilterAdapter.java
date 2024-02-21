@@ -17,9 +17,9 @@ import java.util.List;
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
 
     private List<FilterMeal> meals = new ArrayList<>();
-    private final OnClickListener listener;
+    private final OnClickListener<FilterMeal> listener;
 
-    public FilterAdapter(OnClickListener listener) {
+    public FilterAdapter(OnClickListener<FilterMeal> listener) {
         this.listener = listener;
     }
 

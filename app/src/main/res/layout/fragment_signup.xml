@@ -6,129 +6,141 @@
     android:layout_height="match_parent"
     android:background="@drawable/ic_food_background"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/spacing_medium">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        app:cardCornerRadius="@dimen/corner_radius_large"
+        app:cardElevation="@dimen/spacing_large"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:fontFamily="@font/courgette"
+            android:text="@string/sign_up"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_xxlarge"
+            android:textStyle="bold" />
 
-            <TextView
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/spacing_xlarge">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sign_up"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/courgette"
-                android:textSize="36sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_circular"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_person"
-                app:layout_constraintEnd_toStartOf="@+id/imvCircularWithStroke"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:shapeAppearanceOverlay="@style/Circular"
-                android:layout_gravity="center"/>
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_circular"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:src="@drawable/profile"
+                    app:shapeAppearanceOverlay="@style/Circular" />
 
-            <EditText
-                android:id="@+id/et_email"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="8dp"
-                android:hint="@string/email"
-                android:padding="8dp"
-                android:textColor="@color/black" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_email"
+                    style="@style/App.TextInputLayout"
+                    android:hint="@string/email"
+                    app:startIconContentDescription="Email"
+                    app:startIconDrawable="@drawable/ic_email">
 
-            <EditText
-                android:id="@+id/et_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="8dp"
-                android:hint="@string/username"
-                android:padding="8dp"
-                android:textColor="@color/black" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress" />
 
-            <EditText
-                android:id="@+id/et_password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/ic_lock"
-                android:drawablePadding="8dp"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:padding="8dp"
-                android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/et_confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/ic_lock"
-                android:drawablePadding="8dp"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword"
-                android:padding="8dp"
-                android:textColor="@color/black" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_username"
+                    style="@style/App.TextInputLayout"
+                    android:hint="Name"
+                    app:startIconContentDescription="Username"
+                    app:startIconDrawable="@drawable/ic_person">
 
-            <Button
-                android:id="@+id/btn_signup"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="30dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/sign_up"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                app:cornerRadius="20dp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
 
-            <TextView
-                android:id="@+id/tv_redirect_to_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"
-                android:padding="8dp"
-                android:text="@string/redirect_to_login"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_password"
+                    style="@style/App.TextInputLayout"
+                    android:hint="Password"
+                    app:endIconMode="password_toggle"
+                    app:startIconContentDescription="Password"
+                    app:startIconDrawable="@drawable/ic_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_confirm_password"
+                    style="@style/App.TextInputLayout"
+                    android:hint="Confirm Password"
+                    app:endIconMode="password_toggle"
+                    app:startIconContentDescription="Password"
+                    app:startIconDrawable="@drawable/ic_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_confirm_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_signup"
+                    style="@style/App.Button"
+                    android:text="@string/sign_up"
+                    app:icon="@drawable/ic_person" />
+
+                <TextView
+                    android:id="@+id/tv_redirect_to_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:padding="@dimen/spacing_medium"
+                    android:text="@string/redirect_to_login"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_large" />
+            </LinearLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/av_loading"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:visibility="gone"
+        style="@style/LottieAnimation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         app:lottie_rawRes="@raw/animation_loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

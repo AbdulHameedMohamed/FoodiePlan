@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.abdulhameed.foodieplan.home.profile.presenter.ProfilePresenter;
-import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -61,23 +60,15 @@ public class AuthenticationRepository {
         });
     }
 
-    public void signup(String email, String password, String username, Bitmap profileImg, SignupCallback callback) {
-        mAuth.createUserWithEmailAndPassword(email, password)
+    public void signup(User user, Bitmap profileImg, SignupCallback callback) {
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            uploadProfileImage(user.getUid(), profileImg, new UploadCallback() {
-                                @Override
-                                public void onUploadSuccess(String imageUrl) {
-                                    saveUserData(user.getUid(), email, username, imageUrl, callback);
-                                }
-
-                                @Override
-                                public void onUploadFailed(String errorMessage) {
-                                    callback.onSignupFailed(errorMessage);
-                                }
-                            });
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            Log.d(TAG, "signup: "+ user);
+                            user.setId(firebaseUser.getUid());
+                            saveUserData(user, profileImg, callback);
                         } else {
                             callback.onSignupFailed("Failed to create user.");
                         }
@@ -87,11 +78,14 @@ public class AuthenticationRepository {
                 });
     }
 
-    private void uploadProfileImage(String userId, Bitmap profileImg, UploadCallback callback) {
-        if (profileImg == null) {
-            callback.onUploadSuccess(null);
-            return;
-        }
+    private void saveUserData(User user, Bitmap profileImg, SignupCallback callback) {
+        DatabaseReference usersRef = mDatabase.getReference("users");
+        usersRef.child(user.getId()).setValue(user)
+                .addOnSuccessListener(aVoid -> callback.onSignupSuccess(user, profileImg))
+                .addOnFailureListener(e -> callback.onSignupFailed("Failed to save user data: " + e.getMessage()));
+    }
+
+    public void uploadProfileImage(String userId, Bitmap profileImg, UploadCallback callback) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         profileImg.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -101,27 +95,27 @@ public class AuthenticationRepository {
 
         profileImgRef.putBytes(data)
                 .addOnSuccessListener(taskSnapshot -> {
-                    // Image uploaded successfully
                     profileImgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        callback.onUploadSuccess(uri.toString());
+                        Log.d(TAG, "uploadProfileImage: Success");
+                        String downloadUrl = uri.toString();
+
+                        addImageUrlToUser(userId, downloadUrl, callback);
                     });
                 })
                 .addOnFailureListener(exception -> {
-                    // Handle unsuccessful upload
+                    Log.d(TAG, "uploadProfileImage: Failed");
                     callback.onUploadFailed(exception.getMessage());
                 });
     }
 
-    private void saveUserData(String userId, String email, String username, String imageUrl, SignupCallback callback) {
-        DatabaseReference usersRef = mDatabase.getReference("users");
-        User newUser = new User(userId, email, username, imageUrl);
-        usersRef.child(userId).setValue(newUser)
+    private void addImageUrlToUser(String userId, String imageUrl, UploadCallback callback) {
+        DatabaseReference usersRef = mDatabase.getReference("users").child(userId);
+        usersRef.child("imageUrl").setValue(imageUrl)
                 .addOnSuccessListener(aVoid -> {
-                    callback.onSignupSuccess();
+                    Log.d(TAG, "Image URL added successfully to user");
+                    callback.onUploadSuccess();
                 })
-                .addOnFailureListener(e -> {
-                    callback.onSignupFailed("Failed to save user data: " + e.getMessage());
-                });
+                .addOnFailureListener(e -> Log.e(TAG, "Error adding image URL to user: " + e.getMessage()));
     }
 
     public void logOut() {
@@ -186,6 +180,21 @@ public class AuthenticationRepository {
                 });
     }
 
+    public void linkGuestAccount(String email, String password, LinkGuestCallback callback) {
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        mAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener(syncTask -> {
+                    if (syncTask.isSuccessful()) {
+                        Log.d(TAG, "linkWithCredential:success");
+                        FirebaseUser user = syncTask.getResult().getUser();
+                        callback.onLinkGuestSuccess(user);
+                    } else {
+                        Log.w(TAG, "linkWithCredential:failure", syncTask.getException());
+                        callback.onLinkGuestFailed("Failed to link guest account: " + syncTask.getException().getMessage());
+                    }
+                });
+    }
+
     public void downloadUserImage(GetImageCallback callback) {
         StorageReference profileImgRef = mStorageRef.child("profile_images/" + FirebaseAuth.getInstance().getUid() + ".jpg");
 
@@ -224,18 +233,23 @@ public class AuthenticationRepository {
         void onUpdateUserFailed(String errorMessage);
     }
 
-    interface SignupCallback {
-        void onSignupSuccess();
+    public interface SignupCallback {
+        void onSignupSuccess(User user, Bitmap profileImg);
         void onSignupFailed(String errorMessage);
     }
 
     public interface UploadCallback {
-        void onUploadSuccess(String imageUrl);
+        void onUploadSuccess();
         void onUploadFailed(String errorMessage);
     }
 
     public interface GetUserCallback {
         void onGetUserSuccess(User user);
         void onGetUserFailed(String errorMessage);
+    }
+
+    public interface LinkGuestCallback {
+        void onLinkGuestSuccess(FirebaseUser user);
+        void onLinkGuestFailed(String errorMessage);
     }
 }

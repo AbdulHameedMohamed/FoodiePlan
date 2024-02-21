@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
             presenter.signInWithEmail(email, password);
         });
 
-        loginBinding.btnLoginFacebook.setOnClickListener(view -> presenter.signInAsGuest());
+        loginBinding.btnGuestLogin.setOnClickListener(view -> presenter.signInAsGuest());
 
         loginBinding.btnLoginGoogle.setOnClickListener(view -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -132,12 +132,12 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     @Override
     public void showLoading() {
-        loginBinding.avLoading.setVisibility(View.VISIBLE);
+        loginBinding.av.setVisibility(View.VISIBLE);
         loginBinding.cvLogin.setVisibility(View.GONE);
     }
 
     public void stopLoading() {
-        loginBinding.avLoading.setVisibility(View.GONE);
+        loginBinding.av.setVisibility(View.GONE);
         loginBinding.cvLogin.setVisibility(View.VISIBLE);
     }
 }

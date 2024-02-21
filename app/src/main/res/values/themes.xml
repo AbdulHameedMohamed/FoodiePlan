@@ -51,4 +51,37 @@
         <item name="itemIconTint">@color/bottom_nav_view_item_color</item>
         <item name="itemTextColor">@color/bottom_nav_view_item_color</item>
     </style>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:drawablePadding="8dp"
+    android:textColor="@color/black"
+
+    <style name="App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="App.Button" parent="@style/Widget.MaterialComponents.Button.Icon">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">20sp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="LottieAnimation">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">350dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="lottie_autoPlay">true</item>
+        <item name="lottie_loop">true</item>
+    </style>
 </resources>

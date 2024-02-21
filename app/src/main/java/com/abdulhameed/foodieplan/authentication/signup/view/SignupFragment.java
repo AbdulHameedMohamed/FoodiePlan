@@ -23,8 +23,9 @@ import com.abdulhameed.foodieplan.authentication.signup.SignupContract;
 import com.abdulhameed.foodieplan.authentication.signup.presenter.SignupPresenter;
 import com.abdulhameed.foodieplan.databinding.FragmentSignupBinding;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
+import com.abdulhameed.foodieplan.model.data.User;
+import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,26 +40,25 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(requireContext());
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        presenter = new SignupPresenter(this, mAuth, mDatabase, mStorageRef, SharedPreferencesManager.getInstance(requireContext()));
+        presenter = new SignupPresenter(this,
+                new AuthenticationRepository(mAuth, mDatabase, mStorageRef),
+                SharedPreferencesManager.getInstance(requireContext()));
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        signupBinding = FragmentSignupBinding.inflate(inflater, container, false);;
+        signupBinding = FragmentSignupBinding.inflate(inflater, container, false);
         navController = NavHostFragment.findNavController(this);
-        addListeners();
+        setListeners();
         return signupBinding.getRoot();
     }
 
-    private void addListeners() {
-        signupBinding.ivCircular.setOnClickListener(view -> {
-            openFileChooser();
-        });
+    private void setListeners() {
+        signupBinding.ivCircular.setOnClickListener(view -> openFileChooser());
 
         signupBinding.btnSignup.setOnClickListener(v -> {
             if(!NetworkManager.isOnline(requireContext())) {
@@ -66,19 +66,27 @@ public class SignupFragment extends Fragment implements SignupContract.View {
                 return;
             }
 
-            String email = signupBinding.etEmail.getText().toString();
-            String username = signupBinding.etUserName.getText().toString();
-            String password = signupBinding.etPassword.getText().toString();
+            Bitmap bitmap = getProfileImg();
             String confirmPassword = signupBinding.etConfirmPassword.getText().toString();
-            Drawable drawable = signupBinding.ivCircular.getDrawable();
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-
-            presenter.signup(email, username, password, confirmPassword, bitmap);
+            presenter.signup(getUser(), confirmPassword, bitmap);
         });
 
         signupBinding.tvRedirectToLogin.setOnClickListener(v -> {
             navController.navigate(R.id.action_signupFragment_to_loginFragment);
         });
+    }
+
+    private Bitmap getProfileImg() {
+        Drawable drawable = signupBinding.ivCircular.getDrawable();
+        return ((BitmapDrawable) drawable).getBitmap();
+    }
+
+    private User getUser() {
+        String email = signupBinding.etEmail.getText().toString();
+        String username = signupBinding.etUsername.getText().toString();
+        String password = signupBinding.etPassword.getText().toString();
+
+        return new User(email, username, password);
     }
 
     private void openFileChooser() {
@@ -100,7 +108,7 @@ public class SignupFragment extends Fragment implements SignupContract.View {
 
     @Override
     public void showErrorMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

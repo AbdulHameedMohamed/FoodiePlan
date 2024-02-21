@@ -2,6 +2,8 @@ package com.abdulhameed.foodieplan.authentication.signup;
 
 import android.graphics.Bitmap;
 
+import com.abdulhameed.foodieplan.model.data.User;
+
 public interface SignupContract {
     interface View {
         void showProgressBar();
@@ -11,6 +13,6 @@ public interface SignupContract {
     }
 
     interface Presenter {
-        void signup(String email, String userName, String password, String confirmPassword, Bitmap profileImg);
+        void signup(User user, String confirmPassword, Bitmap profileImg);
     }
 }

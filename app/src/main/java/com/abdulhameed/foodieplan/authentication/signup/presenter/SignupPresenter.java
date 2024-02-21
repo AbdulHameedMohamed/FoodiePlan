@@ -3,136 +3,93 @@ package com.abdulhameed.foodieplan.authentication.signup.presenter;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.abdulhameed.foodieplan.authentication.signup.SignupContract;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
+import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.utils.SignupValidator;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
-
-public class SignupPresenter implements SignupContract.Presenter {
+public class SignupPresenter implements SignupContract.Presenter, AuthenticationRepository.SignupCallback, AuthenticationRepository.UploadCallback, AuthenticationRepository.LinkGuestCallback {
     private final SignupContract.View view;
-    private final FirebaseAuth mAuth;
-    private final FirebaseDatabase mDatabase;
-    private final StorageReference mStorageRef;
     private static final String TAG = "SignupPresenter";
-    private User uploadedUser;
-
+    private final AuthenticationRepository repository;
     private final SharedPreferencesManager preferencesManager;
-    public SignupPresenter(SignupContract.View view, FirebaseAuth mAuth,
-                           FirebaseDatabase mDatabase, StorageReference mStorageRef, SharedPreferencesManager preferencesManager) {
+    public SignupPresenter(SignupContract.View view, AuthenticationRepository repository, SharedPreferencesManager preferencesManager) {
         this.view = view;
-        this.mAuth = mAuth;
-        this.mDatabase = mDatabase;
-        this.mStorageRef = mStorageRef;
         this.preferencesManager = preferencesManager;
+        this.repository = repository;
     }
 
     @Override
-    public void signup(String email, String userName, String password, String confirmPassword, Bitmap profileImg) {
+    public void signup(User user, String confirmPassword, Bitmap profileImg) {
 
-        if (!SignupValidator.isValidEmail(email)) {
-            view.showErrorMessage("Pls Enter Your Email Correct.");
-            return;
-        }
-
-        if (!SignupValidator.isValidUsername(userName)) {
-            view.showErrorMessage("Pls Enter Your UserName Correct.");
-            return;
-        }
-
-        if (!SignupValidator.isValidPassword(password)) {
-            view.showErrorMessage("Pls Enter Your Password Correct.");
-            return;
-        }
-
-        if (!SignupValidator.isValidPasswordConfirmation(password, confirmPassword)) {
-            view.showErrorMessage("Passwords do not match.");
-            return;
-        }
+        if (notValid(user, confirmPassword)) return;
 
         view.showProgressBar();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    view.hideProgressBar();
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            uploadedUser = new User(user.getUid(), email, userName);
-                            uploadProfileImage(user.getUid(), profileImg);
-                            saveUserData(uploadedUser);
-                            if (preferencesManager.isGuest()) {
-                                linkGuestAccount(email, password);
-                            } else {
-                                view.navigateToLogin();
-                            }
-                        } else {
-                            view.showErrorMessage("Failed to create user.");
-                        }
-                    } else {
-                        view.showErrorMessage("Authentication failed: " + task.getException().getMessage());
-                    }
-                });
+        repository.signup(user, profileImg, this);
+
+        if (preferencesManager.isGuest()) {
+            repository.linkGuestAccount(user.getEmail(), user.getPassword(), this);
+        }
     }
 
-    private void linkGuestAccount(String email, String password) {
-        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-        mAuth.getCurrentUser().linkWithCredential(credential)
-                .addOnCompleteListener(syncTask -> {
-                    if (syncTask.isSuccessful()) {
-                        Log.d(TAG, "linkWithCredential:success");
-                        FirebaseUser user = syncTask.getResult().getUser();
-                        view.navigateToLogin();
-                    } else {
-                        Log.w(TAG, "linkWithCredential:failure", syncTask.getException());
-                        view.showErrorMessage("Failed to link guest account: " + syncTask.getException().getMessage());
-                    }
-                });
+    private boolean notValid(User user, String confirmPassword) {
+        if (!SignupValidator.isValidEmail(user.getEmail())) {
+            view.showErrorMessage("Pls Enter Your Email Correct.");
+            return true;
+        }
+
+        if (!SignupValidator.isValidUsername(user.getUserName())) {
+            view.showErrorMessage("Pls Enter Your UserName Correct.");
+            return true;
+        }
+
+        if (!SignupValidator.isValidPassword(user.getPassword())) {
+            view.showErrorMessage("Pls Enter Your Password Correct.");
+            return true;
+        }
+
+        if (!SignupValidator.isValidPasswordConfirmation(user.getPassword(), confirmPassword)) {
+            view.showErrorMessage("Passwords do not match.");
+            return true;
+        }
+        return false;
     }
 
-    private void uploadProfileImage(String userId, Bitmap profileImg) {
-        if (profileImg == null) return;
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        profileImg.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        StorageReference profileImgRef = mStorageRef.child("profile_images/" + userId + ".jpg");
-
-        profileImgRef.putBytes(data)
-                .addOnSuccessListener(taskSnapshot -> {
-
-                    profileImgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-
-                        String downloadUrl = uri.toString();
-                        uploadedUser.setProfileUrl(downloadUrl);
-
-                        saveUserData(uploadedUser);
-                    }).addOnFailureListener(exception -> {
-                        saveUserData(uploadedUser);
-                    });
-                })
-                .addOnFailureListener(exception -> {
-                    saveUserData(uploadedUser);
-                });
+    @Override
+    public void onSignupSuccess(User user, Bitmap profileImg) {
+        Log.d(TAG, "onSignupSuccess: " + profileImg);
+        repository.uploadProfileImage(user.getId(), profileImg, this);
+        view.hideProgressBar();
+        view.navigateToLogin();
     }
 
-    private void saveUserData(User user) {
-        Log.d("TAG", "saveUserData: " + user);
-        DatabaseReference usersRef = mDatabase.getReference("users");
-        usersRef.child(user.getId()).setValue(user);
+    @Override
+    public void onSignupFailed(String errorMessage) {
+        view.hideProgressBar();
+        Log.d(TAG, "onSignupFailed: "+ errorMessage);
+        view.showErrorMessage("Sign up Failed \n"+ errorMessage);
+    }
+
+    @Override
+    public void onUploadSuccess() {
+        Log.d(TAG, "onUploadSuccess: ");
+    }
+
+    @Override
+    public void onUploadFailed(String errorMessage) {
+        view.showErrorMessage(errorMessage);
+    }
+
+    @Override
+    public void onLinkGuestSuccess(FirebaseUser user) {
+        Log.d(TAG, "onLinkGuestSuccess: " + user.getDisplayName());
+    }
+
+    @Override
+    public void onLinkGuestFailed(String errorMessage) {
+        view.showErrorMessage(errorMessage);
     }
 }

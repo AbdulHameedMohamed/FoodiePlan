@@ -30,7 +30,6 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
     @Override
     public void getFavouriteMeals() {
         view.showData(mealRepository.getAllMealsFromLocal());
-        Log.i("TAG", "getData: " + User.getCurrentUserId());
     }
 
     @Override

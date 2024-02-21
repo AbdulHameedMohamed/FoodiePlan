@@ -47,8 +47,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        Log.d(TAG, "onCreate: "+ SharedPreferencesManager.getInstance(requireContext()).isGuest() +" " + MainActivity.getGuestMode());
-        if(MainActivity.getGuestMode()) {
+        Log.d(TAG, "onCreate: "+ SharedPreferencesManager.getInstance(requireContext()).isGuest());
+        if(SharedPreferencesManager.getInstance(requireContext()).isGuest()) {
             binding.avSignUp.setVisibility(View.VISIBLE);
             binding.clProfile.setVisibility(View.GONE);
             Toast.makeText(requireContext(), "Sign Up To Get All The Features From Foodie App", Toast.LENGTH_LONG).show();

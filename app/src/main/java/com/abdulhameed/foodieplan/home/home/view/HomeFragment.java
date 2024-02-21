@@ -52,19 +52,17 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     private HomeContract.Presenter presenter;
     FragmentHomeBinding binding;
     private MealAdapter mealsAdapter;
-    private FilterAdapter filterAdapter;
-    private FilterAdapter countriesAdapter;
-    private FilterAdapter categoriesAdapter;
+    private FilterAdapter filterAdapter, countriesAdapter, categoriesAdapter;
     private NavController navController;
     private Meal mealOfTheDay;
     private NetworkChangeReceiver networkChangeReceiver;
-    private boolean isFavourite;
     private static final String TAG = "HomeFragment";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "onCreate: "+ SharedPreferencesManager.getInstance(requireContext()).isGuest());
+        Log.d(TAG, "onCreate: " + SharedPreferencesManager.getInstance(requireContext()).isGuest());
         presenter = new HomePresenter(
                 MealRepository.getInstance(
                         MealsRemoteDataSource.getInstance(),
@@ -84,6 +82,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
 
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -109,14 +108,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
 
     private void setListeners() {
         binding.ibFavourite.setOnClickListener(view -> {
-            if (isFavourite) {
-                deleteMeal(mealOfTheDay);
-                binding.ibFavourite.setImageDrawable(getResources().getDrawable(R.drawable.ic_red_heart));
-            } else {
-                addMeal(mealOfTheDay);
-                binding.ibFavourite.setImageDrawable(getResources().getDrawable(R.drawable.ic_black_heart));
-            }
-            isFavourite = !isFavourite;
+            addMeal(mealOfTheDay);
         });
         binding.cvMealOfTheDay.setOnClickListener(view -> {
             HomeFragmentDirections.ActionHomeFragmentToDetailsFragment direction = HomeFragmentDirections.
@@ -168,7 +160,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         binding.tvCategoryMeal.setText(meal.getCategory());
         binding.tvCountryMeal.setText(meal.getCountry());
         Picasso.get().load(meal.getThumb())
-                .placeholder(R.drawable.ic_cooking).into(binding.ivMealImg);
+                .placeholder(R.drawable.cooking).into(binding.ivMealImg);
     }
 
     @Override
@@ -225,7 +217,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         stopShimmer(binding.shRvCountries);
         List<Filter> filters = new ArrayList<>();
 
-        for (Country country: countries) {
+        for (Country country : countries) {
             filters.add(country);
         }
         countriesAdapter.setList(filters);
@@ -236,7 +228,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         stopShimmer(binding.shRvCategories);
         List<Filter> filters = new ArrayList<>();
 
-        for (Category category: categories) {
+        for (Category category : categories) {
             filters.add(category);
         }
         categoriesAdapter.setList(filters);
@@ -246,11 +238,13 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         shimmer.stopShimmer();
         shimmer.setVisibility(View.INVISIBLE);
     }
+
     @Override
     public void addMeal(Meal meal) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         presenter.addToFavourite(userId, meal);
     }
+
     @Override
     public void showEmptyDataMessage() {
         stopAllShimmers();
@@ -296,7 +290,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     public void onDestroyView() {
         super.onDestroyView();
         presenter.detachView();
-        isFavourite = false;
     }
 
     private void registerNetworkChangeReceiver() {
@@ -372,7 +365,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
                 String day = chip.getText().toString();
                 presenter.savePlannedMeal(day, meal.getId());
                 Toast.makeText(requireContext(),
-                        meal.getName() + " Stored Successfully To "+ day
+                        meal.getName() + " Stored Successfully To " + day
                         , Toast.LENGTH_SHORT).show();
             }
         }
@@ -381,7 +374,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     private static void disableChipsBeforeToday(DialogSelectDayBinding dialogBinding, String today) {
         for (int i = 0; i < dialogBinding.chipGroup.getChildCount(); i++) {
             Chip chip = (Chip) dialogBinding.chipGroup.getChildAt(i);
-            if(chip.getText().toString().equals(today))
+            if (chip.getText().toString().equals(today))
                 break;
             chip.setEnabled(false);
         }

@@ -12,15 +12,6 @@ import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static boolean isGuest = false;
-    public static void setGuest(boolean isGuest) {
-        MainActivity.isGuest =  isGuest;
-    }
-
-    public static boolean getGuestMode() {
-        return isGuest;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Pass the result to the fragment
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_nav_host);
         if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode, data);

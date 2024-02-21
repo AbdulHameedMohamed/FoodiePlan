@@ -118,7 +118,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_login_facebook"
+                android:id="@+id/btn_guest_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -178,7 +178,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/av_loading"
+        android:id="@+id/av"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:visibility="gone"

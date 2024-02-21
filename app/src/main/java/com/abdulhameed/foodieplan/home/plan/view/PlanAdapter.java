@@ -56,7 +56,7 @@ public class PlanAdapter extends ListAdapter<PlannedMeal, PlanAdapter.PlanViewHo
         public void bind(PlannedMeal plannedMeal, OnClickListener<PlannedMeal> onClickListener) {
             binding.tvDay.setText(plannedMeal.getDay());
             Picasso.get().load(plannedMeal.getThumb())
-                    .placeholder(R.drawable.ic_cooking)
+                    .placeholder(R.drawable.cooking)
                     .into(binding.iMeal.ivMeal);
             binding.iMeal.tvName.setText(plannedMeal.getName());
             binding.iMeal.tvCountry.setText(plannedMeal.getCountry());
