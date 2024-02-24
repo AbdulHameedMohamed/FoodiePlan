@@ -195,24 +195,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
 
         initRecyclerViews();
         setListeners();
-        User user = SharedPreferencesManager.getInstance(requireContext()).getUser();
-        Picasso.get().load(user.getProfileUrl()).into(binding.ivProfile);
-        binding.ivProfile.setOnClickListener(view1 -> openProfileDialog(user));
         handleOnlineStatusAndLoadData();
-    }
-
-    private void openProfileDialog(User user) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        DialogUserProfileBinding profileBinding = DialogUserProfileBinding.inflate(getLayoutInflater());
-        builder.setView(profileBinding.getRoot());
-        AlertDialog dialog = builder.create();
-
-        profileBinding.textViewName.setText("Name: " + user.getUserName());
-        profileBinding.textViewEmail.setText("Email: " + user.getEmail());
-        Picasso.get().load(user.getProfileUrl()).into(profileBinding.imageViewProfile);
-
-// Show the dialog
-        dialog.show();
     }
 
     private void handleOnlineStatusAndLoadData() {

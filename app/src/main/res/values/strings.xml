@@ -22,4 +22,7 @@
     <string name="planned_meals">Planned Meals</string>
     <string name="favourite_meals">Favourite Meals</string>
     <string name="filter_meals">Filter Meals</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+    <string name="home">Home</string>
 </resources>
