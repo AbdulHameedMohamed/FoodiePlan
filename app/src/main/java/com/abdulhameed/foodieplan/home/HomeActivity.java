@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import android.graphics.Bitmap;
@@ -44,17 +45,24 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        binding.fabHome.setOnClickListener(view -> navigateTo(R.id.homeFragment));
         if(!SharedPreferencesManager.getInstance(this).isGuest()) {
             setupNavigationDrawer();
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.topAppBar, R.string.open_nav,
                     R.string.close_nav);
             binding.drawerLayout.addDrawerListener(toggle);
             toggle.syncState();
+        } else {
+            binding.topAppBar.setNavigationIcon(R.drawable.ic_guest);
         }
 
         navController = Navigation.findNavController(this, R.id.home_nav_host);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+    }
+
+    private void navigateTo(int destinationId) {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.home_nav_host);
+        navHostFragment.getNavController().navigate(destinationId);
     }
 
     private void setupNavigationDrawer() {
@@ -72,7 +80,6 @@ public class HomeActivity extends AppCompatActivity {
         binding.topAppBar.setNavigationOnClickListener(v -> {
             binding.drawerLayout.openDrawer(GravityCompat.START);
         });
-
 
         // Set up the navigation item click listener
         binding.navView.setNavigationItemSelectedListener(item -> {
