@@ -10,27 +10,23 @@
        <KeyFrameSet>
            <KeyAttribute
                motion:motionTarget="@+id/tv_meal_details_name"
-               motion:framePosition="110"
+               motion:framePosition="125"
                android:alpha="0" />
            <KeyAttribute
                motion:motionTarget="@+id/tv_meal_details_category"
-               motion:framePosition="110"
+               motion:framePosition="125"
                android:alpha="0" />
            <KeyAttribute
                motion:motionTarget="@+id/tv_meal_details_country"
-               motion:framePosition="110"
+               motion:framePosition="125"
                android:alpha="0" />
            <KeyAttribute
                motion:motionTarget="@+id/iv_meal_img"
-               motion:framePosition="110"
-               android:alpha="0" />
-           <KeyAttribute
-               motion:motionTarget="@+id/ib_favourite"
-               motion:framePosition="110"
+               motion:framePosition="125"
                android:alpha="0" />
            <KeyAttribute
                motion:motionTarget="@+id/gradient_overlay"
-               motion:framePosition="110"
+               motion:framePosition="125"
                android:alpha="0" />
        </KeyFrameSet>
         <OnSwipe

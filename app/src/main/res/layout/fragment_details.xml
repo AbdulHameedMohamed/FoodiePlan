@@ -25,6 +25,7 @@
                 android:id="@+id/iv_meal_img"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:elevation="2dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/cooking"
                 app:layout_constraintStart_toStartOf="parent"
@@ -39,23 +40,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:singleSelection="false"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="@id/cv_meal_img"
-        app:layout_constraintTop_toTopOf="@id/cv_meal_img">
+        app:layout_constraintTop_toTopOf="@id/cv_meal_img"
+        app:singleSelection="false">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/favorite"
-            app:icon="@drawable/ic_red_heart"/>
+            app:icon="@drawable/ic_red_heart" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/plan"
-            app:icon="@drawable/ic_calendar"/>
+            app:icon="@drawable/ic_calendar" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -79,7 +81,7 @@
         android:drawableStart="@drawable/ic_name"
         android:drawablePadding="12dp"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textColor="@color/white"
         android:textSize="26sp"
         android:textStyle="bold"
@@ -93,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="8dp"
-        android:drawableStart="@drawable/ic_cateogry"
+        android:drawableStart="@drawable/ic_category_white"
         android:drawablePadding="12dp"
         android:text="Category"
         android:textColor="@color/white"
@@ -107,7 +109,7 @@
         android:id="@+id/tv_meal_details_country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_country"
+        android:drawableStart="@drawable/ic_country_white"
         android:drawablePadding="12dp"
         android:text="Country"
         android:textColor="@color/white"
@@ -147,7 +149,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:drawableStart="@drawable/ic_lock"
+                android:drawableStart="@drawable/ingredient"
                 android:drawablePadding="10dp"
                 android:text="Ingredients"
                 android:textColor="@color/black"
@@ -158,7 +160,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_meal_details_ingredient"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
@@ -184,6 +186,8 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
+                android:drawableStart="@drawable/ic_step"
+                android:drawablePadding="10dp"
                 android:text="Meals Instructions"
                 android:textColor="@color/black"
                 android:textSize="20sp"
