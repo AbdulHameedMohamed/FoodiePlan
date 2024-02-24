@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -21,12 +22,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthenticationRepository {
     private final FirebaseAuth mAuth;
     private final FirebaseDatabase mDatabase;
     private final StorageReference mStorageRef;
-    private static final String TAG = "AuthenticationRepositor";
+    private static final String TAG = "AuthenticationRepository";
 
     public AuthenticationRepository(FirebaseAuth mAuth, FirebaseDatabase mDatabase, StorageReference mStorageRef) {
         this.mAuth = mAuth;
@@ -166,14 +169,14 @@ public class AuthenticationRepository {
                 });
     }
 
-    public void linkGuestAccount(String email, String password, LinkGuestCallback callback) {
-        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+    public void linkGuestAccount(User user, LinkGuestCallback callback) {
+        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), user.getPassword());
         mAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(syncTask -> {
                     if (syncTask.isSuccessful()) {
                         Log.d(TAG, "linkWithCredential:success");
-                        FirebaseUser user = syncTask.getResult().getUser();
-                        callback.onLinkGuestSuccess(user);
+                        FirebaseUser firebaseUser = syncTask.getResult().getUser();
+                        callback.onLinkGuestSuccess(firebaseUser);
                     } else {
                         Log.w(TAG, "linkWithCredential:failure", syncTask.getException());
                         callback.onLinkGuestFailed("Failed to link guest account: " + syncTask.getException().getMessage());
@@ -191,6 +194,93 @@ public class AuthenticationRepository {
         });
     }
 
+    public void mergeFavoritesFromAnonymousUser(User newUser, String anonymousId) {
+        // Get the IDs of both the anonymous user and the authenticated user
+        String authenticatedUserId = newUser.getId();
+
+        Log.d(TAG, "mergeFavoritesFromAnonymousUser: " + authenticatedUserId +"  " + anonymousId);
+        // Retrieve favorites data from anonymous user
+        DatabaseReference anonymousFavoritesRef = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(anonymousId).child("meals");
+
+        anonymousFavoritesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Retrieve favorites data from anonymous user
+                List<Meal> anonymousFavorites = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Meal favorite = snapshot.getValue(Meal.class);
+                    anonymousFavorites.add(favorite);
+                }
+
+                // Update favorites for the new user
+                DatabaseReference newUserFavoritesRef = FirebaseDatabase.getInstance().getReference()
+                        .child("users").child(authenticatedUserId).child("meals");
+                newUserFavoritesRef.setValue(anonymousFavorites)
+                        .addOnSuccessListener(aVoid -> {
+                            // Merge successful
+                            // Optionally clean up data associated with anonymous user
+                            cleanUpAnonymousUserData();
+                        })
+                        .addOnFailureListener(e -> {
+                            // Handle failure
+                        });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle cancelled event
+            }
+        });
+    }
+
+    private void cleanUpAnonymousUserData() {
+        DatabaseReference anonymousUserRef = FirebaseDatabase.getInstance().getReference()
+                .child("users").child("anonymousUserID");
+
+        anonymousUserRef.removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    // Clean-up successful
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                });
+    }
+    public void getUserData(String userId, final UserDataListener callback) {
+        mDatabase.getReference().child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // User data found, retrieve it
+                    String userEmail = dataSnapshot.child("email").getValue(String.class);
+                    String userName = dataSnapshot.child("userName").getValue(String.class);
+                    String userProfileUrl = dataSnapshot.child("imageUrl").getValue(String.class);
+                    String password = dataSnapshot.child("password").getValue(String.class);
+                    User user = new User(userId, userEmail, userName, userProfileUrl);
+                    Log.d(TAG, "onDataChange: " + user);
+                    Log.d(TAG, "onDataChange: " + userProfileUrl);
+                    Log.d(TAG, "onDataChange: " + password);
+                    // Pass user data to listener
+                    callback.onUserDataReceived(user);
+                } else {
+                    // User data not found
+                    callback.onUserDataCancelled("User Data Not Found.");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+                callback.onUserDataCancelled(databaseError.getMessage());
+            }
+        });
+    }
+
+    // Interface for callback listeners
+    public interface UserDataListener {
+        void onUserDataReceived(User user);
+        void onUserDataCancelled(String errorMessage);
+    }
     public interface SaveUserCallback {
         void onSaveUserSuccess();
 

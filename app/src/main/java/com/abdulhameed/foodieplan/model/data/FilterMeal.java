@@ -28,4 +28,11 @@ public class FilterMeal implements Serializable {
 	public String getImageUrl() {
 		return thumb;
 	}
+
+	@Override
+	public String toString() {
+		return "FilterMeal{" +
+				"idMeal='" + idMeal + '\'' +
+				'}';
+	}
 }

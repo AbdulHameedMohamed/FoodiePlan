@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.data.PlannedMeal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.google.gson.annotations.SerializedName;
@@ -21,20 +22,24 @@ public class Meal {
     public Meal() {
     }
 
-    public Meal(PlannedMeal meal) {
-        this.id = meal.getId();
-        this.name = meal.getName();
-        this.category = meal.getCategory();
-        this.country = meal.getCountry();
-        this.thumb = meal.getThumb();
-    }
-
     public Meal(@NonNull String id, String name, String category, String country, String thumb) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.country = country;
         this.thumb = thumb;
+    }
+
+    public Meal(PlannedMeal meal) {
+        this(meal.getId(), meal.getName(), meal.getCategory(), meal.getCountry(), meal.getThumb());
+    }
+
+    public Meal(@NonNull WatchedMeal watchedMeal) {
+        this.id = watchedMeal.getId();
+        this.name = watchedMeal.getName();
+        this.category = watchedMeal.getCategory();
+        this.country = watchedMeal.getCountry();
+        this.thumb = watchedMeal.getThumb();
     }
 
     @PrimaryKey

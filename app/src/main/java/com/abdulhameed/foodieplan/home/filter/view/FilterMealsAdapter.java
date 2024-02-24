@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.ItemFilterMealsBinding;
 import com.abdulhameed.foodieplan.utils.OnClickListener;
 import com.abdulhameed.foodieplan.model.data.FilterMeal;
@@ -14,12 +15,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
+public class FilterMealsAdapter extends RecyclerView.Adapter<FilterMealsAdapter.FilterViewHolder> {
 
     private List<FilterMeal> meals = new ArrayList<>();
     private final OnClickListener<FilterMeal> listener;
 
-    public FilterAdapter(OnClickListener<FilterMeal> listener) {
+    public FilterMealsAdapter(OnClickListener<FilterMeal> listener) {
         this.listener = listener;
     }
 
@@ -61,7 +62,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
 
         public void bind(FilterMeal filterMeal) {
             binding.tvFilterName.setText(filterMeal.getName());
-            Picasso.get().load(filterMeal.getThumb()).into(binding.ivFilterImage);
+            Picasso.get().load(filterMeal.getThumb()).placeholder(R.drawable.p_chief).into(binding.ivFilterImage);
         }
     }
 }

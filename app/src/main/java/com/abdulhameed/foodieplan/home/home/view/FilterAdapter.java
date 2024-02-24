@@ -38,9 +38,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         holder.binding.tvName.setText(ingredient);
 
         Picasso.get().load(filters.get(position).getThumb())
-                .placeholder(R.drawable.cooking)
+                .placeholder(R.drawable.p_chief)
                 .into(holder.binding.ivImage);
-        holder.itemView.setOnClickListener(view -> listener.onItemClick(filters.get(position)));
     }
 
     @Override
@@ -48,12 +47,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         return filters.size();
     }
 
-    public static class FilterViewHolder extends RecyclerView.ViewHolder {
+    public class FilterViewHolder extends RecyclerView.ViewHolder {
         ItemFilterBinding binding;
-
         public FilterViewHolder(@NonNull ItemFilterBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            binding.getRoot().setOnClickListener(view -> listener.onItemClick(filters.get(getAdapterPosition())));
         }
     }
 }

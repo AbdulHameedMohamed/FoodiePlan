@@ -2,7 +2,6 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recipesRowLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,20 +18,20 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/spacing_medium">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_filter_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:elevation="2dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="10dp"
-            android:scaleType="centerCrop"
-            />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/tv_filter_name"

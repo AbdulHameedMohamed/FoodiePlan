@@ -1,7 +1,6 @@
 package com.abdulhameed.foodieplan.home.details;
 
 import com.abdulhameed.foodieplan.model.Meal;
-import com.abdulhameed.foodieplan.model.data.PlannedMeal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 
 public interface DetailsContract {
@@ -16,6 +15,6 @@ public interface DetailsContract {
 
     interface View {
         void showMeal(Meal meal);
-        void showErrorMsg(String error);
+        void showMsg(String error);
     }
 }

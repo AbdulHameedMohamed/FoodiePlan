@@ -42,20 +42,26 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private static final int PICK_IMAGE_REQUEST = 1;
     NavController navController;
     private static final String TAG = "ProfileFragment";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        Log.d(TAG, "onCreate: "+ SharedPreferencesManager.getInstance(requireContext()).isGuest());
-        if(SharedPreferencesManager.getInstance(requireContext()).isGuest()) {
+        navController = NavHostFragment.findNavController(this);
+        Log.d(TAG, "onCreate: " + SharedPreferencesManager.getInstance(requireContext()).isGuest());
+        if (SharedPreferencesManager.getInstance(requireContext()).isGuest()) {
             binding.avSignUp.setVisibility(View.VISIBLE);
+            binding.btnGuestSignup.setVisibility(View.VISIBLE);
             binding.clProfile.setVisibility(View.GONE);
             Toast.makeText(requireContext(), "Sign Up To Get All The Features From Foodie App", Toast.LENGTH_LONG).show();
         } else {
+            binding.avSignUp.setVisibility(View.GONE);
+            binding.btnGuestSignup.setVisibility(View.GONE);
+            binding.clProfile.setVisibility(View.VISIBLE);
+
             MealsLocalDataSource.getInstance(getContext()).getMealCount().observe(getViewLifecycleOwner(),
                     count -> binding.tvNumOfFavourites.setText(String.valueOf(count)));
-            navController = NavHostFragment.findNavController(this);
             int count = getPlannedMealsCount();
             binding.tvNumOfPlan.setText(String.valueOf(count));
 
@@ -64,9 +70,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
             presenter = new ProfilePresenter(this,
                     new AuthenticationRepository(mAuth, mDatabase, mStorageRef),
-                    MealRepository.getInstance(MealsRemoteDataSource.getInstance(), MealsLocalDataSource.getInstance(requireContext())));
-            binding.avSignUp.setVisibility(View.GONE);
-            binding.clProfile.setVisibility(View.VISIBLE);
+                    MealRepository.getInstance(MealsRemoteDataSource.getInstance(), MealsLocalDataSource.getInstance(requireContext())),
+                    SharedPreferencesManager.getInstance(requireContext()));
+
             presenter.getUser(SharedPreferencesManager.getInstance(requireContext()).getUser().getId());
             presenter.getDownloadUserImage();
         }
@@ -75,30 +81,24 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     }
 
     private int getPlannedMealsCount() {
-        int countOfDays= 0;
+        int countOfDays = 0;
         String[] daysOfWeek = MyCalender.getDaysOfWeek();
         SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(requireContext());
-        for(String day: daysOfWeek)
-            if(preferencesManager.getMealIdForDay(day) != null)
+        for (String day : daysOfWeek)
+            if (preferencesManager.getMealIdForDay(day) != null)
                 countOfDays++;
         return countOfDays;
     }
 
     private void setListeners() {
-        binding.ivProfile.setOnClickListener(view -> openFileChooser());
-
-        binding.ibLogout.setOnClickListener(view -> {
-            if(binding.clProfile.getVisibility()== View.VISIBLE) {
-                presenter.logOut();
-                navController.navigate(R.id.action_profileFragment_to_mainActivity);
-            } else {
-                displayDialog();
-            }
-        });
+        binding.ibEdit.setOnClickListener(view -> openFileChooser());
+        binding.ibLogout.setOnClickListener(view -> displayDialog());
+        binding.btnGuestSignup.setOnClickListener(view -> navController.navigate(R.id.action_profileFragment_to_mainActivity));
     }
+
     @Override
     public void showUserData(User user) {
-        if(user.getProfileUrl() != null && !user.getProfileUrl().isEmpty())
+        if (user.getProfileUrl() != null && !user.getProfileUrl().isEmpty())
             Picasso.get().load(user.getProfileUrl()).into(binding.ivProfile);
         binding.etName.setText(user.getUserName());
         binding.etEmail.setText(user.getEmail());
@@ -138,8 +138,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         builder.setMessage("Are You Sure that you want to logout ?");
 
         builder.setPositiveButton("Yes", (dialog, which) -> {
+            presenter.logOut();
             navController.navigate(R.id.action_profileFragment_to_mainActivity);
-            Toast.makeText(requireContext(), "See You Again !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "See You Soon !", Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());

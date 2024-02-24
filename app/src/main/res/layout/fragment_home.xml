@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,10 +8,28 @@
     android:layout_height="match_parent"
     tools:background="@color/white">
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/profile"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="25dip"
+        app:riv_mutate_background="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/sv_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile"
+        android:layout_marginTop="@dimen/spacing_small">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/r_home"
@@ -20,7 +39,7 @@
 
             <TextView
                 android:id="@+id/tv_inspiration"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/courgette"
@@ -28,7 +47,6 @@
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,8 +84,8 @@
                         android:id="@+id/iv_meal_img"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/cooking"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/p_chief"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -209,7 +227,7 @@
             </com.facebook.shimmer.ShimmerFrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_country_meals"
+                android:id="@+id/rv_interests_meals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -220,6 +238,63 @@
                 app:layout_constraintEnd_toEndOf="@id/tv_inspiration"
                 app:layout_constraintStart_toStartOf="@id/tv_inspiration"
                 app:layout_constraintTop_toBottomOf="@+id/tv_interests_meals"
+                tools:listitem="@layout/item_meal" />
+
+            <TextView
+                android:id="@+id/tv_country_meals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/ic_country"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/courgette"
+                android:text="Meals That Popular In Your Country"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sh_rv_interest" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/sh_rv_country_meals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_country_meals"
+                shimmer:duration="800"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/placeholder_meal" />
+
+                    <include layout="@layout/placeholder_meal" />
+
+                    <include layout="@layout/placeholder_meal" />
+
+                    <include layout="@layout/placeholder_meal" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_country_meals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/tv_inspiration"
+                app:layout_constraintStart_toStartOf="@id/tv_inspiration"
+                app:layout_constraintTop_toBottomOf="@+id/tv_country_meals"
                 tools:listitem="@layout/item_meal" />
 
             <TextView
@@ -235,7 +310,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sh_rv_interest" />
+                app:layout_constraintTop_toBottomOf="@id/sh_rv_country_meals" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/sh_rv_ingredients"
@@ -411,6 +486,10 @@
         android:id="@+id/av_no_internet"
         style="@style/LottieAnimation"
         android:layout_gravity="center"
-        app:lottie_rawRes="@raw/animation_no_internet" />
+        app:lottie_rawRes="@raw/animation_no_internet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

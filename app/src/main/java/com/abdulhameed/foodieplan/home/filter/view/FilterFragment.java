@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
 import com.abdulhameed.foodieplan.model.repository.FilterRepository;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class FilterFragment extends Fragment implements FilterContract.FilterVie
 
     private FragmentFilterBinding binding;
     private FilterContract.FilterPresenter presenter;
-    private FilterAdapter adapter;
+    private FilterMealsAdapter adapter;
     private NavController navController;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class FilterFragment extends Fragment implements FilterContract.FilterVie
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentFilterBinding.inflate(inflater, container, false);
-        adapter = new FilterAdapter(this);
+        adapter = new FilterMealsAdapter(this);
         binding.rvFilterMeals.setAdapter(adapter);
         return binding.getRoot();
     }
@@ -65,12 +67,14 @@ public class FilterFragment extends Fragment implements FilterContract.FilterVie
         }
     }
 
+    private static final String TAG = "FilterFragment";
     private void getArgs() {
         Bundle args = getArguments();
         if (args != null) {
             String filter = args.getString("filter_type");
 
             if (filter != null) {
+                startShimmer(binding.shRvFilter);
                 if(filter.equals("Ingredient")) {
                     Ingredient ingredient = (Ingredient) args.getSerializable("filter_value");
                     presenter.getMealsByIngredient(ingredient.getName());
@@ -85,9 +89,15 @@ public class FilterFragment extends Fragment implements FilterContract.FilterVie
         }
     }
 
+    private void startShimmer(ShimmerFrameLayout shRvFilter) {
+        shRvFilter.setVisibility(View.VISIBLE);
+        shRvFilter.startShimmer();
+    }
+
     @Override
     public void showMeals(List<FilterMeal> meals) {
         stopShimmer();
+        binding.rvFilterMeals.setVisibility(View.VISIBLE);
         adapter.setList(meals);
     }
 

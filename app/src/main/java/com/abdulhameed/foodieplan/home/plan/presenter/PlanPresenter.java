@@ -21,7 +21,6 @@ public class PlanPresenter implements PlanContract.Presenter, NetworkCallBack<Me
     private final PlanContract.View view;
     private final FavouriteRepository favouriteRepository;
 
-
     public PlanPresenter(PlanContract.View view, MealRepository mealRepository, FavouriteRepository favouriteRepository, SharedPreferencesManager preferencesManager) {
         this.repository = mealRepository;
         this.favouriteRepository = favouriteRepository;

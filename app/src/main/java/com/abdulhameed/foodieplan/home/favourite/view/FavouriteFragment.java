@@ -65,6 +65,9 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
                 binding.avNoDataFound.setVisibility(View.GONE);
                 binding.rvMeals.setVisibility(View.VISIBLE);
                 adapter.submitList(mealsList);
+            } else {
+                binding.avNoDataFound.setVisibility(View.VISIBLE);
+                binding.rvMeals.setVisibility(View.GONE);
             }
         });
     }

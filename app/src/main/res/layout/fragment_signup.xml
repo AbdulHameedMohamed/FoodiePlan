@@ -48,6 +48,18 @@
                     android:src="@drawable/profile"
                     app:shapeAppearanceOverlay="@style/Circular" />
 
+                <ImageButton
+                    android:id="@+id/ib_edit"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="-25dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <include
                     android:id="@+id/i_email"
                     layout="@layout/layout_email" />

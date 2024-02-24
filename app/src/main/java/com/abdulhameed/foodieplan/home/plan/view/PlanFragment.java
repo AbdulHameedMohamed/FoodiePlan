@@ -89,8 +89,12 @@ public class PlanFragment extends Fragment implements PlanContract.View {
 
     @Override
     public void showPlannedMeals(List<PlannedMeal> plannedMeals) {
-        if (plannedMeals != null&& plannedMeals.size() != 0)
+        if (plannedMeals != null&& plannedMeals.size() != 0) {
             adapter.submitList(plannedMeals);
+        } else {
+            binding.avNoDataFound.setVisibility(View.VISIBLE);
+            binding.rvPlan.setVisibility(View.GONE);
+        }
     }
 
     @Override

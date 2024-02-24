@@ -13,15 +13,19 @@ public class ProfilePresenter implements ProfileContract.Presenter, Authenticati
     private final ProfileContract.View view;
     private final AuthenticationRepository authenticationRepository;
     private final MealRepository mealRepository;
+    private final SharedPreferencesManager preferencesManager;
 
-    public ProfilePresenter(ProfileContract.View view, AuthenticationRepository authenticationRepository, MealRepository mealRepository) {
+    public ProfilePresenter(ProfileContract.View view, AuthenticationRepository authenticationRepository
+            , MealRepository mealRepository, SharedPreferencesManager preferencesManager) {
         this.view = view;
         this.authenticationRepository = authenticationRepository;
         this.mealRepository = mealRepository;
+        this.preferencesManager = preferencesManager;
     }
     @Override
     public void logOut() {
         authenticationRepository.logOut();
+        preferencesManager.clearUser();
         clearFavourites();
     }
 

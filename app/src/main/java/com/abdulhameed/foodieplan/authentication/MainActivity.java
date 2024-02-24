@@ -19,9 +19,9 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
 
-        User user = SharedPreferencesManager.getInstance(this).getUser();
+        SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(this);
 
-        if (user != null) {
+        if (preferencesManager.getUser() != null) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();

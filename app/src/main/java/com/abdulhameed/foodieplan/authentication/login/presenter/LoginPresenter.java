@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-public class LoginPresenter implements LoginContract.Presenter, AuthenticationRepository.LoginCallback, AuthenticationRepository.LoginWithGoogleCallback, FavouriteRepository.Callback<List<Meal>>, AuthenticationRepository.LoginGuestCallback {
+public class LoginPresenter implements LoginContract.Presenter, AuthenticationRepository.LoginCallback, AuthenticationRepository.LoginWithGoogleCallback, FavouriteRepository.Callback<List<Meal>>, AuthenticationRepository.LoginGuestCallback, AuthenticationRepository.UserDataListener {
     private final LoginContract.View view;
     private final AuthenticationRepository authenticationRepository;
     private final FavouriteRepository favouriteRepository;
@@ -62,10 +62,11 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
     }
 
     @Override
-    public void onGuestLoginSuccess(FirebaseUser user) {
+    public void onGuestLoginSuccess(FirebaseUser firebaseUser) {
         Log.d(TAG, "onLoginSuccess: ");
         preferencesManager.saveGuestMode(true);
-        view.navigateToHomeActivity(user.getUid());
+        preferencesManager.saveUserId(firebaseUser.getUid());
+        view.navigateToHomeActivity(firebaseUser.getUid());
     }
 
     @Override
@@ -73,9 +74,8 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
         if (firebaseUser != null) {
             favouriteRepository.getAllMealsForUser(firebaseUser.getUid(), this);
             preferencesManager.saveGuestMode(false);
-            User user = getUser(firebaseUser);
-            preferencesManager.saveUser(user);
-            view.navigateToHomeActivity(user.getId());
+            Log.d(TAG, "onLoginSuccess: " + firebaseUser);
+            authenticationRepository.getUserData(firebaseUser.getUid(), this);
         } else {
             view.showMessage("User is Not Found");
         }
@@ -110,6 +110,19 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
     public void onError(String errorMessage) {
         view.showMessage(errorMessage);
     }
+
+    @Override
+    public void onUserDataReceived(User user) {
+        Log.d(TAG, "onLoginSuccess: " + user);
+        preferencesManager.saveUser(user);
+        view.navigateToHomeActivity(user.getId());
+    }
+
+    @Override
+    public void onUserDataCancelled(String errorMessage) {
+        view.showMessage(errorMessage);
+    }
+
     public static class Builder {
         private final LoginContract.View view;
         private AuthenticationRepository authenticationRepository;

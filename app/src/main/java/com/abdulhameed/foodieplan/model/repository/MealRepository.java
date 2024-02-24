@@ -1,7 +1,5 @@
 package com.abdulhameed.foodieplan.model.repository;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
 import com.abdulhameed.foodieplan.model.Meal;
@@ -42,7 +40,7 @@ public class MealRepository {
         mealsRemoteDataSource.makeCategoriesCall(networkCallBack);
     }
 
-    public void getCountry(NetworkCallBack<List<Country>> networkCallBack) {
+    public void getCountries(NetworkCallBack<List<Country>> networkCallBack) {
         mealsRemoteDataSource.makeCountryCall(networkCallBack);
     }
 

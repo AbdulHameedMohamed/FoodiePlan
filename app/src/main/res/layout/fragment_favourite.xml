@@ -8,6 +8,7 @@
     tools:background="@color/white">
 
     <TextView
+        android:layout_marginTop="@dimen/spacing_large"
         android:id="@+id/tv_favourite"
         style="@style/App.TitleTextView"
         android:text="@string/favourite_meals"
@@ -27,20 +28,16 @@
         app:layout_constraintTop_toBottomOf="@id/tv_favourite"
         tools:itemCount="3"
         tools:listitem="@layout/item_meal"
-        tools:visibility="gone"
-        android:paddingBottom="@dimen/spacing_medium"/>
+        tools:visibility="visible"
+        />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/av_no_data_found"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:visibility="visible"
+        style="@style/LottieAnimation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         app:lottie_rawRes="@raw/animation_no_favourites" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

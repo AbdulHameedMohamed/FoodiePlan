@@ -7,7 +7,7 @@ public class FilterRepository {
 
     private static FilterRepository filterRepo;
 
-    private MealsRemoteDataSource mealsRemoteDataSource;
+    private final MealsRemoteDataSource mealsRemoteDataSource;
 
     private FilterRepository(MealsRemoteDataSource mealsRemoteDataSource) {
         this.mealsRemoteDataSource = mealsRemoteDataSource;

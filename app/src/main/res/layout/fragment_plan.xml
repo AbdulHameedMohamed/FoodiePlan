@@ -7,12 +7,13 @@
     tools:background="@color/white">
 
     <TextView
-        android:id="@+id/tv_favourite"
+        android:id="@+id/tv_plan"
         style="@style/App.TitleTextView"
         android:text="@string/planned_meals"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/spacing_large"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_plan"
@@ -24,7 +25,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_favourite"
+        app:layout_constraintTop_toBottomOf="@id/tv_plan"
         tools:listitem="@layout/item_plan" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/av_no_data_found"
+        style="@style/LottieAnimation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_rawRes="@raw/animation_no_favourites" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

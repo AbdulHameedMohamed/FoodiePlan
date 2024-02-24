@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData;
 
 import com.abdulhameed.foodieplan.model.data.Category;
 import com.abdulhameed.foodieplan.model.data.Country;
+import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.data.Ingredient;
 import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
+import com.abdulhameed.foodieplan.model.repository.FilterRepository;
 
 import java.util.List;
 
@@ -21,6 +23,8 @@ public interface HomeContract {
         public void deleteMeal(Meal mealsItem);
         void showError(String message);
         void showWatchedMeals(LiveData<List<WatchedMeal>> watchedMealsLD);
+
+        void showCountryMeals(List<FilterMeal> filterMeals);
     }
 
     interface Presenter {
@@ -38,10 +42,12 @@ public interface HomeContract {
 
         void getCategories();
 
-        void getCountry();
+        void getCountries();
 
-        void getWatchedMeals();
+        void getInterestsMeals();
 
         void savePlannedMeal(String day, String mealId);
+
+        void getCountryMeals(String country, FilterRepository instance);
     }
 }

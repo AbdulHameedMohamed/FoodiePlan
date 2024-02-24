@@ -21,4 +21,5 @@
     <string name="search">Search</string>
     <string name="planned_meals">Planned Meals</string>
     <string name="favourite_meals">Favourite Meals</string>
+    <string name="filter_meals">Filter Meals</string>
 </resources>

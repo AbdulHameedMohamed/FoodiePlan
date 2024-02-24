@@ -8,6 +8,7 @@ import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.utils.SignupValidator;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignupPresenter implements SignupContract.Presenter, AuthenticationRepository.SignupCallback, AuthenticationRepository.UploadCallback, AuthenticationRepository.LinkGuestCallback {
@@ -29,10 +30,6 @@ public class SignupPresenter implements SignupContract.Presenter, Authentication
         view.showProgressBar();
 
         repository.signup(user, profileImg, this);
-
-        if (preferencesManager.isGuest()) {
-            repository.linkGuestAccount(user.getEmail(), user.getPassword(), this);
-        }
     }
 
     private boolean notValid(User user, String confirmPassword) {
@@ -59,9 +56,15 @@ public class SignupPresenter implements SignupContract.Presenter, Authentication
     }
 
     @Override
-    public void onSignupSuccess(User user, Bitmap profileImg) {
+    public void onSignupSuccess(User newUser, Bitmap profileImg) {
         Log.d(TAG, "onSignupSuccess: " + profileImg);
-        repository.uploadProfileImage(user.getId(), profileImg, this);
+        repository.uploadProfileImage(newUser.getId(), profileImg, this);
+        Log.d(TAG, "onSignupSuccess: " + newUser.getUserName() +" "+ FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        Log.d(TAG, "onSignupSuccess: " + preferencesManager.isGuest());
+        if (preferencesManager.isGuest()) {
+            Log.d(TAG, "onSignupSuccess: " + newUser.getUserName() +" "+ FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            repository.mergeFavoritesFromAnonymousUser(newUser, preferencesManager.getUserId());
+        }
         view.hideProgressBar();
         view.navigateToLogin();
     }
@@ -86,6 +89,7 @@ public class SignupPresenter implements SignupContract.Presenter, Authentication
     @Override
     public void onLinkGuestSuccess(FirebaseUser user) {
         Log.d(TAG, "onLinkGuestSuccess: " + user.getDisplayName());
+        //repository.mergeFavourites(user);
     }
 
     @Override

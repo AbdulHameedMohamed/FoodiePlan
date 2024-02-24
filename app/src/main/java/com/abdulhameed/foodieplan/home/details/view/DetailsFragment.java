@@ -23,6 +23,7 @@ import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
+import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.abdulhameed.foodieplan.utils.MyCalender;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
@@ -33,8 +34,8 @@ import com.squareup.picasso.Picasso;
 
 
 public class DetailsFragment extends Fragment implements DetailsContract.View {
-    private static final long MINIMUM_TIME_SPENT_MILLISECONDS = 10000;
     private static final String TAG = "DetailsFragment";
+    private static final long MINIMUM_TIME_SPENT_MILLISECONDS = 10000;
     private DetailsContract.Presenter presenter;
     private FragmentDetailsBinding binding;
     private IngredientAdapter ingredientAdapter;
@@ -50,7 +51,9 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
                 MealRepository.getInstance(
                         MealsRemoteDataSource.getInstance(),
                         MealsLocalDataSource.getInstance(getContext())),
+                FavouriteRepository.getInstance(),
                 SharedPreferencesManager.getInstance(requireContext()));
+
     }
 
     @Override
@@ -222,7 +225,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     }
 
     @Override
-    public void showErrorMsg(String error) {
+    public void showMsg(String error) {
         Toast.makeText(getContext(),  error, Toast.LENGTH_SHORT).show();
     }
 }

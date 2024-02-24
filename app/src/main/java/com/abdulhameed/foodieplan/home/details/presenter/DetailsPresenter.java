@@ -3,22 +3,25 @@ package com.abdulhameed.foodieplan.home.details.presenter;
 import com.abdulhameed.foodieplan.home.details.DetailsContract;
 import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
-import com.abdulhameed.foodieplan.model.data.PlannedMeal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;
+import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
-
-import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class DetailsPresenter implements DetailsContract.Presenter, NetworkCallBack<Meal> {
     private final DetailsContract.View view;
     private final MealRepository repository;
     private final SharedPreferencesManager preferencesManager;
+    private final FavouriteRepository favouriteRepository;
+    private final MealRepository mealsRepository;
 
-    public DetailsPresenter(DetailsContract.View view, MealRepository repository, SharedPreferencesManager preferencesManager) {
+    public DetailsPresenter(DetailsContract.View view, MealRepository mealsRepository, FavouriteRepository favouriteRepository, SharedPreferencesManager preferencesManager) {
         this.view = view;
-        this.repository = repository;
+        this.repository = mealsRepository;
         this.preferencesManager = preferencesManager;
+        this.mealsRepository = mealsRepository;
+        this.favouriteRepository = favouriteRepository;
     }
 
     @Override
@@ -28,7 +31,19 @@ public class DetailsPresenter implements DetailsContract.Presenter, NetworkCallB
 
     @Override
     public void addToFavourite(Meal meal) {
-        repository.insertMeal(meal);
+
+        mealsRepository.insertMeal(meal);
+        favouriteRepository.saveMealForUser(FirebaseAuth.getInstance().getUid(), meal, new FavouriteRepository.Callback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean isInserted) {
+                view.showMsg("Added In Cloud Successfully");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                view.showMsg(errorMessage);
+            }
+        });
     }
 
     @Override
@@ -53,6 +68,6 @@ public class DetailsPresenter implements DetailsContract.Presenter, NetworkCallB
 
     @Override
     public void onFailure(String message) {
-        view.showErrorMsg(message);
+        view.showMsg(message);
     }
 }

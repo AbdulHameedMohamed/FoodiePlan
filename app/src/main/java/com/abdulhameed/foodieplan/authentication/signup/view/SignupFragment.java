@@ -33,7 +33,6 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     private NavController navController;
     private FragmentSignupBinding signupBinding;
     private static final int PICK_IMAGE_REQUEST = 1;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +51,7 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     }
 
     private void setListeners() {
-        signupBinding.ivCircular.setOnClickListener(view -> openFileChooser());
+        signupBinding.ibEdit.setOnClickListener(view -> openFileChooser());
 
         signupBinding.btnSignup.setOnClickListener(v -> {
             if(!NetworkManager.isOnline(requireContext())) {

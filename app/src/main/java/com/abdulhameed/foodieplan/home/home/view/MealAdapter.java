@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.ItemMealBinding;
 import com.abdulhameed.foodieplan.model.Meal;
 
@@ -69,7 +70,7 @@ public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
             holder.binding.tvName.setText(meal.getName());
             holder.binding.tvCategory.setText(meal.getCategory());
             holder.binding.tvCountry.setText(meal.getCountry());
-            Picasso.get().load(meal.getThumb()).into(holder.binding.ivMeal);
+            Picasso.get().load(meal.getThumb()).placeholder(R.drawable.p_chief).into(holder.binding.ivMeal);
         }
     }
 

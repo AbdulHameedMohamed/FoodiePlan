@@ -1,10 +1,5 @@
 package com.abdulhameed.foodieplan.model.data;
 
-import android.graphics.Bitmap;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 public class User {
     private String id;
     private String email;

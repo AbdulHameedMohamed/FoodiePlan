@@ -8,16 +8,17 @@ import com.abdulhameed.foodieplan.home.home.HomeContract;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.Category;
 import com.abdulhameed.foodieplan.model.data.Country;
+import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.data.Ingredient;
 import com.abdulhameed.foodieplan.model.Meal;
-import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
-import com.abdulhameed.foodieplan.model.firebase.DeleteMealCallback;
 import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
-import com.abdulhameed.foodieplan.model.repository.FirebaseRepository;
+import com.abdulhameed.foodieplan.model.repository.FilterRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
@@ -62,12 +63,12 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
     }
 
     @Override
-    public void getCountry() {
-        mealsRepository.getCountry(this);
+    public void getCountries() {
+        mealsRepository.getCountries(this);
     }
 
     @Override
-    public void getWatchedMeals() {
+    public void getInterestsMeals() {
         LiveData<List<WatchedMeal>> watchedMeals = mealsRepository.getWatchedMeals();
         view.showWatchedMeals(watchedMeals);
     }
@@ -78,14 +79,39 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
     }
 
     @Override
+    public void getCountryMeals(String country, FilterRepository repository) {
+        repository.getMealsByCountry(new NetworkCallBack<List<FilterMeal>>() {
+            @Override
+            public void onSuccess(List<FilterMeal> filterMeals) {
+                Log.d(TAG, "onSuccess: " + filterMeals);
+                if(filterMeals != null) {
+                    view.showCountryMeals(filterMeals);
+                    Log.d(TAG, "onSuccess: " + filterMeals);
+                }
+                else {
+                    repository.getMealsByCountry(this, "Unknown");
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Log.d(TAG, "onFailure: " + message);
+                repository.getMealsByCountry(this, "Unknown");
+                view.showError(message);
+            }
+        }, country);
+    }
+
+    @Override
     public void addToFavourite(Meal meal) {
         Log.d(TAG, "addToFavourite: " + preferencesManager.getUser());
 
         mealsRepository.insertMeal(meal);
-        favouriteRepository.saveMealForUser(preferencesManager.getUser().getId(), meal, new FavouriteRepository.Callback<Boolean>() {
+        favouriteRepository.saveMealForUser(FirebaseAuth.getInstance().getUid(), meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
                 Log.d(TAG, "addToFavourite: " + isInserted);
+                view.showError("Inserted in Cloud Successfully.");
             }
 
             @Override

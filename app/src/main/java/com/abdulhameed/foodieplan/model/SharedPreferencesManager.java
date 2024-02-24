@@ -42,19 +42,28 @@ public class SharedPreferencesManager {
         editor.putString(KEY_PROFILE_URL, user.getProfileUrl());
         editor.apply();
     }
+
+    public void saveUserId(String userId) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_USER_ID, userId);
+        editor.apply();
+    }
+    public String getUserId() {
+        return sharedPreferences.getString(KEY_USER_ID, null);
+    }
     public User getUser() {
         String userId = sharedPreferences.getString(KEY_USER_ID, null);
         String email = sharedPreferences.getString(KEY_EMAIL, null);
         String username = sharedPreferences.getString(KEY_USERNAME, null);
         String imageUrl = sharedPreferences.getString(KEY_PROFILE_URL, null);
 
-        if (userId == null)
+        if (email == null)
             return null;
 
         return new User(userId, email, username, imageUrl);
     }
 
-    public void clearUserDetails() {
+    public void clearUser() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_USER_ID);
         editor.remove(KEY_EMAIL);
