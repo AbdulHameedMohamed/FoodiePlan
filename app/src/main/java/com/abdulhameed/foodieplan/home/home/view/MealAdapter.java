@@ -54,6 +54,10 @@ public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
         submitList(newList);
     }
 
+    public Meal getMeal(int position) {
+        return getItem(position);
+    }
+
     class MealViewHolder extends RecyclerView.ViewHolder {
         ItemMealBinding binding;
 

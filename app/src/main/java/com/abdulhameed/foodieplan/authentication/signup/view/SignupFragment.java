@@ -1,6 +1,7 @@
 package com.abdulhameed.foodieplan.authentication.signup.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.abdulhameed.foodieplan.R;
@@ -26,6 +28,7 @@ import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.factory.AuthenticationRepositoryFactory;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
+import com.abdulhameed.foodieplan.utils.KeyboardUtils;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.squareup.picasso.Picasso;
 public class SignupFragment extends Fragment implements SignupContract.View {
@@ -54,6 +57,7 @@ public class SignupFragment extends Fragment implements SignupContract.View {
         signupBinding.ibEdit.setOnClickListener(view -> openFileChooser());
 
         signupBinding.btnSignup.setOnClickListener(v -> {
+            KeyboardUtils.hideKeyboard(requireContext(), v);
             if(!NetworkManager.isOnline(requireContext())) {
                 Toast.makeText(requireContext(), "Check For Your Connection", Toast.LENGTH_SHORT).show();
                 return;
@@ -101,7 +105,6 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     public void showErrorMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void navigateToLogin() {
         requireActivity().getSupportFragmentManager().popBackStack();

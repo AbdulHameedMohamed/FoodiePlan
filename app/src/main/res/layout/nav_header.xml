@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="176dp"
+    android:layout_height="200dp"
     android:gravity="bottom"
     android:paddingStart="@dimen/spacing_medium"
     android:paddingBottom="@dimen/spacing_small"
@@ -17,7 +17,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/profile"
         app:riv_border_width="2dp"
-        app:riv_corner_radius="50dp" />
+        app:riv_corner_radius="50dp"/>
     <TextView
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
@@ -34,6 +34,6 @@
         android:layout_marginTop="@dimen/spacing_small"
         android:text="@string/email"
         android:textColor="@color/white"
-        android:textSize="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:textSize="16sp"
+        android:layout_marginBottom="@dimen/spacing_medium"/>
 </LinearLayout>

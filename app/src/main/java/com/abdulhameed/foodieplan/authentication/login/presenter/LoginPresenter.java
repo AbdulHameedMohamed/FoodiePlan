@@ -12,6 +12,7 @@ import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
+import com.abdulhameed.foodieplan.utils.SignupValidator;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
@@ -34,8 +35,26 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
 
     @Override
     public void signInWithEmail(String email, String password) {
-        view.showLoading();
-        authenticationRepository.login(email, password, this);
+        if (checkCredientials(email, password)) return;
+
+        if(preferencesManager.isGuest())
+            view.showDialog(email, password);
+        else {
+            view.showLoading();
+            authenticationRepository.login(email, password, this);
+        }
+    }
+
+    private boolean checkCredientials(String email, String password) {
+        if (!SignupValidator.isValidEmail(email)) {
+            view.showMessage("Pls Enter Your Email Correct.");
+            return true;
+        }
+        if (!SignupValidator.isValidPassword(password)) {
+            view.showMessage("Pls Enter Your Password Correct.");
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -46,6 +65,11 @@ public class LoginPresenter implements LoginContract.Presenter, AuthenticationRe
     @Override
     public void signInAsGuest() {
         authenticationRepository.signInAsGuest(this);
+    }
+
+    @Override
+    public void clearGuest() {
+        preferencesManager.saveGuestMode(false);
     }
 
     public void handleGoogleSignInResult(Intent data) {

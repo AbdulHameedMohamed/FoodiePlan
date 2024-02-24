@@ -307,9 +307,9 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
 
     @Override
     public void showWatchedMeals(LiveData<List<WatchedMeal>> watchedMealsLD) {
-        stopShimmer(binding.shRvInterest);
         watchedMealsLD.observe(getViewLifecycleOwner(), watchedMeals -> {
             if (watchedMeals != null && !watchedMeals.isEmpty()) {
+                stopShimmer(binding.shRvInterest);
                 binding.rvInterestsMeals.setVisibility(View.VISIBLE);
                 binding.tvInterestsMeals.setVisibility(View.VISIBLE);
                 List<Meal> meals = new ArrayList<>();
@@ -320,6 +320,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
 
                 interestsAdapter.submitList(meals);
             } else {
+                binding.shRvInterest.stopShimmer();
                 binding.shRvInterest.setVisibility(View.GONE);
                 binding.rvInterestsMeals.setVisibility(View.GONE);
                 binding.tvInterestsMeals.setVisibility(View.GONE);

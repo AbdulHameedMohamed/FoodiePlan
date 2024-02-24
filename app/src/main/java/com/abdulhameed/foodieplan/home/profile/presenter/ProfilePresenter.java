@@ -50,6 +50,11 @@ public class ProfilePresenter implements ProfileContract.Presenter, Authenticati
     }
 
     @Override
+    public void btnSignupClicked() {
+        mealRepository.deleteAllMeals();
+    }
+
+    @Override
     public void onGetUserSuccess(User user) {
         view.showUserData(user);
     }

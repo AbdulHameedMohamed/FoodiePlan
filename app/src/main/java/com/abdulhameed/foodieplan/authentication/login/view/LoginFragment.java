@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -20,9 +21,8 @@ import com.abdulhameed.foodieplan.databinding.FragmentLoginBinding;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.factory.AuthenticationRepositoryFactory;
 import com.abdulhameed.foodieplan.model.factory.MealRepositoryFactory;
-import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
-import com.abdulhameed.foodieplan.model.repository.MealRepository;
+import com.abdulhameed.foodieplan.utils.KeyboardUtils;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,7 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment implements LoginContract.View {
     public static final int RC_SIGN_IN = 123;
-    private LoginPresenter presenter;
+    private LoginContract.Presenter presenter;
     NavController navController;
     FragmentLoginBinding loginBinding;
     GoogleSignInClient mGoogleSignInClient;
@@ -72,7 +72,8 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     private void setListeners() {
         loginBinding.btnLogin.setOnClickListener(view -> {
-            if(!NetworkManager.isOnline(requireContext())) {
+            KeyboardUtils.hideKeyboard(requireContext(), view);
+            if (!NetworkManager.isOnline(requireContext())) {
                 Toast.makeText(requireContext(), "Check For Your Connection", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -132,6 +133,25 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     public void showLoading() {
         loginBinding.av.setVisibility(View.VISIBLE);
         loginBinding.cvLogin.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showDialog(String email, String password) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Guest Mode");
+        builder.setMessage("Are You Sure that you want to Sign In With New Account?\n" +
+                "if you do so all guest mode progress will be lost.");
+
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            presenter.clearGuest();
+            presenter.signInWithEmail(email, password);
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     public void stopLoading() {

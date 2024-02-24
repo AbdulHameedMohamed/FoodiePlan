@@ -74,7 +74,7 @@ public class FilterFragment extends Fragment implements FilterContract.FilterVie
             String filter = args.getString("filter_type");
 
             if (filter != null) {
-                startShimmer(binding.shRvFilter);
+                startShimmer();
                 if(filter.equals("Ingredient")) {
                     Ingredient ingredient = (Ingredient) args.getSerializable("filter_value");
                     presenter.getMealsByIngredient(ingredient.getName());
@@ -89,9 +89,10 @@ public class FilterFragment extends Fragment implements FilterContract.FilterVie
         }
     }
 
-    private void startShimmer(ShimmerFrameLayout shRvFilter) {
-        shRvFilter.setVisibility(View.VISIBLE);
-        shRvFilter.startShimmer();
+    private void startShimmer() {
+        Log.d(TAG, "startShimmer: ");
+        binding.shRvFilter.setVisibility(View.VISIBLE);
+        binding.shRvFilter.startShimmer();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.abdulhameed.foodieplan.authentication.login;
 
+import android.content.Intent;
+
 import com.google.firebase.auth.FirebaseUser;
 
 public interface LoginContract {
@@ -12,6 +14,8 @@ public interface LoginContract {
         void showMessage(String errorMessage);
 
         void showLoading();
+
+        void showDialog(String email, String password);
     }
 
     interface Presenter {
@@ -20,5 +24,9 @@ public interface LoginContract {
         void getFavouriteMeals(String userId);
 
         void signInAsGuest();
+
+        void clearGuest();
+
+        void handleGoogleSignInResult(Intent data);
     }
 }

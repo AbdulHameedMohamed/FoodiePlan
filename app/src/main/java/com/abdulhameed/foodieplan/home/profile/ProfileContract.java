@@ -16,6 +16,8 @@ public interface ProfileContract {
         void clearFavourites();
 
         void getDownloadUserImage();
+
+        void btnSignupClicked();
     }
 
     interface View {

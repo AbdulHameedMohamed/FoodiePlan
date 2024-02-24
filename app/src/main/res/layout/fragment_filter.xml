@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,16 +9,16 @@
     <TextView
         android:id="@+id/tv_filter"
         style="@style/App.TitleTextView"
+        android:layout_marginTop="@dimen/spacing_large"
         android:text="@string/filter_meals"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/spacing_large"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/svFilter"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/svFilter"
         app:layout_constraintTop_toBottomOf="@+id/tv_filter">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,28 +26,20 @@
             android:layout_height="match_parent">
 
             <com.facebook.shimmer.ShimmerFrameLayout
-                xmlns:shimmer="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/sh_rv_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                shimmer:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 shimmer:duration="800">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-                    <include layout="@layout/placeholder_item_filter_meals" />
-
-                    <include layout="@layout/placeholder_item_filter_meals" />
-
-                    <include layout="@layout/placeholder_item_filter_meals" />
-
-                    <include layout="@layout/placeholder_item_filter_meals" />
 
                     <include layout="@layout/placeholder_item_filter_meals" />
 
@@ -64,16 +56,17 @@
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/av_no_internet"
-        android:layout_height="350dp"
         android:layout_width="match_parent"
+        android:layout_height="350dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

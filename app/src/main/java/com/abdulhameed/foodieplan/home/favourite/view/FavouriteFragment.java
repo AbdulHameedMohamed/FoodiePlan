@@ -1,18 +1,26 @@
 package com.abdulhameed.foodieplan.home.favourite.view;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.DialogSelectDayBinding;
 import com.abdulhameed.foodieplan.databinding.FragmentFavouriteBinding;
 import com.abdulhameed.foodieplan.home.favourite.FavouriteContract;
@@ -56,6 +64,8 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
     private void initRecyclerView() {
         adapter = new MealAdapter(this);
         binding.rvMeals.setAdapter(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback());
+        itemTouchHelper.attachToRecyclerView(binding.rvMeals);
     }
 
     @Override
@@ -111,7 +121,11 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
 
         builder.setPositiveButton("Yes", (dialog, which) -> deleteMeal(meal));
 
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.dismiss();
+            // Bad thing but iam going back to it later
+            adapter.notifyDataSetChanged();
+        });
 
         AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
@@ -180,6 +194,66 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
             if(chip.getText().toString().equals(today))
                 break;
             chip.setEnabled(false);
+        }
+    }
+
+    public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
+        private final Drawable deleteIcon;
+        private final ColorDrawable background;
+        private float dX = 0;
+        private boolean swipeStarted = false;
+
+        public SwipeToDeleteCallback() {
+            deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete);
+            background = new ColorDrawable(Color.RED);
+
+        }
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return makeMovementFlags(0, ItemTouchHelper.LEFT); // Only allow left swipe
+        }
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            displayDialog(adapter.getMeal(position));
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            View itemView = viewHolder.itemView;
+
+            float swipeThreshold = 0.4f; // Set the threshold to 40% of the screen width
+            float thresholdX = recyclerView.getWidth() * swipeThreshold;
+
+            if (dX < -thresholdX) {
+                dX = -thresholdX; // Limit the maximum swipe distance
+            }
+
+            if (dX < 0) {
+                // Swiping to the left
+                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                background.draw(c);
+
+                // Calculate position for delete icon
+                int iconMargin = (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
+                int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
+                int iconRight = itemView.getRight() - iconMargin;
+                int iconTop = itemView.getTop() + (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
+                int iconBottom = iconTop + deleteIcon.getIntrinsicHeight();
+
+                // Draw delete icon
+                deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                deleteIcon.draw(c);
+            }
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }
 }

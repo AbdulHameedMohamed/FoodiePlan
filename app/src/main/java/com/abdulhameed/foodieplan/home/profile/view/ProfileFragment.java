@@ -29,6 +29,7 @@ import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.abdulhameed.foodieplan.utils.MyCalender;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -54,7 +55,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             binding.avSignUp.setVisibility(View.VISIBLE);
             binding.btnGuestSignup.setVisibility(View.VISIBLE);
             binding.clProfile.setVisibility(View.GONE);
-            Toast.makeText(requireContext(), "Sign Up To Get All The Features From Foodie App", Toast.LENGTH_LONG).show();
+            Snackbar.make(requireView(), "Sign Up To Get All The Features From Foodie App", Snackbar.LENGTH_LONG)
+                    .setAction("Ok", null).show();
         } else {
             binding.avSignUp.setVisibility(View.GONE);
             binding.btnGuestSignup.setVisibility(View.GONE);
@@ -93,7 +95,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private void setListeners() {
         binding.ibEdit.setOnClickListener(view -> openFileChooser());
         binding.ibLogout.setOnClickListener(view -> displayDialog());
-        binding.btnGuestSignup.setOnClickListener(view -> navController.navigate(R.id.action_profileFragment_to_mainActivity));
+        binding.btnGuestSignup.setOnClickListener(view -> {
+            presenter.btnSignupClicked();
+            navController.navigate(R.id.action_profileFragment_to_mainActivity);
+        });
     }
 
     @Override
