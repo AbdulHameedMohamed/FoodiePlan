@@ -79,4 +79,8 @@ public class MealRepository {
     public LiveData<List<WatchedMeal>> getWatchedMeals() {
         return mealsLocalDataSource.getWatchedMeals();
     }
+
+    public LiveData<Integer> getMealsCount() {
+        return mealsLocalDataSource.getMealCount();
+    }
 }

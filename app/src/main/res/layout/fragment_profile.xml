@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".home.profile.view.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,7 +121,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"
-            android:src="@drawable/ic_red_heart"
+            android:src="@drawable/ic_black_heart"
             app:layout_constraintEnd_toStartOf="@id/iv_plan"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ti_email" />
@@ -133,10 +132,12 @@
             android:layout_height="50dp"
             android:layout_marginStart="96dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_calendar"
+            android:src="@drawable/ic_calendar_black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_favourite"
-            app:layout_constraintTop_toTopOf="@+id/iv_favourite" />
+            app:layout_constraintTop_toTopOf="@+id/iv_favourite"
+            app:iconSize= "50dp"
+            />
 
         <TextView
             android:id="@+id/tv_num_of_favourites"

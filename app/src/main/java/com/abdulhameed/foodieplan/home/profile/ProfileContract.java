@@ -2,22 +2,22 @@ package com.abdulhameed.foodieplan.home.profile;
 
 import android.net.Uri;
 
+import androidx.lifecycle.LiveData;
+
 import com.abdulhameed.foodieplan.model.data.User;
+import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 
 public interface ProfileContract {
 
     interface Presenter {
-        void logOut();
-
+        void logOut(AuthenticationRepository repository);
         void onSaveEditClicked(User user, Uri imageUri);
-
-        void getUser(String id);
-
         void clearFavourites();
-
-        void getDownloadUserImage();
-
         void btnSignupClicked();
+
+        void getFavMealsCount();
+
+        void getPlannedMealsCount();
     }
 
     interface View {
@@ -26,5 +26,9 @@ public interface ProfileContract {
         void showErrorMessage(String errorMessage);
 
         void displayImage(String url);
+
+        void displayMealsCount(LiveData<Integer> mealsCount);
+
+        void showPlannedMealsCount(int countOfDays);
     }
 }

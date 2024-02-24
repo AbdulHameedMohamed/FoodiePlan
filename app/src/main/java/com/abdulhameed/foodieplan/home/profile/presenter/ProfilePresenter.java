@@ -7,24 +7,22 @@ import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
+import com.abdulhameed.foodieplan.utils.MyCalender;
 
 public class ProfilePresenter implements ProfileContract.Presenter, AuthenticationRepository.GetUserCallback, AuthenticationRepository.GetImageCallback {
 
     private final ProfileContract.View view;
-    private final AuthenticationRepository authenticationRepository;
     private final MealRepository mealRepository;
     private final SharedPreferencesManager preferencesManager;
 
-    public ProfilePresenter(ProfileContract.View view, AuthenticationRepository authenticationRepository
-            , MealRepository mealRepository, SharedPreferencesManager preferencesManager) {
+    public ProfilePresenter(ProfileContract.View view, MealRepository mealRepository, SharedPreferencesManager preferencesManager) {
         this.view = view;
-        this.authenticationRepository = authenticationRepository;
         this.mealRepository = mealRepository;
         this.preferencesManager = preferencesManager;
     }
     @Override
-    public void logOut() {
-        authenticationRepository.logOut();
+    public void logOut(AuthenticationRepository repository) {
+        repository.logOut();
         preferencesManager.clearUser();
         clearFavourites();
     }
@@ -35,23 +33,28 @@ public class ProfilePresenter implements ProfileContract.Presenter, Authenticati
     }
 
     @Override
-    public void getUser(String id) {
-        authenticationRepository.getUserById(id, this);
-    }
-
-    @Override
     public void clearFavourites() {
         mealRepository.deleteAllMeals();
     }
 
     @Override
-    public void getDownloadUserImage() {
-        authenticationRepository.downloadUserImage(this);
+    public void btnSignupClicked() {
+        mealRepository.deleteAllMeals();
     }
 
     @Override
-    public void btnSignupClicked() {
-        mealRepository.deleteAllMeals();
+    public void getFavMealsCount() {
+        view.displayMealsCount(mealRepository.getMealsCount());
+    }
+
+    @Override
+    public void getPlannedMealsCount() {
+        int countOfDays = 0;
+        String[] daysOfWeek = MyCalender.getDaysOfWeek();
+        for (String day : daysOfWeek)
+            if (preferencesManager.getMealIdForDay(day) != null)
+                countOfDays++;
+        view.showPlannedMealsCount(countOfDays);
     }
 
     @Override

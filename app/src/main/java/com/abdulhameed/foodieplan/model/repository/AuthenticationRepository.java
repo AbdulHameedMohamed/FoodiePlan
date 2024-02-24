@@ -27,8 +27,8 @@ import java.util.List;
 
 public class AuthenticationRepository {
     private final FirebaseAuth mAuth;
-    private final FirebaseDatabase mDatabase;
-    private final StorageReference mStorageRef;
+    private FirebaseDatabase mDatabase;
+    private StorageReference mStorageRef;
     private static final String TAG = "AuthenticationRepository";
 
     public AuthenticationRepository(FirebaseAuth mAuth, FirebaseDatabase mDatabase, StorageReference mStorageRef) {
@@ -37,30 +37,8 @@ public class AuthenticationRepository {
         this.mStorageRef = mStorageRef;
     }
 
-    public void getUserById(String userId, GetUserCallback callback) {
-        DatabaseReference usersRef = mDatabase.getReference("users").child(userId);
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Check if user exists
-                if (dataSnapshot.exists()) {
-                    // User found, parse user data
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user != null) {
-                        callback.onGetUserSuccess(user);
-                    } else {
-                        callback.onGetUserFailed("Failed to parse user data.");
-                    }
-                } else {
-                    callback.onGetUserFailed("User not found.");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                callback.onGetUserFailed("Database error: " + databaseError.getMessage());
-            }
-        });
+    public AuthenticationRepository(FirebaseAuth mAuth) {
+        this.mAuth = mAuth;
     }
 
     public void signup(User user, Bitmap profileImg, SignupCallback callback) {
@@ -122,7 +100,7 @@ public class AuthenticationRepository {
     }
 
     public void logOut() {
-        FirebaseAuth.getInstance().signOut();
+        mAuth.signOut();
     }
 
     public void login(String email, String password, LoginCallback callback) {
@@ -182,16 +160,6 @@ public class AuthenticationRepository {
                         callback.onLinkGuestFailed("Failed to link guest account: " + syncTask.getException().getMessage());
                     }
                 });
-    }
-
-    public void downloadUserImage(GetImageCallback callback) {
-        StorageReference profileImgRef = mStorageRef.child("profile_images/" + FirebaseAuth.getInstance().getUid() + ".jpg");
-
-        profileImgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            callback.onDownloadImgSuccess(uri.toString());
-        }).addOnFailureListener(exception -> {
-            callback.onSaveUserFailed(exception.getMessage());
-        });
     }
 
     public void mergeFavoritesFromAnonymousUser(User newUser, String anonymousId) {

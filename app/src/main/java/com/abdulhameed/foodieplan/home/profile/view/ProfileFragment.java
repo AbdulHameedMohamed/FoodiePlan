@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -50,7 +51,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
         navController = NavHostFragment.findNavController(this);
-        Log.d(TAG, "onCreate: " + SharedPreferencesManager.getInstance(requireContext()).isGuest());
         if (SharedPreferencesManager.getInstance(requireContext()).isGuest()) {
             binding.avSignUp.setVisibility(View.VISIBLE);
             binding.btnGuestSignup.setVisibility(View.VISIBLE);
@@ -62,34 +62,16 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             binding.btnGuestSignup.setVisibility(View.GONE);
             binding.clProfile.setVisibility(View.VISIBLE);
 
-            MealsLocalDataSource.getInstance(getContext()).getMealCount().observe(getViewLifecycleOwner(),
-                    count -> binding.tvNumOfFavourites.setText(String.valueOf(count)));
-            int count = getPlannedMealsCount();
-            binding.tvNumOfPlan.setText(String.valueOf(count));
-
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
             presenter = new ProfilePresenter(this,
-                    new AuthenticationRepository(mAuth, mDatabase, mStorageRef),
                     MealRepository.getInstance(MealsRemoteDataSource.getInstance(), MealsLocalDataSource.getInstance(requireContext())),
                     SharedPreferencesManager.getInstance(requireContext()));
 
-            presenter.getUser(SharedPreferencesManager.getInstance(requireContext()).getUser().getId());
-            presenter.getDownloadUserImage();
+            presenter.getFavMealsCount();
+            presenter.getPlannedMealsCount();
+
         }
         setListeners();
         return binding.getRoot();
-    }
-
-    private int getPlannedMealsCount() {
-        int countOfDays = 0;
-        String[] daysOfWeek = MyCalender.getDaysOfWeek();
-        SharedPreferencesManager preferencesManager = SharedPreferencesManager.getInstance(requireContext());
-        for (String day : daysOfWeek)
-            if (preferencesManager.getMealIdForDay(day) != null)
-                countOfDays++;
-        return countOfDays;
     }
 
     private void setListeners() {
@@ -119,6 +101,16 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         Picasso.get().load(url).placeholder(R.drawable.profile).into(binding.ivProfile);
     }
 
+    @Override
+    public void displayMealsCount(LiveData<Integer> mealsCount) {
+        mealsCount.observe(getViewLifecycleOwner(), count -> binding.tvNumOfFavourites.setText(String.valueOf(count)));
+    }
+
+    @Override
+    public void showPlannedMealsCount(int countOfDays) {
+        binding.tvNumOfPlan.setText(String.valueOf(countOfDays));
+    }
+
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -143,7 +135,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         builder.setMessage("Are You Sure that you want to logout ?");
 
         builder.setPositiveButton("Yes", (dialog, which) -> {
-            presenter.logOut();
+            presenter.logOut(new AuthenticationRepository(FirebaseAuth.getInstance()));
             navController.navigate(R.id.action_profileFragment_to_mainActivity);
             Toast.makeText(requireContext(), "See You Soon !", Toast.LENGTH_SHORT).show();
         });

@@ -228,6 +228,12 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
             presenter.addToFavourite(mealOfTheDay);
             Toast.makeText(requireContext(), "Meal Of Day Added Successfully", Toast.LENGTH_SHORT).show();
         });
+
+        binding.ibPlan.setOnClickListener(view -> {
+            showDaySelectionDialog(mealOfTheDay);
+            Toast.makeText(requireContext(), "Meal Of Day Added Successfully", Toast.LENGTH_SHORT).show();
+        });
+
         binding.cvMealOfTheDay.setOnClickListener(view -> {
             HomeFragmentDirections.ActionHomeFragmentToDetailsFragment direction = HomeFragmentDirections.
                     actionHomeFragmentToDetailsFragment(mealOfTheDay.getId());
@@ -254,15 +260,17 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         countriesAdapter = new FilterAdapter(item -> goToCountryMeals((Country) item));
         binding.rvCountries.setAdapter(countriesAdapter);
 
-        categoriesAdapter = new FilterAdapter(item -> {
-            goToCategoryMeals((Category) item);
-        });
+        categoriesAdapter = new FilterAdapter(item -> goToCategoryMeals((Category) item));
         binding.rvCategories.setAdapter(categoriesAdapter);
 
         interestsAdapter = new MealAdapter(this);
         binding.rvInterestsMeals.setAdapter(interestsAdapter);
 
-        filterMealsAdapter = new FilterMealsAdapter(item -> Toast.makeText(requireContext(), item.getName(), Toast.LENGTH_SHORT).show());
+        filterMealsAdapter = new FilterMealsAdapter(meal -> {
+            HomeFragmentDirections.ActionHomeFragmentToDetailsFragment direction = HomeFragmentDirections.
+                    actionHomeFragmentToDetailsFragment(meal.getIdMeal());
+            Navigation.findNavController(binding.getRoot()).navigate(direction);
+        });
         binding.rvCountryMeals.setAdapter(filterMealsAdapter);
     }
 
