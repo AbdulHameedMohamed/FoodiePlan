@@ -29,8 +29,10 @@ import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.abdulhameed.foodieplan.utils.MyCalender;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment implements SearchContract.View , MealAdapter.OnMealClickListener<Meal> {
@@ -69,7 +71,7 @@ public class SearchFragment extends Fragment implements SearchContract.View , Me
     }
 
     private void initRecyclerView() {
-        adapter = new MealAdapter(this);
+        adapter = new MealAdapter(this, requireActivity());
         binding.rvMeals.setAdapter(adapter);
     }
 
@@ -135,12 +137,27 @@ public class SearchFragment extends Fragment implements SearchContract.View , Me
 
     @Override
     public void onFavouriteClick(Meal meal) {
-        presenter.addToFavourite(FirebaseAuth.getInstance().getUid(), meal);
+        presenter.addToFavourite(meal);
     }
 
     @Override
     public void onPlanClick(Meal meal) {
         showDaySelectionDialog(meal);
+    }
+
+    @Override
+    public void onMealsSelected(ArrayList<Meal> selectedMeals) {
+        for(Meal meal: selectedMeals)
+            presenter.addToFavourite(meal);
+        showSnackBar("Meals Added Successfully");
+    }
+
+    private void showSnackBar(String message) {
+        Snackbar.make(
+                requireView(),
+                message,
+                Snackbar.LENGTH_SHORT
+        ).setAction("Okay", null).show();
     }
 
     private void showDaySelectionDialog(Meal meal) {

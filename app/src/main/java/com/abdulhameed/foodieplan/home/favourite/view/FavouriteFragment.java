@@ -36,6 +36,7 @@ import com.abdulhameed.foodieplan.utils.MyCalender;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FavouriteFragment extends Fragment implements FavouriteContract.View, MealAdapter.OnMealClickListener<Meal> {
@@ -62,7 +63,7 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
     }
 
     private void initRecyclerView() {
-        adapter = new MealAdapter(this);
+        adapter = new MealAdapter(this, requireActivity());
         binding.rvMeals.setAdapter(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback());
         itemTouchHelper.attachToRecyclerView(binding.rvMeals);
@@ -115,6 +116,19 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
                 }).show();
     }
 
+    @Override
+    public void mealsDeleted(ArrayList<Meal> selectedMeals) {
+        adapter.removeMeals(selectedMeals);
+        Snackbar.make(requireView(), "Selected Meals Removed Successfully.", Snackbar.LENGTH_LONG)
+                .setAction("Undo", view -> presenter.addMeals(selectedMeals)).show();
+    }
+
+    @Override
+    public void mealsInserted(ArrayList<Meal> selectedMeals) {
+        adapter.insertMeals(selectedMeals);
+        Snackbar.make(requireView(), "Removed Meals Inserted Again Successfully !", Snackbar.LENGTH_LONG)
+                .setAction("Redo", view -> presenter.removeMeals(selectedMeals)).show();
+    }
     public void displayDialog(Meal meal) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Are You Sure to remove Item From Your Favourite ?");
@@ -147,6 +161,11 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
     @Override
     public void onPlanClick(Meal meal) {
         showDaySelectionDialog(meal);
+    }
+
+    @Override
+    public void onMealsSelected(ArrayList<Meal> selectedMeals) {
+        presenter.removeMeals(selectedMeals);
     }
 
     private void showDaySelectionDialog(Meal meal) {

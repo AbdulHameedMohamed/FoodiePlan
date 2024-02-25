@@ -2,6 +2,8 @@ package com.abdulhameed.foodieplan.home.favourite;
 
 import androidx.lifecycle.LiveData;
 import com.abdulhameed.foodieplan.model.Meal;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public interface FavouriteContract {
@@ -14,6 +16,10 @@ public interface FavouriteContract {
         void mealDeleted(Meal meal);
 
         void mealInserted(Meal meal);
+
+        void mealsDeleted(ArrayList<Meal> selectedMeals);
+
+        void mealsInserted(ArrayList<Meal> selectedMeals);
     }
 
     interface Presenter {
@@ -23,5 +29,9 @@ public interface FavouriteContract {
         void savePlannedMeal(String day, String mealId);
 
         void addMeal(Meal meal);
+
+        void removeMeals(ArrayList<Meal> selectedMeals);
+
+        void addMeals(ArrayList<Meal> selectedMeals);
     }
 }

@@ -56,6 +56,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -263,7 +264,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         categoriesAdapter = new FilterAdapter(item -> goToCategoryMeals((Category) item));
         binding.rvCategories.setAdapter(categoriesAdapter);
 
-        interestsAdapter = new MealAdapter(this);
+        interestsAdapter = new MealAdapter(this, requireActivity());
         binding.rvInterestsMeals.setAdapter(interestsAdapter);
 
         filterMealsAdapter = new FilterMealsAdapter(meal -> {
@@ -462,6 +463,20 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         showDaySelectionDialog(meal);
     }
 
+    @Override
+    public void onMealsSelected(ArrayList<Meal> selectedMeals) {
+        for (Meal meal : selectedMeals)
+            presenter.addToFavourite(meal);
+        showSnackBar("Meals Added Successfully");
+    }
+
+    private void showSnackBar(String message) {
+        Snackbar.make(
+                requireView(),
+                message,
+                Snackbar.LENGTH_SHORT
+        ).setAction("Okay", null).show();
+    }
     private void showDaySelectionDialog(Meal meal) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         DialogSelectDayBinding dialogBinding = DialogSelectDayBinding.inflate(getLayoutInflater());

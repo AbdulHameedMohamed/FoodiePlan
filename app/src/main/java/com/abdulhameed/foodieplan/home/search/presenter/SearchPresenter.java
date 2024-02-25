@@ -34,9 +34,9 @@ public class SearchPresenter implements SearchContract.Presenter, NetworkCallBac
     private static final String TAG = "SearchPresenter";
 
     @Override
-    public void addToFavourite(String userId, Meal meal) {
+    public void addToFavourite(Meal meal) {
         mealRepository.insertMeal(meal);
-        favouriteRepository.saveMealForUser(userId, meal, new FavouriteRepository.Callback<Boolean>() {
+        favouriteRepository.saveMealForUser(preferencesManager.getUserId(), meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
                 Log.d(TAG, "addToFavourite: " + isInserted);
@@ -45,7 +45,6 @@ public class SearchPresenter implements SearchContract.Presenter, NetworkCallBac
             @Override
             public void onError(String errorMessage) {
                 view.showErrorMsg(errorMessage);
-                Log.d(TAG, "addToFavourite: " + userId);
             }
         });
     }

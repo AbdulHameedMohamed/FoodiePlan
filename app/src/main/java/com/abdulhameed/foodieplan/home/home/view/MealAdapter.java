@@ -1,9 +1,16 @@
 package com.abdulhameed.foodieplan.home.home.view;
 
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,27 +19,31 @@ import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.ItemMealBinding;
 import com.abdulhameed.foodieplan.model.Meal;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
+public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> implements ActionMode.Callback {
     private final OnMealClickListener<Meal> listener;
 
-    public MealAdapter(OnMealClickListener<Meal> listener) {
+    private final FragmentActivity requireActivity;
+    private boolean multiSelection = false;
+    private ActionMode mActionMode;
+    private final ArrayList<Meal> selectedRecipes = new ArrayList<>();
+    private final ArrayList<MealViewHolder> myViewHolders = new ArrayList<>();
+    private View rootView;
+
+    public MealAdapter(OnMealClickListener<Meal> listener, FragmentActivity requireActivity) {
         super(new MealDiffCallback());
         this.listener = listener;
+        this.requireActivity = requireActivity;
     }
 
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return getMealViewHolder(parent);
-    }
-
-    @NonNull
-    private MealViewHolder getMealViewHolder(@NonNull ViewGroup parent) {
         ItemMealBinding binding = ItemMealBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new MealViewHolder(binding, listener);
     }
@@ -54,8 +65,69 @@ public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
         submitList(newList);
     }
 
+    public void insertMeals(ArrayList<Meal> selectedMeals) {
+        List<Meal> newList = new ArrayList<>(getCurrentList());
+        newList.addAll(selectedMeals);
+        submitList(newList);
+    }
+
+    public void removeMeals(ArrayList<Meal> selectedMeals) {
+        List<Meal> newList = new ArrayList<>(getCurrentList());
+        newList.removeAll(selectedMeals);
+        submitList(newList);
+    }
+
     public Meal getMeal(int position) {
         return getItem(position);
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        selectedRecipes.clear();
+        mActionMode = actionMode;
+        mActionMode.getMenuInflater().inflate(R.menu.cm_favourite, menu);
+        applyStatusBarColor(R.color.contextualStatusBarColor);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.i_delete) {
+            listener.onMealsSelected(selectedRecipes);
+
+            multiSelection = false;
+            actionMode.finish();
+        }
+        return true;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        for (MealViewHolder holder : myViewHolders) {
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor);
+        }
+        multiSelection = false;
+        applyStatusBarColor(R.color.statusBarColor);
+    }
+
+    private void changeRecipeStyle(MealViewHolder holder, int backgroundColor, int strokeColor) {
+        holder.itemView.setBackgroundColor(
+                ContextCompat.getColor(requireActivity, backgroundColor)
+        );
+        holder.binding.getRoot().setStrokeColor(
+                ContextCompat.getColor(requireActivity, strokeColor)
+        );
+    }
+
+    private void applyStatusBarColor(int color) {
+        requireActivity.getWindow().setStatusBarColor(
+                ContextCompat.getColor(requireActivity, color)
+        );
     }
 
     class MealViewHolder extends RecyclerView.ViewHolder {
@@ -64,9 +136,53 @@ public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
         public MealViewHolder(@NonNull ItemMealBinding binding, OnMealClickListener<Meal> listener) {
             super(binding.getRoot());
             this.binding = binding;
-            binding.getRoot().setOnClickListener(v -> listener.onItemClick(getItem(getAdapterPosition())));
+            myViewHolders.add(this);
+            rootView = binding.getRoot();
+            binding.getRoot().setOnClickListener(v -> {
+                if (multiSelection) {
+                    applySelection(getItem(getAdapterPosition()));
+                } else {
+                    listener.onItemClick(getItem(getAdapterPosition()));
+                }
+            });
+
+            binding.getRoot().setOnLongClickListener(v -> {
+                if (!multiSelection) {
+                    multiSelection = true;
+                    requireActivity.startActionMode(MealAdapter.this);
+                }
+                applySelection(getMeal(getAdapterPosition()));
+                return true;
+            });
             binding.ivSaveMeal.setOnClickListener(view -> listener.onFavouriteClick(getItem(getAdapterPosition())));
             binding.ivCalenderMeal.setOnClickListener(view -> listener.onPlanClick(getItem(getAdapterPosition())));
+        }
+
+        private void applySelection(Meal currentRecipe) {
+            if (selectedRecipes.contains(currentRecipe)) {
+                selectedRecipes.remove(currentRecipe);
+                changeRecipeStyle(this, R.color.cardBackgroundColor, R.color.strokeColor);
+                applyActionModeTitle();
+            } else {
+                selectedRecipes.add(currentRecipe);
+                changeRecipeStyle(this, R.color.cardBackgroundLightColor, R.color.colorPrimary);
+                applyActionModeTitle();
+            }
+        }
+
+        private void applyActionModeTitle() {
+            switch (selectedRecipes.size()) {
+                case 0:
+                    mActionMode.finish();
+                    multiSelection = false;
+                    break;
+                case 1:
+                    mActionMode.setTitle(selectedRecipes.size() + " item selected");
+                    break;
+                default:
+                    mActionMode.setTitle(selectedRecipes.size() + " items selected");
+                    break;
+            }
         }
 
         private void bindViews(@NonNull MealViewHolder holder, int position) {
@@ -96,5 +212,7 @@ public class MealAdapter extends ListAdapter<Meal, MealAdapter.MealViewHolder> {
         void onFavouriteClick(T meal);
 
         void onPlanClick(T meal);
+
+        void onMealsSelected(ArrayList<T> selectedMeals);
     }
 }
