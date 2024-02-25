@@ -6,7 +6,7 @@
     android:layout_height="200dp"
     android:gravity="bottom"
     android:paddingStart="@dimen/spacing_medium"
-    android:paddingBottom="@dimen/spacing_small"
+    android:paddingBottom="@dimen/spacing_medium"
     android:background="@drawable/bg_header"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -31,7 +31,7 @@
         android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginTop="4dp"
         android:text="@string/email"
         android:textColor="@color/white"
         android:textSize="16sp"

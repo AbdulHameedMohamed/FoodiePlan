@@ -200,8 +200,6 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
     public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
         private final Drawable deleteIcon;
         private final ColorDrawable background;
-        private float dX = 0;
-        private boolean swipeStarted = false;
 
         public SwipeToDeleteCallback() {
             deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete);

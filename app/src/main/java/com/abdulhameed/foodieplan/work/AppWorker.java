@@ -19,11 +19,11 @@ import com.abdulhameed.foodieplan.utils.MyCalender;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class FetchMealWorker extends Worker implements NetworkCallBack<List<Meal>> {
+public class AppWorker extends Worker implements NetworkCallBack<List<Meal>> {
     private static final String TAG = "FetchMealWorker";
     private final NotificationHelper notificationHelper;
 
-    public FetchMealWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public AppWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         notificationHelper = new NotificationHelper(context);
     }
@@ -78,7 +78,7 @@ public class FetchMealWorker extends Worker implements NetworkCallBack<List<Meal
     }
 
     private void scheduleNextWorkRequest() {
-        OneTimeWorkRequest fetchMealWork = new OneTimeWorkRequest.Builder(FetchMealWorker.class)
+        OneTimeWorkRequest fetchMealWork = new OneTimeWorkRequest.Builder(AppWorker.class)
                 .setInitialDelay(1, TimeUnit.MINUTES)
                 .build();
 

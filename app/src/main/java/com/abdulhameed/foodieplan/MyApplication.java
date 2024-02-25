@@ -7,7 +7,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import com.abdulhameed.foodieplan.work.FetchMealWorker;
+import com.abdulhameed.foodieplan.work.AppWorker;
 import com.google.firebase.FirebaseApp;
 
 import java.util.concurrent.TimeUnit;
@@ -24,14 +24,14 @@ public class MyApplication extends Application {
     private void scheduleFetchMealWork() {
         Log.d(TAG, "scheduleFetchMealWork: ");
         FirebaseApp.initializeApp(this);
-        PeriodicWorkRequest fetchMealWork = new PeriodicWorkRequest.Builder(
-                FetchMealWorker.class,
+        PeriodicWorkRequest worker = new PeriodicWorkRequest.Builder(
+                AppWorker.class,
                 1, TimeUnit.DAYS)
                 .build();
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
                 "fetch_meal_work",
                 ExistingPeriodicWorkPolicy.REPLACE,
-                fetchMealWork);
+                worker);
     }
 }

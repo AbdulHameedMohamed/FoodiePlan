@@ -440,7 +440,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
             presenter.getCountries();
             presenter.getCategories();
             presenter.getInterestsMeals();
-            getCountryMeals(userCountry);
+            requestLocationPermission();
         } else {
             Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
