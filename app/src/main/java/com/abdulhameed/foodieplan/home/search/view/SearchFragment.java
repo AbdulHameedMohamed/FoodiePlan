@@ -138,6 +138,7 @@ public class SearchFragment extends Fragment implements SearchContract.View , Me
     @Override
     public void onFavouriteClick(Meal meal) {
         presenter.addToFavourite(meal);
+        showSnackBar("Meal " + meal + " Added Successfully");
     }
 
     @Override

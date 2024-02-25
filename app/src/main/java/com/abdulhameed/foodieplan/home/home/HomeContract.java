@@ -19,9 +19,8 @@ public interface HomeContract {
         void showCategory(List<Category> categories);
 
         void showCountry(List<Country> countryItems);
-        void showEmptyDataMessage();
         public void deleteMeal(Meal mealsItem);
-        void showError(String message);
+        void showMessage(String message);
         void showWatchedMeals(LiveData<List<WatchedMeal>> watchedMealsLD);
 
         void showCountryMeals(List<FilterMeal> filterMeals);

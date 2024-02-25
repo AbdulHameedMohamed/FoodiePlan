@@ -39,7 +39,6 @@ public class SearchPresenter implements SearchContract.Presenter, NetworkCallBac
         favouriteRepository.saveMealForUser(preferencesManager.getUserId(), meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
-                Log.d(TAG, "addToFavourite: " + isInserted);
             }
 
             @Override

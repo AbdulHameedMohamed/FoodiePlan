@@ -18,7 +18,6 @@ import com.abdulhameed.foodieplan.model.repository.FilterRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
@@ -97,7 +96,7 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
             public void onFailure(String message) {
                 Log.d(TAG, "onFailure: " + message);
                 repository.getMealsByCountry(this, "Unknown");
-                view.showError(message);
+                view.showMessage(message);
             }
         }, country);
     }
@@ -110,13 +109,12 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
         favouriteRepository.saveMealForUser(FirebaseAuth.getInstance().getUid(), meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
-                Log.d(TAG, "addToFavourite: " + isInserted);
-                view.showError("Inserted in Cloud Successfully.");
+                view.showMessage("Inserted in Cloud Successfully.");
             }
 
             @Override
             public void onError(String errorMessage) {
-                view.showError(errorMessage);
+                view.showMessage(errorMessage);
             }
         });
     }
@@ -132,11 +130,11 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
 
                 @Override
                 public void onError(String errorMessage) {
-                    view.showError(errorMessage);
+                    view.showMessage(errorMessage);
                 }
             });
         } else {
-            view.showError("NO User, Login First");
+            view.showMessage("NO User, Login First");
         }
     }
 
@@ -158,17 +156,15 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
                     view.showCategory((List<Category>) result);
                 } else if (item instanceof Country) {
                     view.showCountry((List<Country>) result);
-                } else {
-                    view.showEmptyDataMessage();
                 }
             } else {
-                view.showError("Unexpected result type: " + result.getClass().getSimpleName());
+                view.showMessage("Unexpected result type: " + result.getClass().getSimpleName());
             }
         }
     }
 
     @Override
     public void onFailure(String message) {
-        view.showError(message);
+        view.showMessage(message);
     }
 }

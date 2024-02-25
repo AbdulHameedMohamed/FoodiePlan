@@ -80,7 +80,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     private static final String TAG = "HomeFragment";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
     private FusedLocationProviderClient fusedLocationClient;
-    private String userCountry = "Egypt";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -164,9 +163,8 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
                         if (location != null) {
                             String country = getCountryFromLocation(location);
                             if (country != null) {
-                                this.userCountry = country;
-                                Toast.makeText(requireContext(), "The Virtual Device Location On: " + country, Toast.LENGTH_SHORT).show();
                                 getCountryMeals(country);
+                                showSnackBar("Note: The Virtual Device Location On: " + country);
                             }
                         } else {
                             binding.shRvCountryMeals.stopShimmer();
@@ -185,6 +183,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     private void disableCountryMeals() {
         binding.shRvCountryMeals.stopShimmer();
         binding.shRvCountryMeals.setVisibility(View.GONE);
+
         binding.tvCountryMeals.setVisibility(View.GONE);
         binding.rvCountryMeals.setVisibility(View.GONE);
     }
@@ -300,20 +299,9 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     }
 
     @Override
-    public void showError(String message) {
-        stopAllShimmers();
+    public void showMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
-    private void stopAllShimmers() {
-        stopShimmer(binding.shCvMeal);
-        stopShimmer(binding.shRvIngredients);
-        stopShimmer(binding.shRvCategories);
-        stopShimmer(binding.shRvCountries);
-        stopShimmer(binding.shRvInterest);
-        stopShimmer(binding.shRvCountryMeals);
-    }
-
     @Override
     public void showWatchedMeals(LiveData<List<WatchedMeal>> watchedMealsLD) {
         watchedMealsLD.observe(getViewLifecycleOwner(), watchedMeals -> {
@@ -372,11 +360,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     private void stopShimmer(ShimmerFrameLayout shimmer) {
         shimmer.stopShimmer();
         shimmer.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void showEmptyDataMessage() {
-        stopAllShimmers();
     }
 
     @Override
