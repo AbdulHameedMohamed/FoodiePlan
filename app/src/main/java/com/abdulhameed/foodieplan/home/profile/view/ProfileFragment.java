@@ -1,11 +1,14 @@
 package com.abdulhameed.foodieplan.home.profile.view;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -19,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.abdulhameed.foodieplan.R;
-import com.abdulhameed.foodieplan.authentication.MainActivity;
 import com.abdulhameed.foodieplan.databinding.FragmentProfileBinding;
 import com.abdulhameed.foodieplan.home.profile.ProfileContract;
 import com.abdulhameed.foodieplan.home.profile.presenter.ProfilePresenter;
@@ -29,21 +31,23 @@ import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
 import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
-import com.abdulhameed.foodieplan.utils.MyCalender;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 
 public class ProfileFragment extends Fragment implements ProfileContract.View {
     private ProfileContract.Presenter presenter;
     private FragmentProfileBinding binding;
-    private static final int PICK_IMAGE_REQUEST = 1;
     NavController navController;
     private static final String TAG = "ProfileFragment";
+    BroadcastReceiver nightModeReceiver;
+
+    private void registerNightReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+        requireActivity().registerReceiver(nightModeReceiver, filter);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -68,14 +72,22 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
             presenter.getFavMealsCount();
             presenter.getPlannedMealsCount();
+            presenter.getUser();
 
+            setDrawableImages();
+            nightModeReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    setDrawableImages();
+                }
+            };
+            registerNightReceiver();
         }
         setListeners();
         return binding.getRoot();
     }
 
     private void setListeners() {
-        binding.ibEdit.setOnClickListener(view -> openFileChooser());
         binding.ibLogout.setOnClickListener(view -> displayDialog());
         binding.btnGuestSignup.setOnClickListener(view -> {
             presenter.btnSignupClicked();
@@ -83,12 +95,36 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         });
     }
 
+    private void setDrawableImages() {
+        Log.d(TAG, "setBackgroundImage: ");
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        boolean isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+
+        if (isDarkMode) {
+            setDarkModeImages();
+        } else {
+            setLightModeImages();
+        }
+    }
+
+    private void setDarkModeImages() {
+        binding.ibLogout.setImageResource(R.drawable.ic_home_white);
+        binding.ivFavourite.setImageResource(R.drawable.ic_red_heart);
+        binding.ivPlan.setImageResource(R.drawable.ic_calendar_white);
+    }
+
+    private void setLightModeImages() {
+        binding.ibLogout.setImageResource(R.drawable.ic_home_black);
+        binding.ivFavourite.setImageResource(R.drawable.ic_black_heart);
+        binding.ivPlan.setImageResource(R.drawable.ic_calendar_black);
+    }
+
     @Override
     public void showUserData(User user) {
         if (user.getProfileUrl() != null && !user.getProfileUrl().isEmpty())
             Picasso.get().load(user.getProfileUrl()).into(binding.ivProfile);
-        binding.etName.setText(user.getUserName());
-        binding.etEmail.setText(user.getEmail());
+        binding.tvName.setText(user.getUserName());
+        binding.tvEmail.setText(user.getEmail());
     }
 
     @Override
@@ -111,24 +147,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         binding.tvNumOfPlan.setText(String.valueOf(countOfDays));
     }
 
-    private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Choose Your Image"), PICK_IMAGE_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
-                && data != null && data.getData() != null) {
-            Uri mImageUri = data.getData();
-            Picasso.get().load(mImageUri).into(binding.ivProfile);
-        }
-    }
-
     public void displayDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Logout");
@@ -145,5 +163,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         AlertDialog dialog = builder.create();
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        requireActivity().unregisterReceiver(nightModeReceiver);
+        super.onDestroyView();
     }
 }

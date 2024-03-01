@@ -9,7 +9,7 @@ import com.abdulhameed.foodieplan.model.repository.AuthenticationRepository;
 import com.abdulhameed.foodieplan.model.repository.MealRepository;
 import com.abdulhameed.foodieplan.utils.MyCalender;
 
-public class ProfilePresenter implements ProfileContract.Presenter, AuthenticationRepository.GetUserCallback, AuthenticationRepository.GetImageCallback {
+public class ProfilePresenter implements ProfileContract.Presenter, AuthenticationRepository.GetImageCallback {
 
     private final ProfileContract.View view;
     private final MealRepository mealRepository;
@@ -20,16 +20,12 @@ public class ProfilePresenter implements ProfileContract.Presenter, Authenticati
         this.mealRepository = mealRepository;
         this.preferencesManager = preferencesManager;
     }
+
     @Override
     public void logOut(AuthenticationRepository repository) {
         repository.logOut();
         preferencesManager.clearUser();
         clearFavourites();
-    }
-
-    @Override
-    public void onSaveEditClicked(User user, Uri imageUri) {
-
     }
 
     @Override
@@ -58,12 +54,10 @@ public class ProfilePresenter implements ProfileContract.Presenter, Authenticati
     }
 
     @Override
-    public void onGetUserSuccess(User user) {
-        view.showUserData(user);
-    }
-    @Override
-    public void onGetUserFailed(String errorMessage) {
-        view.showErrorMessage(errorMessage);
+    public void getUser() {
+        User user = preferencesManager.getUser();
+        if (user != null)
+            view.showUserData(user);
     }
 
     @Override

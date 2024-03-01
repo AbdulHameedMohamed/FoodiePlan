@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_food_background"
     tools:context=".authentication.MainActivity">
 
     <com.google.android.material.card.MaterialCardView
@@ -42,7 +41,7 @@
             <Button
                 android:id="@+id/btn_login"
                 style="@style/App.AuthenticationButton"
-                android:text="Login" />
+                android:text="@string/login" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_login_with_google"
@@ -63,7 +62,7 @@
                 android:layout_gravity="end"
                 android:layout_marginBottom="20dp"
                 android:padding="8dp"
-                android:text="Not yet registered? SignUp Now"
+                android:text="@string/not_registered"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"

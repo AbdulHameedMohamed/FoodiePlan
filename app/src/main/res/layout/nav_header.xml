@@ -25,7 +25,7 @@
         android:layout_marginTop="@dimen/spacing_small"
         android:text="@string/name"
         android:textSize="18sp"
-        android:textColor="@color/white"
+        android:textColor="@color/titleColor"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/tv_email"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/email"
-        android:textColor="@color/white"
+        android:textColor="@color/descriptionColor"
         android:textSize="16sp"
         android:layout_marginBottom="@dimen/spacing_medium"/>
 </LinearLayout>

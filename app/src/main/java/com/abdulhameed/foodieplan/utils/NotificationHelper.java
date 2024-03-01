@@ -24,7 +24,7 @@ public class NotificationHelper {
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("meal_channel", "Meal Notification", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel("meal_channel", "Meal Notification", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
 

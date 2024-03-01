@@ -10,7 +10,7 @@
         android:id="@+id/stepNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:textColor="@color/titleColor"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:text="Step 1" />
@@ -19,7 +19,7 @@
         android:id="@+id/stepDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:textColor="@color/descriptionColor"
         android:layout_marginTop="8dp"
         android:textSize="16sp"
         tools:text="Boil The Water" />

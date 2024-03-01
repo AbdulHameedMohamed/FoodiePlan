@@ -20,7 +20,9 @@
         android:label="Login" >
         <action
             android:id="@+id/action_loginFragment_to_homeActivity"
-            app:destination="@id/homeActivity" />
+            app:destination="@id/homeActivity"
+            app:popUpTo="@id/homeActivity"
+            app:popUpToInclusive="true"/>
 
         <action
             android:id="@+id/action_loginFragment_to_signupFragment"

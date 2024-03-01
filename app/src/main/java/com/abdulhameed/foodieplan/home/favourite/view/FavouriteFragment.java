@@ -221,7 +221,7 @@ public class FavouriteFragment extends Fragment implements FavouriteContract.Vie
         private final ColorDrawable background;
 
         public SwipeToDeleteCallback() {
-            deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete);
+            deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete_black);
             background = new ColorDrawable(Color.RED);
 
         }

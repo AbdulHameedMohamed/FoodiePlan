@@ -11,13 +11,11 @@ public interface ProfileContract {
 
     interface Presenter {
         void logOut(AuthenticationRepository repository);
-        void onSaveEditClicked(User user, Uri imageUri);
         void clearFavourites();
         void btnSignupClicked();
-
         void getFavMealsCount();
-
         void getPlannedMealsCount();
+        void getUser();
     }
 
     interface View {

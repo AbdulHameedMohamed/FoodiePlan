@@ -1,8 +1,12 @@
 package com.abdulhameed.foodieplan.home.home.view;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -25,7 +29,6 @@ import androidx.navigation.Navigation;
 
 import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.DialogSelectDayBinding;
-import com.abdulhameed.foodieplan.databinding.DialogUserProfileBinding;
 import com.abdulhameed.foodieplan.databinding.FragmentHomeBinding;
 import com.abdulhameed.foodieplan.databinding.LayoutIngredientBinding;
 import com.abdulhameed.foodieplan.home.filter.view.FilterMealsAdapter;
@@ -38,7 +41,6 @@ import com.abdulhameed.foodieplan.model.data.Filter;
 import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.data.Ingredient;
 import com.abdulhameed.foodieplan.model.Meal;
-import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
@@ -53,7 +55,6 @@ import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -69,6 +70,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class HomeFragment extends Fragment implements HomeContract.View, NetworkChangeListener,
         EasyPermissions.PermissionCallbacks, MealAdapter.OnMealClickListener<Meal> {
+    private static final String TAG = "HomeFragment";
     private HomeContract.Presenter presenter;
     private FragmentHomeBinding binding;
     private MealAdapter interestsAdapter;
@@ -77,13 +79,20 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     private NavController navController;
     private Meal mealOfTheDay;
     private NetworkChangeReceiver networkChangeReceiver;
-    private static final String TAG = "HomeFragment";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
     private FusedLocationProviderClient fusedLocationClient;
+    BroadcastReceiver nightModeReceiver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        nightModeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                setDrawableImages();
+            }
+        };
+        registerNightReceiver();
 
         presenter = new HomePresenter(
                 MealRepository.getInstance(
@@ -95,13 +104,41 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
     }
 
+    private void setDrawableImages() {
+        Log.d(TAG, "setBackgroundImage: ");
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        boolean isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+
+        if (isDarkMode) {
+            setDarkModeImages();
+        } else {
+            setLightModeImages();
+        }
+    }
+
+    private void setDarkModeImages() {
+        binding.tvInterestsMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_white, 0, 0, 0);
+        binding.tvCountryMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
+        binding.tvIngredients.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_white, 0, 0, 0);
+        binding.tvCategory.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_white, 0, 0, 0);
+        binding.tvCountry.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
+    }
+
+    private void setLightModeImages() {
+        binding.tvInterestsMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_black, 0, 0, 0);
+        binding.tvCountryMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
+        binding.tvIngredients.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_black, 0, 0, 0);
+        binding.tvCategory.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_black, 0, 0, 0);
+        binding.tvCountry.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         presenter.attachView(this);
-
+        setDrawableImages();
         return binding.getRoot();
     }
 
@@ -409,6 +446,12 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         requireActivity().registerReceiver(networkChangeReceiver, filter);
     }
 
+    private void registerNightReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+        requireActivity().registerReceiver(nightModeReceiver, filter);
+    }
+
     private void unregisterNetworkChangeReceiver() {
         requireActivity().unregisterReceiver(networkChangeReceiver);
     }
@@ -506,5 +549,11 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
                 break;
             chip.setEnabled(false);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        requireActivity().unregisterReceiver(nightModeReceiver);
+        super.onDestroy();
     }
 }

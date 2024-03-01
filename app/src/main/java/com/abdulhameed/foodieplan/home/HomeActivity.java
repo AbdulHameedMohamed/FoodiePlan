@@ -8,6 +8,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -20,6 +25,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.abdulhameed.foodieplan.R;
@@ -38,15 +44,29 @@ import java.net.URL;
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
-    private NavController navController;
+    BroadcastReceiver nightModeReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        nightModeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                setBackgroundImage();
+            }
+        };
+
+        setBackgroundImage();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+
+        registerReceiver(nightModeReceiver, filter);
+
         setContentView(binding.getRoot());
         binding.fabHome.setOnClickListener(view -> navigateTo(R.id.homeFragment));
-        if(!SharedPreferencesManager.getInstance(this).isGuest()) {
+        if (!SharedPreferencesManager.getInstance(this).isGuest()) {
             setupNavigationDrawer();
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.topAppBar, R.string.open_nav,
                     R.string.close_nav);
@@ -56,8 +76,19 @@ public class HomeActivity extends AppCompatActivity {
             binding.topAppBar.setNavigationIcon(R.drawable.ic_guest);
         }
 
-        navController = Navigation.findNavController(this, R.id.home_nav_host);
+        NavController navController = Navigation.findNavController(this, R.id.home_nav_host);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+    }
+
+    private void setBackgroundImage() {
+        Log.d(TAG, "setBackgroundImage: ");
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        boolean isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+
+        if (isDarkMode)
+            getWindow().getDecorView().setBackgroundResource(R.drawable.ic_food_background_dark);
+        else
+            getWindow().getDecorView().setBackgroundResource(R.drawable.ic_food_background);
     }
 
     private void navigateTo(int destinationId) {
@@ -92,6 +123,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private static final String TAG = "HomeActivity";
+
     private void setDrawableIcon(String profileUrl) {
         ImageLoader.loadCircularBitmap(profileUrl)
                 .subscribe(bitmap -> {
@@ -113,5 +145,11 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(nightModeReceiver);
+        super.onDestroy();
     }
 }

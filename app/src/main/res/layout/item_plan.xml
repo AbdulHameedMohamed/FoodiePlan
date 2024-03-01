@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="8dp"
     app:cardCornerRadius="25dp">
 
@@ -17,9 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Day of the Week"
-            android:textColor="@color/black"
-            android:textSize="24dp"
+            tools:text="Day of the Week"
+            android:textColor="@color/titleColor"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
@@ -55,17 +56,18 @@
                     android:layout_marginVertical="20dp"
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="28dp"
-                    android:drawableStart="@drawable/ic_name"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:lines="1"
-                    android:text="Meal Name"
+                    tools:text="Meal Name"
+                    android:textColor="@color/titleColor"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_meal" />
+                    app:layout_constraintTop_toBottomOf="@+id/iv_meal"
+                    app:drawableStartCompat="@drawable/ic_name" />
 
                 <ImageButton
                     android:id="@+id/iv_save_meal"
@@ -94,7 +96,7 @@
                     android:layout_height="25dp"
                     android:layout_marginTop="8dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_delete"
+                    android:src="@drawable/ic_delete_white"
                     app:layout_constraintEnd_toEndOf="@id/iv_save_meal"
                     app:layout_constraintTop_toBottomOf="@id/iv_calender_meal" />
 
@@ -104,8 +106,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Category"
-                    android:textColor="@color/white"
+                    android:text="@string/category"
+                    android:textColor="@color/backgroundColor"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_meal"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -115,8 +117,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Country"
-                    android:textColor="@color/white"
+                    android:text="@string/country"
+                    android:textColor="@color/backgroundColor"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_category"
                     app:layout_constraintEnd_toEndOf="parent"

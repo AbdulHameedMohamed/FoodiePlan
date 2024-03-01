@@ -13,8 +13,9 @@
     app:layout_constraintHorizontal_bias="0.5"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:strokeColor="@color/black"
-    app:strokeWidth="1dp">
+    app:strokeColor="@color/strokeColor"
+    app:strokeWidth="1dp"
+    android:backgroundTint="@color/cardBackgroundColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

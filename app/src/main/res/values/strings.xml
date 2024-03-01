@@ -26,4 +26,14 @@
     <string name="close_nav">Close Navigation Drawer</string>
     <string name="home">Home</string>
     <string name="delete_favourite">Delete Favourite</string>
+    <string name="not_registered">Not yet registered? SignUp Now</string>
+    <string name="category">Category</string>
+    <string name="country">Country</string>
+    <string name="countries">Countries</string>
+    <string name="categories">Categories</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="meals_instructions">Meals Instructions</string>
+    <string name="meals_country">Meals That Popular In Your Country</string>
+    <string name="user_name">Name:</string>
+    <string name="user_email">Email:</string>
 </resources>

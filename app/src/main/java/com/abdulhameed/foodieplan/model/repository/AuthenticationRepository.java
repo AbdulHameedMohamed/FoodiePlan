@@ -297,12 +297,6 @@ public class AuthenticationRepository {
         void onUploadFailed(String errorMessage);
     }
 
-    public interface GetUserCallback {
-        void onGetUserSuccess(User user);
-
-        void onGetUserFailed(String errorMessage);
-    }
-
     public interface LinkGuestCallback {
         void onLinkGuestSuccess(FirebaseUser user);
 

@@ -79,7 +79,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/spacing_medium</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/titleColor</item>
         <item name="iconPadding">@dimen/spacing_small</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_size_small</item>
@@ -96,6 +96,7 @@
         <item name="android:visibility">gone</item>
         <item name="lottie_autoPlay">true</item>
         <item name="lottie_loop">true</item>
+        <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
     <style name="App.TitleTextView" parent="Widget.MaterialComponents.TextView">
