@@ -149,16 +149,16 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     public void displayDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Logout");
-        builder.setMessage("Are You Sure that you want to logout ?");
+        builder.setTitle(R.string.logout);
+        builder.setMessage(R.string.logout_ask);
 
-        builder.setPositiveButton("Yes", (dialog, which) -> {
+        builder.setPositiveButton(requireActivity().getResources().getResourceEntryName(R.string.yes), (dialog, which) -> {
             presenter.logOut(new AuthenticationRepository(FirebaseAuth.getInstance()));
             navController.navigate(R.id.action_profileFragment_to_mainActivity);
-            Toast.makeText(requireContext(), "See You Soon !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), requireActivity().getResources().getResourceEntryName(R.string.see_you), Toast.LENGTH_SHORT).show();
         });
 
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(requireActivity().getResources().getResourceEntryName(R.string.no), (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.setCancelable(false);

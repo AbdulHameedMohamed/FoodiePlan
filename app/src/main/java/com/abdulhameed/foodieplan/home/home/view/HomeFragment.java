@@ -122,6 +122,10 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         binding.tvIngredients.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_white, 0, 0, 0);
         binding.tvCategory.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_white, 0, 0, 0);
         binding.tvCountry.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
+        binding.tvInspiration.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_inspire_white, 0, 0, 0);
+        binding.tvName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_name_white, 0, 0, 0);
+        binding.tvCountryMeal.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
+        binding.tvCategoryMeal.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_white, 0, 0, 0);
     }
 
     private void setLightModeImages() {
@@ -130,6 +134,10 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
         binding.tvIngredients.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_black, 0, 0, 0);
         binding.tvCategory.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_black, 0, 0, 0);
         binding.tvCountry.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
+        binding.tvInspiration.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_inspire_black, 0, 0, 0);
+        binding.tvName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_name_black, 0, 0, 0);
+        binding.tvCountryMeal.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
+        binding.tvCategoryMeal.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_black, 0, 0, 0);
     }
 
     @Nullable

@@ -25,13 +25,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:drawablePadding="10dp"
                 android:fontFamily="@font/courgette"
                 android:text="@string/daily_inspiration"
                 android:textColor="@color/titleColor"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:drawableStart="@drawable/ic_inspire_white" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/sh_cv_meal"
@@ -73,7 +75,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:riv_border_color="#333333"
+                        app:riv_border_color="@color/strokeColor"
                         app:riv_border_width="2dip"
                         app:riv_corner_radius="25dip"
                         app:riv_mutate_background="true" />
@@ -98,17 +100,6 @@
                         app:layout_constraintEnd_toEndOf="@id/ib_favourite"
                         app:layout_constraintTop_toBottomOf="@id/ib_favourite" />
 
-                    <View
-                        android:id="@+id/gradient_overlay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="100dp"
-                        android:background="@drawable/gradient_overlay"
-                        app:layout_constraintBottom_toBottomOf="@+id/iv_meal_img"
-                        app:layout_constraintEnd_toEndOf="@+id/iv_meal_img"
-                        app:layout_constraintStart_toStartOf="@+id/iv_meal_img"
-                        app:layout_constraintTop_toTopOf="@+id/iv_meal_img"
-                        app:layout_constraintVertical_bias="1.0" />
-
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="match_parent"
@@ -122,12 +113,12 @@
                         android:fontFamily="@font/courgette"
                         android:maxLines="1"
                         android:text="@string/meal_name"
-                        android:textColor="@color/backgroundColor"
+                        android:textColor="@color/titleColor"
                         android:textSize="26sp"
-                        android:textStyle="bold"
+                        android:textStyle="bold|italic"
                         app:layout_constraintBottom_toTopOf="@id/tv_category_meal"
                         app:layout_constraintStart_toStartOf="@id/iv_meal_img"
-                        app:drawableStartCompat="@drawable/ic_name" />
+                        tools:drawableStartCompat="@drawable/ic_name_white" />
 
                     <TextView
                         android:id="@+id/tv_category_meal"
@@ -138,13 +129,13 @@
                         android:drawablePadding="12dp"
                         android:fontFamily="@font/courgette"
                         android:text="@string/category"
-                        android:textColor="@color/backgroundColor"
+                        android:textColor="@color/descriptionColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/ic_category_white"
                         app:layout_constraintBottom_toBottomOf="@id/iv_meal_img"
                         app:layout_constraintEnd_toStartOf="@id/tv_country_meal"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:drawableStartCompat="@drawable/ic_category_white" />
 
                     <TextView
                         android:id="@+id/tv_country_meal"
@@ -155,14 +146,15 @@
                         android:drawablePadding="12dp"
                         android:fontFamily="@font/courgette"
                         android:text="@string/country"
-                        android:textColor="@color/backgroundColor"
+                        android:textColor="@color/descriptionColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/tv_category_meal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_category_meal"
                         app:layout_constraintTop_toTopOf="@id/tv_category_meal"
-                        app:drawableStartCompat="@drawable/ic_country_white" />
+                        tools:drawableStartCompat="@drawable/ic_country_white" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

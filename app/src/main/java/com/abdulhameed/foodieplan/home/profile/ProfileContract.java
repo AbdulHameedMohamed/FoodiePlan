@@ -1,7 +1,5 @@
 package com.abdulhameed.foodieplan.home.profile;
 
-import android.net.Uri;
-
 import androidx.lifecycle.LiveData;
 
 import com.abdulhameed.foodieplan.model.data.User;

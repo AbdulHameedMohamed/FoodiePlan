@@ -8,12 +8,12 @@ import com.abdulhameed.foodieplan.model.data.User;
 public class SharedPreferencesManager {
     private static final String SHARED_PREF_NAME = "MySharedPref";
     private static final String KEY_USER_ID = "userId";
-
     private static final String KEY_EMAIL = "email";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PROFILE_URL = "imageUrl";
     private static final String KEY_GUEST_MODE = "guest_mode";
-
+    private static final String KEY_DARK_MODE = "dark_mode";
+    private static final String KEY_LANGUAGE = "language";
     private static final String KEY_MEAL_NAME = "meal_name";
     private static final String KEY_MEAL_CATEGORY = "meal_category";
     private static final String KEY_MEAL_COUNTRY = "meal_country";
@@ -82,6 +82,25 @@ public class SharedPreferencesManager {
         return sharedPreferences.getBoolean(KEY_GUEST_MODE, false);
     }
 
+    public void saveLanguage(String language) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_LANGUAGE, language);
+        editor.apply();
+    }
+
+    public String getLanguage() {
+        return sharedPreferences.getString(KEY_LANGUAGE, "english");
+    }
+
+    public void saveDarkMode(Boolean darkMode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_DARK_MODE, darkMode);
+        editor.apply();
+    }
+
+    public Boolean getDarkMode() {
+        return sharedPreferences.getBoolean(KEY_DARK_MODE, false);
+    }
     public void saveMealOfTheDay(Meal meal) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_MEAL_ID, meal.getId());
@@ -101,7 +120,7 @@ public class SharedPreferencesManager {
         String thumb = sharedPreferences.getString(KEY_MEAL_THUMB, null);
         if(id == null)
             return null;
-        return new Meal(id, name, country, category, thumb);
+        return new Meal(id, name, category, country, thumb);
     }
 
     public void saveMealIdForDay(String day, String mealId) {

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.abdulhameed.foodieplan.authentication.signup.view.SignupFragment"
-        android:label="Signup" >
+        android:label="@string/signup" >
         <action
             android:id="@+id/action_signupFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.abdulhameed.foodieplan.authentication.login.view.LoginFragment"
-        android:label="Login" >
+        android:label="@string/login" >
         <action
             android:id="@+id/action_loginFragment_to_homeActivity"
             app:destination="@id/homeActivity"
