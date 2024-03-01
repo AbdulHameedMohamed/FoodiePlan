@@ -65,7 +65,12 @@ public class HomeActivity extends AppCompatActivity {
         registerReceiver(nightModeReceiver, filter);
 
         setContentView(binding.getRoot());
-        binding.fabHome.setOnClickListener(view -> navigateTo(R.id.homeFragment));
+
+        binding.bottomNavigationView.setSelectedItemId(0);
+        binding.fabHome.setOnClickListener(view -> {
+            binding.bottomNavigationView.setSelectedItemId(-1);
+            navigateTo(R.id.homeFragment);
+        });
         if (!SharedPreferencesManager.getInstance(this).isGuest()) {
             setupNavigationDrawer();
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.topAppBar, R.string.open_nav,

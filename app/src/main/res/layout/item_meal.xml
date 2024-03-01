@@ -41,6 +41,7 @@
             android:layout_marginEnd="28dp"
             android:ellipsize="end"
             android:gravity="center"
+            android:textColor="@color/titleColor"
             android:lines="1"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textSize="20sp"
@@ -78,22 +79,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:textColor="@color/white"
+            android:textColor="@color/backgroundColor"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_meal"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="Category" />
+            android:text="@string/category" />
 
         <TextView
             android:id="@+id/tv_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/backgroundColor"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_category"
             app:layout_constraintTop_toTopOf="@id/tv_category"
             android:layout_marginEnd="16dp"
-            android:text="Country" />
+            android:text="@string/country" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

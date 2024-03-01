@@ -1,19 +1,10 @@
 package com.abdulhameed.foodieplan.model.data;
 
-import android.util.Log;
-import android.util.Pair;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 @Entity(tableName = "watched_meals")
 public class WatchedMeal {
     @PrimaryKey
