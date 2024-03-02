@@ -100,6 +100,15 @@
                         app:layout_constraintEnd_toEndOf="@id/ib_favourite"
                         app:layout_constraintTop_toBottomOf="@id/ib_favourite" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@drawable/gradient_overlay"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_name"
+                        android:paddingTop="10dp"
+                        app:layout_constraintStart_toStartOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="match_parent"
@@ -113,12 +122,16 @@
                         android:fontFamily="@font/courgette"
                         android:maxLines="1"
                         android:text="@string/meal_name"
-                        android:textColor="@color/titleColor"
+                        android:textColor="@color/textColor"
                         android:textSize="26sp"
+                        android:shadowColor="@android:color/white"
+                        android:shadowDx="0"
+                        android:shadowDy="0"
+                        android:shadowRadius="100"
                         android:textStyle="bold|italic"
                         app:layout_constraintBottom_toTopOf="@id/tv_category_meal"
                         app:layout_constraintStart_toStartOf="@id/iv_meal_img"
-                        tools:drawableStartCompat="@drawable/ic_name_white" />
+                        app:drawableStartCompat="@drawable/ic_name_white" />
 
                     <TextView
                         android:id="@+id/tv_category_meal"
@@ -129,13 +142,13 @@
                         android:drawablePadding="12dp"
                         android:fontFamily="@font/courgette"
                         android:text="@string/category"
-                        android:textColor="@color/descriptionColor"
+                        android:textColor="@color/textColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/iv_meal_img"
                         app:layout_constraintEnd_toStartOf="@id/tv_country_meal"
                         app:layout_constraintStart_toStartOf="parent"
-                        tools:drawableStartCompat="@drawable/ic_category_white" />
+                        app:drawableStartCompat="@drawable/ic_category_white" />
 
                     <TextView
                         android:id="@+id/tv_country_meal"
@@ -146,15 +159,14 @@
                         android:drawablePadding="12dp"
                         android:fontFamily="@font/courgette"
                         android:text="@string/country"
-                        android:textColor="@color/descriptionColor"
+                        android:textColor="@color/textColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/tv_category_meal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_category_meal"
                         app:layout_constraintTop_toTopOf="@id/tv_category_meal"
-                        tools:drawableStartCompat="@drawable/ic_country_white" />
-
+                        app:drawableStartCompat="@drawable/ic_country_white" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

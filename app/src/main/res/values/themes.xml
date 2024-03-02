@@ -103,15 +103,19 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/courgette</item>
+        <item name="android:fontFamily">@font/poppins_bold_italic</item>
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_xxlarge</item>
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
     </style>
 
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in</item>
         <item name="android:windowExitAnimation">@anim/slide_out</item>
+    </style>
+
+    <style name="AppTheme.AppBar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="titleTextColor">@color/white</item>
     </style>
 </resources>

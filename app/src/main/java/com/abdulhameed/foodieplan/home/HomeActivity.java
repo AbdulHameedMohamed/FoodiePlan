@@ -89,8 +89,6 @@ public class HomeActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.home_nav_host);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
-        int titleTextColor = getResources().getColor(R.color.titleColor);
-        binding.topAppBar.setTitleTextColor(titleTextColor);
     }
 
     private void setBackgroundImage() {

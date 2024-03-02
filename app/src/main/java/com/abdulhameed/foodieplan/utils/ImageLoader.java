@@ -29,8 +29,7 @@ public class ImageLoader {
                 float radius = Math.min(originalBitmap.getWidth(), originalBitmap.getHeight()) / 2f;
                 canvas.drawCircle(originalBitmap.getWidth() / 2f, originalBitmap.getHeight() / 2f, radius, paint);
 
-                // Scale the circular bitmap to desired size
-                int desiredSize = 125; // Adjust this value as needed
+                int desiredSize = 100;
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(circularBitmap, desiredSize, desiredSize, true);
 
                 emitter.onNext(scaledBitmap);
