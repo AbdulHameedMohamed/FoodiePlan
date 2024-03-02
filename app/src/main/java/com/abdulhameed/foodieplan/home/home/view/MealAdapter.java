@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -17,9 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.ItemMealBinding;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

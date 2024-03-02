@@ -1,11 +1,6 @@
 package com.abdulhameed.foodieplan.model.data;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import com.abdulhameed.foodieplan.model.Meal;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 

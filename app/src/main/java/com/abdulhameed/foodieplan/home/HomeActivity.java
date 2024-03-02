@@ -1,6 +1,7 @@
 package com.abdulhameed.foodieplan.home;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
@@ -12,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -137,7 +139,19 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.nav_settings:
                 navController.navigate(R.id.settingsFragment);
                 break;
+            case R.id.nav_about:
+                showAboutUsDialog(getString(R.string.about_us), getString(R.string.about_us_description));
+                break;
         }
+    }
+
+    private void showAboutUsDialog(String title, String description) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(description)
+                .setPositiveButton(getString(R.string.ok), (dialog, id) -> dialog.dismiss());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override

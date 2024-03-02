@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdulhameed.foodieplan.R;
 import com.abdulhameed.foodieplan.databinding.ItemPlanBinding;
-import com.abdulhameed.foodieplan.model.Meal;
 import com.abdulhameed.foodieplan.model.data.PlannedMeal;
-import com.abdulhameed.foodieplan.utils.OnClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

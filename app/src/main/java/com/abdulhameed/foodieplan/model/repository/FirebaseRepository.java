@@ -1,26 +1,12 @@
 package com.abdulhameed.foodieplan.model.repository;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.abdulhameed.foodieplan.model.Meal;
-import com.abdulhameed.foodieplan.model.data.User;
-import com.abdulhameed.foodieplan.model.firebase.DeleteMealCallback;
-import com.abdulhameed.foodieplan.model.firebase.MealsBackUpCallBack;
-import com.abdulhameed.foodieplan.model.local.MealDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class FirebaseRepository {
 

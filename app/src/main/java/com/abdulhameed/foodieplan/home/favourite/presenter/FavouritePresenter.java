@@ -3,7 +3,7 @@ package com.abdulhameed.foodieplan.home.favourite.presenter;
 import android.util.Log;
 
 import com.abdulhameed.foodieplan.home.favourite.FavouriteContract;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.User;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
@@ -40,10 +40,10 @@ public class FavouritePresenter implements FavouriteContract.Presenter, Favourit
     }
 
     private void delete(Meal meal) {
-        User user = preferencesManager.getUser();
-        if (user.getId() != null) {
+        String userId = preferencesManager.getUserId();
+        if (userId != null) {
             mealRepository.deleteMeal(meal);
-            favouriteRepository.deleteMealForUser(user.getId(), meal.getId(), new FavouriteRepository.Callback<Boolean>() {
+            favouriteRepository.deleteMealForUser(userId, meal.getId(), new FavouriteRepository.Callback<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
                 }

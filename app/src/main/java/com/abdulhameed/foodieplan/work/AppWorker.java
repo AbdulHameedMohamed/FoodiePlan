@@ -9,7 +9,7 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
 import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;

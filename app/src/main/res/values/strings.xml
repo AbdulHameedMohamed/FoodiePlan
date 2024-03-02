@@ -57,4 +57,22 @@
     <string name="filter_fragment">Filter</string>
     <string name="details_fragment">Details</string>
     <string name="signup">Signup</string>
+    <string name="about_us_description">Welcome to our Meal Planner app!\n\n
+    Our app is designed to help you plan your weekly meals efficiently. Here\'s what our app offers:\n\n
+    1. Meal of the Day: Get inspired with a new meal suggestion every day!\n
+    2. Search Functionality: Easily search for meals based on country, ingredient, or category.\n
+    3. Categories and Countries: Explore popular meals by categories and countries.\n
+    4. Favorite Meals: Save your favorite meals to browse them later, even offline!\n
+    5. Data Sync: Backup and synchronize your meal plans across devices using Firebase.\n
+    6. Weekly Meal Planning: Plan your meals for the current week with ease.\n
+    7. Offline Support: Access your favorite meals and weekly plan even without network connectivity.\n
+    8. Authentication: Sign up or log in using your email or social media accounts.\n
+    9. Guest Mode: Use the app as a guest to explore categories, search, and view the meal of the day.\n
+    10. Detailed Meal Information: View meal details including name, image, origin country, ingredients, steps, and video.\n
+    11. Splash Screen: Enjoy a stylish splash screen animation powered by Lottie.\n\n
+    We hope you enjoy using our app to simplify your meal planning experience!\n\n
+    Happy Cooking!</string>
+    <string name="ok">OK</string>
+    <string name="confirm_guest">Are You Sure that you want to Sign In With New Account?\n\nif you do so all guest mode progress will be lost.</string>
+    <string name="guest_mode">Guest Mode</string>
 </resources>

@@ -1,7 +1,7 @@
 package com.abdulhameed.foodieplan.home.favourite;
 
 import androidx.lifecycle.LiveData;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 
 import java.util.ArrayList;
 import java.util.List;

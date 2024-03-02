@@ -1,16 +1,11 @@
-package com.abdulhameed.foodieplan.model;
+package com.abdulhameed.foodieplan.model.data;
 
-import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.abdulhameed.foodieplan.model.data.FilterMeal;
-import com.abdulhameed.foodieplan.model.data.PlannedMeal;
-import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

@@ -18,7 +18,7 @@ import com.abdulhameed.foodieplan.databinding.DialogSelectDayBinding;
 import com.abdulhameed.foodieplan.databinding.FragmentDetailsBinding;
 import com.abdulhameed.foodieplan.home.details.DetailsContract;
 import com.abdulhameed.foodieplan.home.details.presenter.DetailsPresenter;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
@@ -40,7 +40,8 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     private FragmentDetailsBinding binding;
     private IngredientAdapter ingredientAdapter;
     private InstructionAdapter instructionAdapter;
-    private boolean mealLiked = false;
+    private boolean isOpenVideo = false;
+    private boolean isTimerFinished = false;
     private CountDownTimer countDownTimer;
     private Meal meal;
 
@@ -63,7 +64,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
 
         initRecyclerViews();
         getLifecycle().addObserver(binding.ypMealDetailsVideo);
-        if(NetworkManager.isOnline(requireContext())) {
+        if (NetworkManager.isOnline(requireContext())) {
             getArgs();
             binding.avNoInternet.setVisibility(View.GONE);
             binding.cvMealImg.setVisibility(View.VISIBLE);
@@ -100,8 +101,11 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         stopTimer();
+        if (isOpenVideo && isTimerFinished) {
+            saveWatchedMeal();
+        }
+        super.onDestroyView();
     }
 
     private void startTimer() {
@@ -113,7 +117,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
 
             @Override
             public void onFinish() {
-                saveWatchedMeal();
+                isTimerFinished = true;
             }
         }.start();
     }
@@ -125,10 +129,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     }
 
     private void saveWatchedMeal() {
-        if (meal != null && mealLiked) {
-            presenter.saveWatchedMeal(new WatchedMeal(meal.getId(), meal.getName(),
-                    meal.getCategory(), meal.getCountry(), meal.getThumb()));
-        }
+        presenter.saveWatchedMeal(new WatchedMeal(meal));
     }
 
     private void initRecyclerViews() {
@@ -150,7 +151,8 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     @Override
     public void showMeal(Meal meal) {
         this.meal = meal;
-        Toast.makeText(requireContext(), meal.getName(), Toast.LENGTH_SHORT).show();
+        if(meal.getVideoUrl() == null|| meal.getVideoUrl().isEmpty())
+            binding.ypMealDetailsVideo.setVisibility(View.GONE);
         Picasso.get().load(meal.getThumb()).placeholder(R.drawable.cooking).into(binding.ivMealImg);
 
         binding.tvMealDetailsName.setText(meal.getName());
@@ -160,7 +162,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
         binding.ypMealDetailsVideo.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                mealLiked = true;
+                isOpenVideo = true;
                 String videoId = getVideoId(meal.getVideoUrl());
                 youTubePlayer.cueVideo(videoId, 0);
             }
@@ -185,10 +187,10 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
         String today = MyCalender.getDayName(MyCalender.getDayOfWeek());
 
         for (String day : MyCalender.getDaysOfWeek()) {
-                Chip chip = new Chip(requireContext());
-                chip.setText(day);
-                chip.setCheckable(true);
-                dialogBinding.chipGroup.addView(chip);
+            Chip chip = new Chip(requireContext());
+            chip.setText(day);
+            chip.setCheckable(true);
+            dialogBinding.chipGroup.addView(chip);
         }
 
         disableChipsBeforeToday(dialogBinding, today);
@@ -209,7 +211,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
                 String day = chip.getText().toString();
                 presenter.savePlannedMeal(day, meal.getId());
                 Toast.makeText(requireContext(),
-                        meal.getName() + " Stored Successfully To "+ day
+                        meal.getName() + " Stored Successfully To " + day
                         , Toast.LENGTH_SHORT).show();
             }
         }
@@ -218,7 +220,7 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     private static void disableChipsBeforeToday(DialogSelectDayBinding dialogBinding, String today) {
         for (int i = 0; i < dialogBinding.chipGroup.getChildCount(); i++) {
             Chip chip = (Chip) dialogBinding.chipGroup.getChildAt(i);
-            if(chip.getText().toString().equals(today))
+            if (chip.getText().toString().equals(today))
                 break;
             chip.setEnabled(false);
         }
@@ -226,6 +228,6 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
 
     @Override
     public void showMsg(String error) {
-        Toast.makeText(getContext(),  error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 }

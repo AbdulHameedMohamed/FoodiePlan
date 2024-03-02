@@ -57,13 +57,10 @@ public class SignupPresenter implements SignupContract.Presenter, Authentication
 
     @Override
     public void onSignupSuccess(User newUser, Bitmap profileImg) {
-        Log.d(TAG, "onSignupSuccess: " + profileImg);
         repository.uploadProfileImage(newUser.getId(), profileImg, this);
-        Log.d(TAG, "onSignupSuccess: " + newUser.getUserName() +" "+ FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        Log.d(TAG, "onSignupSuccess: " + preferencesManager.isGuest());
         if (preferencesManager.isGuest()) {
-            Log.d(TAG, "onSignupSuccess: " + newUser.getUserName() +" "+ FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             repository.mergeFavoritesFromAnonymousUser(newUser, preferencesManager.getUserId());
+            preferencesManager.saveGuestMode(false);
         }
         view.hideProgressBar();
         view.navigateToLogin();

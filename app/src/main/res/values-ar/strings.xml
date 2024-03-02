@@ -20,7 +20,7 @@
     <string name="plan">الخطة</string>
     <string name="favorite">المفضلة</string>
     <string name="search">بحث</string>
-    <string name="planned_meals">الوجبات المخططة</string>
+    <string name="planned_meals">الوجبات المخطط لها</string>
     <string name="favourite_meals">الوجبات المفضلة</string>
     <string name="filter_meals">تصفية الوجبات</string>
     <string name="open_nav">فتح درج التنقل</string>
@@ -50,7 +50,7 @@
     <string name="light">فاتح</string>
     <string name="dark">داكن</string>
     <string name="settings">الإعدادات</string>
-    <string name="about_us">من نحن</string>
+    <string name="about_us">معلومات عنا</string>
     <string name="home_fragment">الرئيسية</string>
     <string name="settings_bottom_sheet">الإعدادات</string>
     <string name="plan_fragment">الخطة</string>
@@ -58,4 +58,23 @@
     <string name="filter_fragment">التصفية</string>
     <string name="details_fragment">التفاصيل</string>
     <string name="signup">التسجيل</string>
+    <string name="ok">حسنًا</string>
+    <string name="confirm_guest">هل أنت متأكد أنك تريد تسجيل الدخول بحساب جديد؟\n\nإذا قمت بذلك، سيتم فقدان كل تقدم وضع الضيف.</string>
+    <string name="guest_mode">وضع الضيف</string>
+
+    <string name="about_us_description">مرحبًا بك في تطبيق مُخطط الوجبات الخاص بنا!\n\n
+    تم تصميم تطبيقنا لمساعدتك في تخطيط وجباتك الأسبوعية بكفاءة. إليك ما يقدمه تطبيقنا:\n\n
+    1. وجبة اليوم: احصل على إلهام من وجبة جديدة كل يوم!\n
+    2. وظيفة البحث: البحث بسهولة عن الوجبات استنادًا إلى البلد، المكون، أو الفئة.\n
+    3. الفئات والدول: استكشاف الوجبات الشهيرة حسب الفئات والدول.\n
+    4. الوجبات المفضلة: حفظ الوجبات المفضلة لديك للتصفح لاحقًا، حتى بدون اتصال بالإنترنت!\n
+    5. مزامنة البيانات: نسخ احتياطي ومزامنة خطط وجباتك عبر الأجهزة باستخدام Firebase.\n
+    6. تخطيط الوجبات الأسبوعية: خطط وجباتك للأسبوع الحالي بسهولة.\n
+    7. الدعم بدون اتصال: الوصول إلى الوجبات المفضلة لديك وخطة الأسبوع حتى بدون اتصال بالشبكة.\n
+    8. المصادقة: قم بالتسجيل أو تسجيل الدخول باستخدام بريدك الإلكتروني أو حسابات التواصل الاجتماعي الخاصة بك.\n
+    9. وضع الضيف: استخدم التطبيق كضيف لاستكشاف الفئات، البحث، وعرض وجبة اليوم.\n
+    10. معلومات مفصلة عن الوجبة: عرض تفاصيل الوجبة بما في ذلك الاسم، الصورة، البلد المنشأ، المكونات، الخطوات، والفيديو.\n
+    11. شاشة الترحيب: استمتع بتأثيرات رائعة في شاشة الترحيب باستخدام Lottie.\n\n
+    نأمل أن تستمتع باستخدام تطبيقنا لتبسيط تجربتك في تخطيط الوجبات!\n\n
+    طهي ممتع!</string>
 </resources>

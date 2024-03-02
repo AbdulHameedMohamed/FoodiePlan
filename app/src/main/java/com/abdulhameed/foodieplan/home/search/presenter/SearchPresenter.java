@@ -1,9 +1,7 @@
 package com.abdulhameed.foodieplan.home.search.presenter;
 
-import android.util.Log;
-
 import com.abdulhameed.foodieplan.home.search.SearchContract;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;

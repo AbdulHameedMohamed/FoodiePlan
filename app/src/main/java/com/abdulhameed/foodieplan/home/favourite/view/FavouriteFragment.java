@@ -26,7 +26,7 @@ import com.abdulhameed.foodieplan.databinding.FragmentFavouriteBinding;
 import com.abdulhameed.foodieplan.home.favourite.FavouriteContract;
 import com.abdulhameed.foodieplan.home.favourite.presenter.FavouritePresenter;
 import com.abdulhameed.foodieplan.home.home.view.MealAdapter;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;

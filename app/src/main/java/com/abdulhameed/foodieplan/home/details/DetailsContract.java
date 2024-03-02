@@ -1,6 +1,6 @@
 package com.abdulhameed.foodieplan.home.details;
 
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 
 public interface DetailsContract {

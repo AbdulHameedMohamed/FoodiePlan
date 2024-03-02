@@ -6,7 +6,7 @@ import com.abdulhameed.foodieplan.model.data.Category;
 import com.abdulhameed.foodieplan.model.data.Country;
 import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.data.Ingredient;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.repository.FilterRepository;
 

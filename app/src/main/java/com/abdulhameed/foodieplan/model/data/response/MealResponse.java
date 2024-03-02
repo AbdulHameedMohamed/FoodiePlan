@@ -1,6 +1,6 @@
 package com.abdulhameed.foodieplan.model.data.response;
 
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 
 import java.util.ArrayList;
 

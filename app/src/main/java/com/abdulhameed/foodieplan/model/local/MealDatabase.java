@@ -6,8 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.abdulhameed.foodieplan.model.Meal;
-import com.abdulhameed.foodieplan.model.data.PlannedMeal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.remote.WatchedMealDao;
 

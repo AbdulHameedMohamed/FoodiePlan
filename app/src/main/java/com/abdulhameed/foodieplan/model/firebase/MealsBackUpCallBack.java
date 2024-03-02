@@ -1,6 +1,6 @@
 package com.abdulhameed.foodieplan.model.firebase;
 
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 
 import java.util.List;
 

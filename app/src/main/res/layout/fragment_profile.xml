@@ -19,7 +19,7 @@
             android:layout_marginEnd="24dp"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_logout"
+            tools:src="@drawable/ic_logout_black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -148,10 +148,12 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/av_sign_up"
         style="@style/LottieAnimation"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16"
         app:lottie_rawRes="@raw/animation_sign_up" />
 
     <Button
@@ -161,7 +163,7 @@
         android:layout_marginHorizontal="80dp"
         android:layout_marginTop="80dp"
         android:paddingVertical="10dp"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textSize="18sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"

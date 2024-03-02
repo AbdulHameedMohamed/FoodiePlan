@@ -3,6 +3,7 @@ package com.abdulhameed.foodieplan.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.User;
 
 public class SharedPreferencesManager {

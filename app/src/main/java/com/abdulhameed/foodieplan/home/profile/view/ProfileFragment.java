@@ -35,7 +35,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
-
 public class ProfileFragment extends Fragment implements ProfileContract.View {
     private ProfileContract.Presenter presenter;
     private FragmentProfileBinding binding;
@@ -43,10 +42,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private static final String TAG = "ProfileFragment";
     BroadcastReceiver nightModeReceiver;
 
-    private void registerNightReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
-        requireActivity().registerReceiver(nightModeReceiver, filter);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        navController = NavHostFragment.findNavController(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -54,7 +53,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        navController = NavHostFragment.findNavController(this);
+        setListeners();
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (SharedPreferencesManager.getInstance(requireContext()).isGuest()) {
             binding.avSignUp.setVisibility(View.VISIBLE);
             binding.btnGuestSignup.setVisibility(View.VISIBLE);
@@ -83,8 +87,13 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             };
             registerNightReceiver();
         }
-        setListeners();
-        return binding.getRoot();
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void registerNightReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+        requireActivity().registerReceiver(nightModeReceiver, filter);
     }
 
     private void setListeners() {
@@ -108,13 +117,13 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     }
 
     private void setDarkModeImages() {
-        binding.ibLogout.setImageResource(R.drawable.ic_home_white);
+        binding.ibLogout.setImageResource(R.drawable.ic_logout_white);
         binding.ivFavourite.setImageResource(R.drawable.ic_red_heart);
         binding.ivPlan.setImageResource(R.drawable.ic_calendar_white);
     }
 
     private void setLightModeImages() {
-        binding.ibLogout.setImageResource(R.drawable.ic_home_black);
+        binding.ibLogout.setImageResource(R.drawable.ic_logout_black);
         binding.ivFavourite.setImageResource(R.drawable.ic_black_heart);
         binding.ivPlan.setImageResource(R.drawable.ic_calendar_black);
     }
@@ -152,10 +161,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         builder.setTitle(R.string.logout);
         builder.setMessage(R.string.logout_ask);
 
-        builder.setPositiveButton(requireActivity().getResources().getResourceEntryName(R.string.yes), (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             presenter.logOut(new AuthenticationRepository(FirebaseAuth.getInstance()));
             navController.navigate(R.id.action_profileFragment_to_mainActivity);
-            Toast.makeText(requireContext(), requireActivity().getResources().getResourceEntryName(R.string.see_you), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.see_you), Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton(requireActivity().getResources().getResourceEntryName(R.string.no), (dialog, which) -> dialog.dismiss());

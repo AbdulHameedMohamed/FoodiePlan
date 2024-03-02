@@ -10,7 +10,7 @@ import com.abdulhameed.foodieplan.model.data.Category;
 import com.abdulhameed.foodieplan.model.data.Country;
 import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.data.Ingredient;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;
 import com.abdulhameed.foodieplan.model.repository.FavouriteRepository;
@@ -106,10 +106,9 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
         Log.d(TAG, "addToFavourite: " + preferencesManager.getUser());
 
         mealsRepository.insertMeal(meal);
-        favouriteRepository.saveMealForUser(FirebaseAuth.getInstance().getUid(), meal, new FavouriteRepository.Callback<Boolean>() {
+        favouriteRepository.saveMealForUser(preferencesManager.getUserId(), meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
-                view.showMessage("Inserted in Cloud Successfully.");
             }
 
             @Override
@@ -121,8 +120,8 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
 
     @Override
     public void removeFromFavourite(Meal meal) {
-        if (preferencesManager.getUser() != null && meal.getId() != null) {
-            favouriteRepository.deleteMealForUser(preferencesManager.getUser().getId(), meal.getId(), new FavouriteRepository.Callback<Boolean>() {
+        if (preferencesManager.getUserId() != null && meal.getId() != null) {
+            favouriteRepository.deleteMealForUser(preferencesManager.getUserId(), meal.getId(), new FavouriteRepository.Callback<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
                     mealsRepository.deleteMeal(meal);
@@ -134,7 +133,7 @@ public class HomePresenter implements HomeContract.Presenter, NetworkCallBack {
                 }
             });
         } else {
-            view.showMessage("NO User, Login First");
+            view.showMessage("No User, Login First");
         }
     }
 

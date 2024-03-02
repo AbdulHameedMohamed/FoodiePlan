@@ -1,7 +1,7 @@
 package com.abdulhameed.foodieplan.home.details.presenter;
 
 import com.abdulhameed.foodieplan.home.details.DetailsContract;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.remote.NetworkCallBack;

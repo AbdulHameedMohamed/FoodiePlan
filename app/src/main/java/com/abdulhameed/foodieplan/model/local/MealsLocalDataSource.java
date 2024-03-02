@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.remote.WatchedMealDao;
 

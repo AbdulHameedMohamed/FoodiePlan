@@ -16,11 +16,10 @@ import android.widget.Toast;
 
 import com.abdulhameed.foodieplan.databinding.DialogSelectDayBinding;
 import com.abdulhameed.foodieplan.databinding.FragmentSearchBinding;
-import com.abdulhameed.foodieplan.home.favourite.view.FavouriteFragmentDirections;
 import com.abdulhameed.foodieplan.home.home.view.MealAdapter;
 import com.abdulhameed.foodieplan.home.search.SearchContract;
 import com.abdulhameed.foodieplan.home.search.presenter.SearchPresenter;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
@@ -30,7 +29,6 @@ import com.abdulhameed.foodieplan.utils.MyCalender;
 import com.abdulhameed.foodieplan.utils.NetworkManager;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +79,10 @@ public class SearchFragment extends Fragment implements SearchContract.View , Me
             public void onTextChanged(CharSequence searchText, int i, int i1, int i2) {
                 showLoading();
                 String search = searchText.toString().toLowerCase();
+                if(search.isEmpty()) {
+                    showMeals(new ArrayList<>());
+                    return;
+                }
                 presenter.searchFilterItem(search);
             }
         });

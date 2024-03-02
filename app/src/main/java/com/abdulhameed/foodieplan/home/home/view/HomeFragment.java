@@ -40,7 +40,7 @@ import com.abdulhameed.foodieplan.model.data.Country;
 import com.abdulhameed.foodieplan.model.data.Filter;
 import com.abdulhameed.foodieplan.model.data.FilterMeal;
 import com.abdulhameed.foodieplan.model.data.Ingredient;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.WatchedMeal;
 import com.abdulhameed.foodieplan.model.local.MealsLocalDataSource;
 import com.abdulhameed.foodieplan.model.remote.MealsRemoteDataSource;
@@ -82,7 +82,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
     private FusedLocationProviderClient fusedLocationClient;
     BroadcastReceiver nightModeReceiver;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

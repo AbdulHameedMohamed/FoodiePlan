@@ -2,7 +2,7 @@ package com.abdulhameed.foodieplan.home.plan.presenter;
 
 
 import com.abdulhameed.foodieplan.home.plan.PlanContract;
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;
 import com.abdulhameed.foodieplan.model.data.PlannedMeal;
 import com.abdulhameed.foodieplan.model.data.User;

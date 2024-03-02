@@ -2,7 +2,7 @@ package com.abdulhameed.foodieplan.model.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.abdulhameed.foodieplan.model.Meal;
+import com.abdulhameed.foodieplan.model.data.Meal;
 import com.abdulhameed.foodieplan.model.data.Category;
 import com.abdulhameed.foodieplan.model.data.Country;
 import com.abdulhameed.foodieplan.model.data.Ingredient;
