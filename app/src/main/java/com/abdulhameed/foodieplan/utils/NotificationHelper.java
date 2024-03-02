@@ -20,7 +20,7 @@ public class NotificationHelper {
         mContext = context;
     }
 
-    public void showNotification(String title, String content) {
+    public void showNotification(String title, String content, int notificationId) {
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -29,7 +29,7 @@ public class NotificationHelper {
         }
 
         Intent intent = new Intent(mContext, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "meal_channel")
                 .setSmallIcon(R.drawable.ic_notification)
@@ -41,6 +41,7 @@ public class NotificationHelper {
         bigTextStyle.bigText(content);
         builder.setStyle(bigTextStyle);
 
-        notificationManager.notify(1, builder.build());
+        // Use unique notificationId for each notification
+        notificationManager.notify(notificationId, builder.build());
     }
 }

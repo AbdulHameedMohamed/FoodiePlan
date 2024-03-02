@@ -104,7 +104,6 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     }
 
     private void setDrawableImages() {
-        Log.d(TAG, "setBackgroundImage: ");
         int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         boolean isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
 
@@ -116,21 +115,20 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     }
 
     private void setDarkModeImages() {
-        binding.tvInterestsMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_white, 0, 0, 0);
-        binding.tvCountryMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
-        binding.tvIngredients.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_white, 0, 0, 0);
-        binding.tvCategory.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_white, 0, 0, 0);
-        binding.tvCountry.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
-        binding.tvInspiration.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_inspire_white, 0, 0, 0);
+        binding.tvInterestsMeals.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_interest_white, 0, 0, 0);
+        binding.tvCountryMeals.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
+        binding.tvIngredients.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_interest_white, 0, 0, 0);
+        binding.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_country_white, 0, 0, 0);
+        binding.tvInspiration.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_inspire_white, 0, 0, 0);
     }
 
     private void setLightModeImages() {
-        binding.tvInterestsMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_black, 0, 0, 0);
-        binding.tvCountryMeals.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
-        binding.tvIngredients.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_interest_black, 0, 0, 0);
-        binding.tvCategory.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_black, 0, 0, 0);
-        binding.tvCountry.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
-        binding.tvInspiration.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_inspire_black, 0, 0, 0);
+        binding.tvInterestsMeals.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_interest_black, 0, 0, 0);
+        binding.tvCountryMeals.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
+        binding.tvIngredients.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_interest_black, 0, 0, 0);
+        binding.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_category_black, 0, 0, 0);
+        binding.tvCountry.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_country_black, 0, 0, 0);
+        binding.tvInspiration.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_inspire_black, 0, 0, 0);
     }
 
     @Nullable
@@ -200,10 +198,8 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
                     .addOnSuccessListener(requireActivity(), location -> {
                         if (location != null) {
                             String country = getCountryFromLocation(location);
-                            if (country != null) {
+                            if (country != null)
                                 getCountryMeals(country);
-                                showSnackBar("Note: The Virtual Device Location On: " + country);
-                            }
                         } else {
                             binding.shRvCountryMeals.stopShimmer();
                             binding.shRvCountryMeals.setVisibility(View.GONE);
@@ -494,7 +490,7 @@ public class HomeFragment extends Fragment implements HomeContract.View, Network
     public void onMealsSelected(ArrayList<Meal> selectedMeals) {
         for (Meal meal : selectedMeals)
             presenter.addToFavourite(meal);
-        showSnackBar("Meals Added Successfully");
+        showSnackBar("Meals Added to Favourite Successfully");
     }
 
     private void showSnackBar(String message) {

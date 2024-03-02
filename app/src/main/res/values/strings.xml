@@ -75,4 +75,5 @@
     <string name="ok">OK</string>
     <string name="confirm_guest">Are You Sure that you want to Sign In With New Account?\n\nif you do so all guest mode progress will be lost.</string>
     <string name="guest_mode">Guest Mode</string>
+    <string name="no_video">Sorry, but we don\'t have a video of this meal.</string>
 </resources>

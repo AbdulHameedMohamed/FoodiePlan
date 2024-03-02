@@ -61,6 +61,7 @@
     <string name="ok">حسنًا</string>
     <string name="confirm_guest">هل أنت متأكد أنك تريد تسجيل الدخول بحساب جديد؟\n\nإذا قمت بذلك، سيتم فقدان كل تقدم وضع الضيف.</string>
     <string name="guest_mode">وضع الضيف</string>
+    <string name="no_video">عذرًا، لكن ليس لدينا فيديو لهذه الوجبة.</string>
 
     <string name="about_us_description">مرحبًا بك في تطبيق مُخطط الوجبات الخاص بنا!\n\n
     تم تصميم تطبيقنا لمساعدتك في تخطيط وجباتك الأسبوعية بكفاءة. إليك ما يقدمه تطبيقنا:\n\n

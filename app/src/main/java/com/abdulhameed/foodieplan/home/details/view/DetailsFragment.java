@@ -151,8 +151,10 @@ public class DetailsFragment extends Fragment implements DetailsContract.View {
     @Override
     public void showMeal(Meal meal) {
         this.meal = meal;
-        if(meal.getVideoUrl() == null|| meal.getVideoUrl().isEmpty())
+        if(meal.getVideoUrl() == null|| meal.getVideoUrl().isEmpty()) {
             binding.ypMealDetailsVideo.setVisibility(View.GONE);
+            Toast.makeText(requireContext(), R.string.no_video, Toast.LENGTH_SHORT).show();
+        }
         Picasso.get().load(meal.getThumb()).placeholder(R.drawable.cooking).into(binding.ivMealImg);
 
         binding.tvMealDetailsName.setText(meal.getName());

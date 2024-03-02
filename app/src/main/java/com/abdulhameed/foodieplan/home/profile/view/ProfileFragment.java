@@ -167,7 +167,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             Toast.makeText(requireContext(), getString(R.string.see_you), Toast.LENGTH_SHORT).show();
         });
 
-        builder.setNegativeButton(requireActivity().getResources().getResourceEntryName(R.string.no), (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.setCancelable(false);

@@ -46,7 +46,7 @@ public class AppWorker extends Worker implements NetworkCallBack<List<Meal>> {
             apiService.getMealById(new NetworkCallBack<Meal>() {
                 @Override
                 public void onSuccess(Meal plannedMeal) {
-                    notificationHelper.showNotification("Today is: "+ dayName + " and your meal to this day is ready!", dayName + "'s meal: " + plannedMeal.getName());
+                    notificationHelper.showNotification("Today is: "+ dayName + " and your planning meal to this day is ready!", dayName + "'s meal: " + plannedMeal.getName(), 1);
                 }
 
                 @Override
@@ -68,7 +68,7 @@ public class AppWorker extends Worker implements NetworkCallBack<List<Meal>> {
         if (mealOfTheDay != null && !mealOfTheDay.isEmpty()) {
             Meal meal = mealOfTheDay.get(0);
             SharedPreferencesManager.getInstance(getApplicationContext()).saveMealOfTheDay(meal);
-            notificationHelper.showNotification("Good Morning Sir!\nYour meal of the day is ready!", "Today's meal: " + meal.getName());
+            notificationHelper.showNotification("Good Morning Sir!\nYour Inspiration meal of the day is ready!", "Today's meal: " + meal.getName(), 2);
         }
     }
 

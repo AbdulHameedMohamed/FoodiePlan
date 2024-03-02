@@ -152,7 +152,7 @@ public class SearchFragment extends Fragment implements SearchContract.View , Me
     public void onMealsSelected(ArrayList<Meal> selectedMeals) {
         for(Meal meal: selectedMeals)
             presenter.addToFavourite(meal);
-        showSnackBar("Meals Added Successfully");
+        showSnackBar("Meals Added To Favourite Successfully");
     }
 
     private void showSnackBar(String message) {
