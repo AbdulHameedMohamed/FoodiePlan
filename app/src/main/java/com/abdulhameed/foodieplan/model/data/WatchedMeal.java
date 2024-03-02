@@ -27,6 +27,14 @@ public class WatchedMeal {
         this.thumb = thumb;
     }
 
+    public WatchedMeal(@NonNull Meal meal) {
+        this.id = meal.getId();
+        this.name = meal.getName();
+        this.category = meal.getCategory();
+        this.country = meal.getCountry();
+        this.thumb = meal.getThumb();
+    }
+
     @NonNull
     public String getId() {
         return id;

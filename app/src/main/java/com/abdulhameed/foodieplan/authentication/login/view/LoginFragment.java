@@ -138,16 +138,15 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     @Override
     public void showDialog(String email, String password) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Guest Mode");
-        builder.setMessage("Are You Sure that you want to Sign In With New Account?\n" +
-                "if you do so all guest mode progress will be lost.");
+        builder.setTitle(R.string.guest_mode);
+        builder.setMessage(getString(R.string.confirm_guest));
 
-        builder.setPositiveButton("Yes", (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             presenter.clearGuest();
             presenter.signInWithEmail(email, password);
         });
 
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.setCancelable(false);

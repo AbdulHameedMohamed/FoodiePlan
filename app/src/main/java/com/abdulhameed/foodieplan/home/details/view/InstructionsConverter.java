@@ -8,9 +8,12 @@ import java.util.List;
 public class InstructionsConverter {
     public static List<Step> convertStringToInstructions(String stepsString) {
         List<Step> stepList = new ArrayList<>();
-        String[] stepsArray = stepsString.split("\r\n");
-        for (int i = 0; i < stepsArray.length; i++) {
-            stepList.add(new Step(i + 1, stepsArray[i]));
+        String[] stepsArray = stepsString.split("\r\n+");
+        int stepIndex= 0;
+        for (String s : stepsArray) {
+            String stepText = s.trim();
+            if (!stepText.isEmpty() && stepText.length() > 10)
+                stepList.add(new Step(++stepIndex, stepText));
         }
         return stepList;
     }
