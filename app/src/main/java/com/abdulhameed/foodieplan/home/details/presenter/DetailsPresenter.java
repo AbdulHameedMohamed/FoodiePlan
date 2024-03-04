@@ -36,7 +36,6 @@ public class DetailsPresenter implements DetailsContract.Presenter, NetworkCallB
         favouriteRepository.saveMealForUser(FirebaseAuth.getInstance().getUid(), meal, new FavouriteRepository.Callback<Boolean>() {
             @Override
             public void onSuccess(Boolean isInserted) {
-                view.showMsg("Added In Cloud Successfully");
             }
 
             @Override

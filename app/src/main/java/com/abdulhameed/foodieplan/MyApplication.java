@@ -26,7 +26,7 @@ public class MyApplication extends Application {
         FirebaseApp.initializeApp(this);
         PeriodicWorkRequest worker = new PeriodicWorkRequest.Builder(
                 AppWorker.class,
-                1, TimeUnit.DAYS)
+                1, TimeUnit.MINUTES)
                 .build();
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(

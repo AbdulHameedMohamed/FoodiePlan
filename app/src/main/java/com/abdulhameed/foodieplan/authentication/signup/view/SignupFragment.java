@@ -83,19 +83,17 @@ public class SignupFragment extends Fragment implements SignupContract.View {
 
         return new User(email, username, password);
     }
-
-    private void openFileChooser() {
+     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
-
     @Override
     public void showProgressBar() {
         signupBinding.avLoading.setVisibility(View.VISIBLE);
+        signupBinding.cvSignup.setVisibility(View.GONE);
     }
-
     @Override
     public void hideProgressBar() {
         signupBinding.avLoading.setVisibility(View.GONE);
@@ -109,7 +107,6 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     public void navigateToLogin() {
         requireActivity().getSupportFragmentManager().popBackStack();
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

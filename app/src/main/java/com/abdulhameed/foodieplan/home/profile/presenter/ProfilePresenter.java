@@ -1,6 +1,7 @@
 package com.abdulhameed.foodieplan.home.profile.presenter;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.abdulhameed.foodieplan.home.profile.ProfileContract;
 import com.abdulhameed.foodieplan.model.SharedPreferencesManager;

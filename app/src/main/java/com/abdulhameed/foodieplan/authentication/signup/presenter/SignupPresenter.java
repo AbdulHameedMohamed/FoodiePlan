@@ -16,6 +16,7 @@ public class SignupPresenter implements SignupContract.Presenter, Authentication
     private static final String TAG = "SignupPresenter";
     private final AuthenticationRepository repository;
     private final SharedPreferencesManager preferencesManager;
+
     public SignupPresenter(SignupContract.View view, AuthenticationRepository repository, SharedPreferencesManager preferencesManager) {
         this.view = view;
         this.preferencesManager = preferencesManager;

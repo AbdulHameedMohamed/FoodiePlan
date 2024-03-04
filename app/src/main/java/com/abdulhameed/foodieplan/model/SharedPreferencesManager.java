@@ -52,6 +52,12 @@ public class SharedPreferencesManager {
     public String getUserId() {
         return sharedPreferences.getString(KEY_USER_ID, null);
     }
+
+    public void clearUserId() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_USER_ID);
+        editor.apply();
+    }
     public User getUser() {
         String userId = sharedPreferences.getString(KEY_USER_ID, null);
         String email = sharedPreferences.getString(KEY_EMAIL, null);

@@ -44,6 +44,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        presenter = new ProfilePresenter(this,
+                MealRepository.getInstance(MealsRemoteDataSource.getInstance(),
+                        MealsLocalDataSource.getInstance(requireContext())),
+                SharedPreferencesManager.getInstance(requireContext()));
         navController = NavHostFragment.findNavController(this);
         super.onCreate(savedInstanceState);
     }
@@ -69,10 +73,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             binding.avSignUp.setVisibility(View.GONE);
             binding.btnGuestSignup.setVisibility(View.GONE);
             binding.clProfile.setVisibility(View.VISIBLE);
-
-            presenter = new ProfilePresenter(this,
-                    MealRepository.getInstance(MealsRemoteDataSource.getInstance(), MealsLocalDataSource.getInstance(requireContext())),
-                    SharedPreferencesManager.getInstance(requireContext()));
 
             presenter.getFavMealsCount();
             presenter.getPlannedMealsCount();
